@@ -1,6 +1,6 @@
 # .travis.yml --
 #
-# Travis CI configuration for MMCK Template.
+# Travis CI configuration for MMCK CHICKEN Docs.
 
 #page
 #### about branch selection
@@ -140,12 +140,10 @@ env:
 #
 
 install:
-  - ./meta/travis-ci/install-pkg-config.sh;
   - ./meta/travis-ci/install-autoconf.sh;
   - ./meta/travis-ci/install-automake.sh;
   - ./meta/travis-ci/install-texinfo.sh;
   - ./meta/travis-ci/install-chicken.sh;
-  - ./meta/travis-ci/install-chicken-egg-coops.sh;
   - ./meta/travis-ci/install-mmck-checks.sh;
 
 #page
@@ -154,7 +152,6 @@ install:
 before_script:
   # On Linux the GNU  Libtool preparation script is called "libtoolize", while on  OS X it is called
   # "glibtoolize".
-  - echo pkg-config --version ; pkg-config --version;
   - echo autoconf --version ; autoconf --version;
   - echo automake --version ; automake --version;
   - sh ./autogen.sh;
