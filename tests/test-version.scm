@@ -40,8 +40,6 @@
 
 ;;;; units and module header
 
-(require-library (mmck checks))
-
 (module (test-version)
     ()
   (import (scheme)

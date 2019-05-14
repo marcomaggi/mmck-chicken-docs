@@ -40,8 +40,6 @@
 
 ;;;; units and module header
 
-(require-library (mmck checks))
-
 (module (test-chicken-internals-slots)
     ()
   (import (scheme)
