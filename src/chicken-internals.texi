@@ -149,10 +149,6 @@ Indexes
 @chapter Overview of the package
 
 
-@cindex @library{mmck template}, library
-@cindex Library @library{mmck template}
-
-
 This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
 implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language
 features as defined in the ``Revised^5 Report on Scheme''.
