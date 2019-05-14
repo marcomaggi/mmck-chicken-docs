@@ -225,6 +225,9 @@ operations with the following macros:
 (define-syntax-rule ($vector-set! ?vector ?slot-index ?new-value)
   (##sys#setslot ?vector ?slot-index ?new-value))
 
+(define-syntax-rule ($vector-set-immediate! ?vector ?slot-index ?new-value)
+  (##sys#setislot ?vector ?slot-index ?new-value))
+
 (define-syntax-rule ($vector-length ?vector)
   (##sys#size ?vector))
 @end lisp

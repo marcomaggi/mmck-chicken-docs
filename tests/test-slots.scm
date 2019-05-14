@@ -84,6 +84,9 @@
   (define-syntax-rule ($vector-set! ?vector ?slot-index ?new-value)
     (##sys#setslot ?vector ?slot-index ?new-value))
 
+  (define-syntax-rule ($vector-set-immediate! ?vector ?slot-index ?new-value)
+    (##sys#setislot ?vector ?slot-index ?new-value))
+
   (define-syntax-rule ($vector-length ?vector)
     (##sys#size ?vector))
 
@@ -105,6 +108,20 @@
 	($vector-set! vec 0 'x)
 	($vector-set! vec 1 'y)
 	($vector-set! vec 2 'z)
+
+	(values ($vector-ref vec 0)
+		($vector-ref vec 1)
+		($vector-ref vec 2)))
+    => 'x 'y 'z)
+
+  (check
+      (internal-body
+	(define V
+	  (vector 'a 'b 'c))
+
+	($vector-set-immediate! vec 0 'x)
+	($vector-set-immediate! vec 1 'y)
+	($vector-set-immediate! vec 2 'z)
 
 	(values ($vector-ref vec 0)
 		($vector-ref vec 1)
