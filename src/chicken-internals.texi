@@ -128,6 +128,7 @@ and as backup at:
 
 @menu
 * overview::                    Overview of the document.
+* layout::                      Representation of Scheme values.
 * slots::                       Slots operations.
 
 Appendices
@@ -152,6 +153,16 @@ Indexes
 This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
 implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language
 features as defined in the ``Revised^5 Report on Scheme''.
+
+Throughout this document some syntactic bindings are described as @dfn{System Operations}; we can
+think of a system operation as a Scheme macro that, in the end, directly expands into C language
+code integrated at the macro--use site.  As usual with macros: we must take care of not causing
+multiple evaluation of expressions used as arguments to such operations.
+
+@c page
+@node layout
+@chapter Representation of Scheme values
+
 
 @c page
 @node slots
