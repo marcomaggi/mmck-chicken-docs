@@ -298,6 +298,10 @@ and as backup at:
 
 @center @url{http://www.call-cc.org/}
 
+The @chicken{} Wiki has a page about data representation:
+
+@center @url{http://wiki.call-cc.org/man/5/Data%20representation}
+
 @c page
 @node concept index
 @appendix An entry for each concept
