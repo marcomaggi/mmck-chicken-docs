@@ -206,6 +206,9 @@ Like @syntax{##sys#setslot}, it is an unsafe slot setter with an additional cons
 value.  We can use it when we know that: @qvar{block-value} is a reference to a block value;
 @qvar{slot-index} is a valid slot index for @qvar{block-value}; @qvar{new-immediate-value} is any
 immediate Scheme value (examples: a fixnum, a boolean).  Return the undefined value.
+
+@strong{NOTE} No validation is performed against @qvar{new-immediate-value} to check that it is
+actually an immediate value.
 @end deffn
 
 
@@ -230,6 +233,52 @@ operations with the following macros:
 
 (define-syntax-rule ($vector-length ?vector)
   (##sys#size ?vector))
+
+(define V
+  (vector 'a 'b 'c))
+
+($vector-set! vec 0 'x)
+($vector-set! vec 1 'y)
+($vector-set! vec 2 'z)
+
+($vector-ref vec 0)     @result{} x
+($vector-ref vec 1)     @result{} y
+($vector-ref vec 2)     @result{} z
+@end lisp
+
+When the block value is a Scheme record, we could make a more descriptive use of the above
+operations with the following macros:
+
+@lisp
+(define-syntax-rule ($struct-size ?stru)
+  (##sys#size ?stru))
+
+(define-syntax-rule ($struct-slot ?stru ?slot-index)
+  (##sys#slot ?stru ?slot-index))
+
+(define-syntax-rule ($struct-slot-set! ?stru ?slot-index ?new-value)
+  (##sys#setslot ?stru ?slot-index ?new-value))
+
+(define-syntax-rule ($struct-slot-set-immediate! ?stru ?slot-index ?new-value)
+  (##sys#setislot ?stru ?slot-index ?new-value))
+
+(define-record <spiffy>
+  one two)
+
+(define instance
+  (make-<spiffy> 'a 'b))
+
+($struct-size instance)         @result{} 3
+
+($struct-slot instance 0)       @result{} current-module-name#<spiffy>
+($struct-slot instance 1)       @result{} a
+($struct-slot instance 2)       @result{} b
+
+($struct-slot-set! instance 1 'x)
+($struct-slot-set! instance 2 'y)
+
+($struct-slot instance 1)       @result{} x
+($struct-slot instance 2)       @result{} y
 @end lisp
 
 @c page

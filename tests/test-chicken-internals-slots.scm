@@ -119,14 +119,69 @@
 	(define V
 	  (vector 'a 'b 'c))
 
-	($vector-set-immediate! vec 0 'x)
-	($vector-set-immediate! vec 1 'y)
-	($vector-set-immediate! vec 2 'z)
+	($vector-set-immediate! vec 0 77)
+	($vector-set-immediate! vec 1 88)
+	($vector-set-immediate! vec 2 99)
 
 	(values ($vector-ref vec 0)
 		($vector-ref vec 1)
 		($vector-ref vec 2)))
-    => 'x 'y 'z)
+    => 77 88 99)
+
+  (values))
+
+
+(parameterise ((check-test-name		'records))
+
+  (import (only (chicken base)
+		define-record))
+
+  (define-syntax-rule ($struct-size ?stru)
+    (##sys#size ?stru))
+
+  (define-syntax-rule ($struct-slot ?stru ?slot-index)
+    (##sys#slot ?stru ?slot-index))
+
+  (define-syntax-rule ($struct-slot-set! ?stru ?slot-index ?new-value)
+    (##sys#setslot ?stru ?slot-index ?new-value))
+
+  (define-syntax-rule ($struct-slot-set-immediate! ?stru ?slot-index ?new-value)
+    (##sys#setislot ?stru ?slot-index ?new-value))
+
+;;; --------------------------------------------------------------------
+
+  (define-record <spiffy>
+    one two)
+
+  (check
+      (let ((instance (make-<spiffy> 1 2)))
+	($struct-size instance))
+    => 3)
+
+  (check
+      (let ((instance (make-<spiffy> 'a 'b)))
+	(values ($struct-slot instance 0)
+		($struct-slot instance 1)
+		($struct-slot instance 2)))
+    => 'test-chicken-internals-slots#<spiffy> 'a 'b)
+
+  (check
+      (let ((instance (make-<spiffy> 'a 'b)))
+	($struct-slot-set! instance 1 'x)
+	($struct-slot-set! instance 2 'y)
+	(values ($struct-slot instance 0)
+		($struct-slot instance 1)
+		($struct-slot instance 2)))
+    => 'test-chicken-internals-slots#<spiffy> 'x 'y)
+
+  (check
+      (let ((instance (make-<spiffy> 'a 'b)))
+	($struct-slot-set-immediate! instance 1 88)
+	($struct-slot-set-immediate! instance 2 99)
+	(values ($struct-slot instance 0)
+		($struct-slot instance 1)
+		($struct-slot instance 2)))
+    => 'test-chicken-internals-slots#<spiffy> 88 99)
 
   (values))
 
