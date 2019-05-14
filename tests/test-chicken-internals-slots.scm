@@ -51,7 +51,7 @@
 		pretty-print))
 
 (check-set-mode! 'report-failed)
-(check-display "*** testing slots\n")
+(check-display "*** testing CHICKEN internals: slots system operations\n")
 
 
 ;;;; helpers
