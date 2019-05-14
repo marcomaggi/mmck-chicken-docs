@@ -132,7 +132,6 @@ and as backup at:
 Appendices
 
 * credits::                     Document authors and source material.
-* document license::            Creative Commons Attribution 3.0 License.
 * references::                  Bibliography and references.
 
 Indexes
@@ -185,18 +184,15 @@ the library and import its syntactic bindings in a module we can do:
 @appendix Document authors and source material
 
 
-The informations about the data representation comes from the page (@aurl{} last checked May 14,
-2019):
+The core informations about the data representation is mostly a derivative from the web page
+``CHICKEN internals: data representation'' by @url{https://wiki.call-cc.org/users/peter-bex, Peter
+Bex} which is licensed under @url{https://creativecommons.org/licenses/by/3.0/, CC BY 3.0} (@aurl{}
+last verified May 14, 2019):
 
 @center @url{https://www.more-magic.net/posts/internals-data-representation.html}
 
-
-@c page
-@node document license
-@appendix Creative Commons Attribution 3.0 License
-
-
-
+@noindent
+it was reformatted and edited from the original @sc{html}.
 
 @c page
 @node references
