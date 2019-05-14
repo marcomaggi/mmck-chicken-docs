@@ -157,29 +157,6 @@ This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{}
 implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language
 features as defined in the ``Revised^5 Report on Scheme''.
 
-This package supports @posix{} platforms.  This package depends upon the @chicken{} egg
-@code{coops}.  To run the tests distributed with the source code: this package depends upon the
-package @mmck{} Checks.
-
-The package installs the library @library{mmck template} along with its import library.  To require
-the library and import its syntactic bindings in a module we can do:
-
-@example
-(declare (unit my-module)
-         (emit-import-library my-module))
-
-(require-library (mmck template))
-
-(module (my-module)
-    ()
-  (import (scheme)
-    (mmck template))
-
-  ...
-
-  #| end of module |# )
-@end example
-
 @c page
 @node slots
 @chapter Slots operations
