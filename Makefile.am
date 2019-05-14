@@ -20,15 +20,15 @@ src_chicken_internals_TEXINFOS = \
 
 EXTRA_DIST		+= \
 	tests/test-version.scm		\
-	tests/test-slots.scm
+	tests/test-chicken-internals-slots.scm
 
 MMCK_CHECK_OBJECTS	= \
 	tests/test-version.$(OBJEXT)	\
-	tests/test-slots.$(OBJEXT)
+	tests/test-chicken-internals-slots.$(OBJEXT)
 
 MMCK_CHECK_PROGS	= \
 	tests/test-version.exe		\
-	tests/test-slots.exe
+	tests/test-chicken-internals-slots.exe
 
 CLEANFILES	+= $(MMCK_CHECK_PROGS) $(MMCK_CHECK_OBJECTS)
 
@@ -48,10 +48,10 @@ tests/test-version.exe: tests/test-version.$(OBJEXT)
 
 ## --------------------------------------------------------------------
 
-tests/test-slots.$(OBJEXT): tests/test-slots.scm $(MMCK_CHECK_DEPS)
+tests/test-chicken-internals-slots.$(OBJEXT): tests/test-chicken-internals-slots.scm $(MMCK_CHECK_DEPS)
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
-tests/test-slots.exe: tests/test-slots.$(OBJEXT)
+tests/test-chicken-internals-slots.exe: tests/test-chicken-internals-slots.$(OBJEXT)
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 ### end of file

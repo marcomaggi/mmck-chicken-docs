@@ -42,7 +42,7 @@
 
 (require-library (mmck checks))
 
-(module (test-slots)
+(module (test-chicken-internals-slots)
     ()
   (import (scheme)
 	  (mmck checks)
