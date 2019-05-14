@@ -185,35 +185,38 @@ the library and import its syntactic bindings in a module we can do:
 @chapter Slots operations
 
 
-@deffn {System Operation} {##sys#slot} @qvar{vector} @qvar{slot-index}
-Unsafe implementation of @func{vector-ref}.  We can use it when we know that: @qvar{vector} is a
-vector object; @qvar{slot-index} is a valid slot index for @qvar{vector}.  Return the undefined
-value.
+We can access the internal representation of all the compound Scheme values implemented as
+``blocks'' with the following system operations.
+
+
+@deffn {System Operation} {##sys#slot} @qvar{block-value} @qvar{slot-index}
+Unsafe slot getter.  We can use it when we know that: @qvar{block-value} is a reference to a block
+value; @qvar{slot-index} is a valid slot index for @qvar{block-value}.  Return the undefined value.
 @end deffn
 
 
-@deffn {System Operation} {##sys#setslot} @qvar{vector} @qvar{slot-index} @qvar{new-value}
-Unsafe implementation of @func{vector-ref}.  We can use it when we know that: @qvar{vector} is a
-vector object; @qvar{slot-index} is a valid slot index for @qvar{vector}.  Return the undefined
-value.
+@deffn {System Operation} {##sys#setslot} @qvar{block-value} @qvar{slot-index} @qvar{new-value}
+Unsafe slot setter.  We can use it when we know that: @qvar{block-value} is a reference to a block
+value; @qvar{slot-index} is a valid slot index for @qvar{block-value}.  Return the undefined value.
 @end deffn
 
 
-@deffn {System Operation} {##sys#setislot} @qvar{vector} @qvar{slot-index} @qvar{new-immediate-value}
-Like @syntax{##sys#setslot}, it is an unsafe implementation of @func{vector-ref} with an additional
-constraint on the new value.  We can use it when we know that: @qvar{vector} is a vector object;
-@qvar{slot-index} is a valid slot index for @qvar{vector}; @qvar{new-immediate-value} is any
+@deffn {System Operation} {##sys#setislot} @qvar{block-value} @qvar{slot-index} @qvar{new-immediate-value}
+Like @syntax{##sys#setslot}, it is an unsafe slot setter with an additional constraint on the new
+value.  We can use it when we know that: @qvar{block-value} is a reference to a block value;
+@qvar{slot-index} is a valid slot index for @qvar{block-value}; @qvar{new-immediate-value} is any
 immediate Scheme value (examples: a fixnum, a boolean).  Return the undefined value.
 @end deffn
 
 
-@deffn {System Operation} {##sys#size} @qvar{vector}
-Unsafe implementation of @func{vector-length}.  We can use it when we know that: @qvar{vector} is a
-vector object.
+@deffn {System Operation} {##sys#size} @qvar{block-value}
+Unsafe block length getter: return a fixnum representing the number of slots.  We can use it when we
+know that: @qvar{block-value} is a reference to a block value.
 @end deffn
 
 
-We could make the use of the above operations a bit more descriptive by using the following macros:
+When the block value is a Scheme vector, we could make a more descriptive use of the above
+operations with the following macros:
 
 @lisp
 (define-syntax-rule ($vector-ref ?vector ?slot-index)
