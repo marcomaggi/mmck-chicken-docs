@@ -23,7 +23,8 @@ EXTRA_DIST		+= \
 	tests/test-slots.scm
 
 MMCK_CHECK_OBJECTS	= \
-	tests/test-version.$(OBJEXT)
+	tests/test-version.$(OBJEXT)	\
+	tests/test-slots.$(OBJEXT)
 
 MMCK_CHECK_PROGS	= \
 	tests/test-version.exe		\
