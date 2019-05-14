@@ -1,0 +1,4 @@
+@set UPDATED 14 May 2019
+@set UPDATED-MONTH May 2019
+@set EDITION 0.1.0-devel.0
+@set VERSION 0.1.0-devel.0
