@@ -131,6 +131,7 @@ and as backup at:
 * overview::                    Overview of the document.
 * layout::                      Representation of Scheme values.
 * slots::                       Slots operations.
+* structs::                     Low-level structures.
 
 Appendices
 
@@ -814,6 +815,128 @@ operations with the following macros:
 
 ($struct-slot instance 1)       @result{} x
 ($struct-slot instance 2)       @result{} y
+@end lisp
+
+@c page
+@node structs
+@chapter Low-level structures
+
+
+A number of system operations implement the low--level structure value handling.  A structure is a
+block Scheme value whose data area is made of machine words holding either immediate Scheme values
+or references to block Scheme values; @ref{layout intro block, Block values}.  We can access the
+slots of a structure with the slots system operations; @ref{slots, Slots operations}.
+
+@menu
+* structs sysops::              System operations on structures.
+* structs sample::              Example of structure handling @api{}.
+@end menu
+
+@c page
+@node structs sysops
+@section System operations on structures
+
+
+@deffn {System Operation} {##sys#make-structure} @qvar{NAME} @qvar{slot-value} @dots{}
+Build and return an new structure whose ``name'' is the symbol @qvar{NAME}; initialise the slots
+with the Scheme values @qvar{slot-value}.  No validation is performed on the type of values and
+their number.
+@end deffn
+
+
+@deffn {System Operation} {##sys#structure?} @qvar{OBJ} @qvar{NAME}
+Return @true{} if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}; otherwise return
+@false{}.
+@end deffn
+
+
+@deffn {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME}
+@deffnx {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME} @qvar{loc}
+Check if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}.  When successful: just
+return unspecified values.  Otherwise raise an exception using the optional @qvar{loc} value as
+exceptional--condition @code{location} property.
+
+If we want to support compilation of unsafe code, we can wrap a use of this operation into a
+@func{##core#check} form:
+
+@example
+(##core#check (##sys#check-structure @qvar{OBJ} @qvar{NAME} @qvar{loc}))
+@end example
+
+@noindent
+with normal compilation: the use of @func{##sys#check-structure} is included; with unsafe
+compilation: the whole form is excluded and replaced with an expression returning @true{}.
+@end deffn
+
+@c page
+@node structs sample
+@section Example of structure handling @api{}
+
+
+The code below shows how we could define a public @api{} to handle structures:
+
+@lisp
+(define-syntax-rule (make-<colour> ?red ?green ?blue)
+  (##sys#make-structure '<colour> ?red ?green ?blue))
+
+(define-syntax-rule (colour? ?obj)
+  (##sys#structure? ?obj '<colour>))
+
+(define-syntax-rule (check-colour ?obj ?loc)
+  (##core#check
+   (##sys#check-structure ?obj '<colour> (quote ?loc))))
+
+(define-syntax-rule (colour-red ?stru)
+  (check-colour ?stru 'colour-red)
+  (##sys#slot ?stru 1))
+
+(define-syntax-rule (colour-green ?stru)
+  (check-colour ?stru 'colour-green)
+  (##sys#slot ?stru 2))
+
+(define-syntax-rule (colour-blue ?stru)
+  (check-colour ?stru 'colour-blue)
+  (##sys#slot ?stru 3))
+
+(define-syntax-rule (colour-red-set! ?stru ?new-red-value)
+  (check-colour ?stru 'colour-red)
+  (##sys#setslot ?stru 1 ?new-red-value))
+
+(define-syntax-rule (colour-green-set! ?stru ?new-green-value)
+  (check-colour ?stru 'colour-green)
+  (##sys#setslot ?stru 2 ?new-green-value))
+
+(define-syntax-rule (colour-blue-set! ?stru ?new-blue-value)
+  (check-colour ?stru 'colour-blue)
+  (##sys#setslot ?stru 3 ?new-blue-value))
+@end lisp
+
+@noindent
+here are some usage examples:
+
+@lisp
+(let ((col (make-<colour> 0.2 0.3 0.4)))
+  (check-colour col 'here)
+  (##sys#slot col 0))
+@result{} <colour>
+
+(colour? (make-<colour> 0.2 0.3 0.4)))  @result{} #t
+(colour? "ciao"))                       @result{} #f
+
+(let ((col (make-<colour> 0.2 0.3 0.4)))
+  (values (colour-red   col)
+          (colour-green col)
+          (colour-blue  col)))
+@result{} 0.2 0.3 0.4
+
+(let ((col (make-<colour> 0.2 0.3 0.4)))
+  (colour-red-set!   col 0.5)
+  (colour-green-set! col 0.6)
+  (colour-blue-set!  col 0.7)
+  (values (colour-red   col)
+          (colour-green col)
+          (colour-blue  col)))
+@result{} 0.5 0.6 0.7
 @end lisp
 
 @c page
