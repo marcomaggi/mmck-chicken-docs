@@ -62,7 +62,7 @@
      (define-syntax ?name
        (syntax-rules ()
 	 ((_ . ?args)
-	  ?body0 ?body ...))))))
+	  (begin ?body0 ?body ...)))))))
 
 (define-syntax internal-body
   (syntax-rules ()
