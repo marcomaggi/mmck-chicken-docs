@@ -5,11 +5,30 @@ include meta/automake/mmck-rules.make
 
 #### documentation
 
+EXTRA_DIST		+= src/mmck-chicken-docs.style.css
+CLEANFILES		+= src/mmck-chicken-docs.css
+
+AM_MAKEINFOHTMLFLAGS	+= --css-ref=mmck-chicken-docs.css \
+	-c PRE_BODY_CLOSE=''
+
 info_TEXINFOS	= \
 	src/chicken-internals.texi
 
 src_chicken_internals_TEXINFOS = \
 	src/macros.texi
+
+src/chicken-internals.html/$(am__dirstamp): src/$(am__dirstamp)
+	@$(MKDIR_P) src/chicken-internals.html/
+	@: > src/chicken-internals.html/$(am__dirstamp)
+
+src/chicken-internals.html/mmck-chicken-docs.css: src/mmck-chicken-docs.style.css src/chicken-internals.html/$(am__dirstamp)
+	$(INSTALL) -m 0444 "$(top_srcdir)/src/mmck-chicken-docs.style.css" "$(builddir)/src/chicken-internals.html/mmck-chicken-docs.css"
+
+html-local: src/chicken-internals.html/mmck-chicken-docs.css
+
+install-html-local:
+	$(MKDIR_P) "$(DESTDIR)$(htmldir)"
+	$(INSTALL) -m 0444 $(top_srcdir)/src/*.css "$(DESTDIR)$(htmldir)"
 
 
 #### interface to "make check"
