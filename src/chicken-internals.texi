@@ -169,10 +169,11 @@ Scheme''.
 
 
 @cindex System operations
-Throughout this document some syntactic bindings are described as @dfn{System Operations}; we can
-think of a system operation as a Scheme macro that, in the end, directly expands into C language
-code integrated at the macro--use site.  As usual with macros: we must take care of not causing
-multiple evaluation of expressions used as arguments to such operations.
+Throughout this document some syntactic bindings are described as @dfn{System Operations}; to be
+safe, no matter the actual implementation, we can should of a system operation as a Scheme macro
+that, in the end, directly expands into C language code integrated at the macro--use site.  As usual
+with macros: we must take care of not causing multiple evaluation of expressions used as arguments
+to such operations.
 
 @c page
 @node layout
