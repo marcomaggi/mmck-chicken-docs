@@ -659,10 +659,10 @@ satisfies a predicate, nothing happens; otherwise an exception is raised.
 @section Checking value types
 
 
-@macro DefineCheckSystemOperation{SYSOP_NAME,VALUE_TYPE}
-@deffn {System Operation} {\SYSOP_NAME\} @qvar{OBJ}
-@deffnx {System Operation} {\SYSOP_NAME\} @qvar{OBJ} @qvar{LOC}
-Check if @qvar{OBJ} is a \VALUE_TYPE\.  When successful: just return unspecified values.  Otherwise
+@macro DefineCheckSystemOperation{SysopName,ValueType}
+@deffn {System Operation} {\SysopName\} @qvar{OBJ}
+@deffnx {System Operation} {\SysopName\} @qvar{OBJ} @qvar{LOC}
+Check if @qvar{OBJ} is a \ValueType\.  When successful: just return unspecified values.  Otherwise
 raise an exception of kind @code{(exn type)} using the optional argument @qvar{LOC} as
 exceptional--condition @code{location} property.
 @end deffn
