@@ -198,9 +198,15 @@ depending on the platform.  By the way, the @samp{C_} prefix stands for @chicken
 language.  Every Scheme value is represented as a @samp{C_word} internally.  To understand how this
 can work, we need to know that there are roughly two kinds of objects.
 
-@c ------------------------------------------------------------------------
+@menu
+* layout intro immediate::      Immediate values.
+* layout intro block::          Block values.
+@end menu
 
-@subsubheading Immediate values
+@c page
+@node layout intro immediate
+@subsection Immediate values
+
 
 These are the typical ``atomic'' values that come up a lot in computations.  It is important to
 represent these as efficiently as possible, so they are packed directly in a @samp{C_word}.  This
@@ -218,9 +224,10 @@ At a high enough level, these values simply look like this:
 #t #f () 42 #\x
 @end example
 
-@c ------------------------------------------------------------------------
+@c page
+@node layout intro block
+@subsection Block values
 
-@subsubheading Block objects
 
 They are values represented pointers to a structure that contains a header and a variable--length
 data block.
@@ -636,6 +643,22 @@ actual bignum value.
 @chapter Slots operations
 
 
+A @dfn{slot} is a machine word in a Scheme value represented as block, whose value is either an
+immediate Scheme value or a reference to a block Scheme value; @ref{layout intro block, Block
+values}.
+
+@menu
+* slots sysops::                System operations on slots.
+* slots pairs::                 Slots operations for pairs.
+* slots vectors::               Slots operations for vectors.
+* slots records::               Slots operations for records.
+@end menu
+
+@c page
+@node slots sysops
+@section System operations on slots
+
+
 We can access the internal representation of all the compound Scheme values implemented as
 ``blocks'' with the following system operations.
 
@@ -668,8 +691,64 @@ Unsafe block length getter: return a fixnum representing the number of slots.  W
 know that: @qvar{block-value} is a reference to a block value.
 @end deffn
 
+@c page
+@node slots pairs
+@section Slots operations for pairs
 
-When the block value is a Scheme vector, we could make a more descriptive use of the above
+
+When the block value is a Scheme pair, we could make a more descriptive use of the system operations
+with the following macros:
+
+@lisp
+(define-syntax-rule ($car ?pair)
+  (##sys#slot ?pair 0))
+
+(define-syntax-rule ($cdr ?pair)
+  (##sys#slot ?pair 1))
+
+(define-syntax-rule ($car-set! ?pair ?new-value)
+  (##sys#setslot ?pair 0 ?new-value))
+
+(define-syntax-rule ($cdr-set! ?pair ?new-value)
+  (##sys#setslot ?pair 1 ?new-value))
+
+(define-syntax-rule ($car-set-immediate! ?pair ?new-value)
+  (##sys#setislot ?pair 0 ?new-value))
+
+(define-syntax-rule ($cdr-set-immediate! ?pair ?new-value)
+  (##sys#setislot ?pair 1 ?new-value))
+
+(define-syntax-rule ($pair-size ?pair)
+  (##sys#size ?pair))
+
+($pair-size '(a . b))           @result{} 2
+
+(let ((P (cons 'a 'b)))
+  (values ($car P)
+          ($cdr P)))
+@result{} a b
+
+(let ((P (cons 'a 'b)))
+  ($car-set! P 'x)
+  ($cdr-set! P 'y)
+  (values ($car P)
+          ($cdr P)))
+@result{} x y
+
+(let ((P (cons 'a 'b)))
+  ($car-set-immediate! P 88)
+  ($cdr-set-immediate! P 99)
+  (values ($car P)
+          ($cdr P)))
+@result{} 88 99
+@end lisp
+
+@c page
+@node slots vectors
+@section Slots operations for vectors
+
+
+When the block value is a Scheme vector, we could make a more descriptive use of the system
 operations with the following macros:
 
 @lisp
@@ -697,7 +776,12 @@ operations with the following macros:
 ($vector-ref vec 2)     @result{} z
 @end lisp
 
-When the block value is a Scheme record, we could make a more descriptive use of the above
+@c page
+@node slots records
+@section Slots operations for records
+
+
+When the block value is a Scheme record, we could make a more descriptive use of the system
 operations with the following macros:
 
 @lisp

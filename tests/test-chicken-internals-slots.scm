@@ -74,6 +74,58 @@
   (pretty-print args (current-error-port)))
 
 
+(parameterise ((check-test-name		'pairs))
+
+  (define-syntax-rule ($car ?pair)
+    (##sys#slot ?pair 0))
+
+  (define-syntax-rule ($cdr ?pair)
+    (##sys#slot ?pair 1))
+
+  (define-syntax-rule ($car-set! ?pair ?new-value)
+    (##sys#setslot ?pair 0 ?new-value))
+
+  (define-syntax-rule ($cdr-set! ?pair ?new-value)
+    (##sys#setslot ?pair 1 ?new-value))
+
+  (define-syntax-rule ($car-set-immediate! ?pair ?new-value)
+    (##sys#setislot ?pair 0 ?new-value))
+
+  (define-syntax-rule ($cdr-set-immediate! ?pair ?new-value)
+    (##sys#setislot ?pair 1 ?new-value))
+
+  (define-syntax-rule ($pair-size ?pair)
+    (##sys#size ?pair))
+
+;;; --------------------------------------------------------------------
+
+  (check ($pair-size '(a . b))	=> 2)
+
+  (check
+      (let ((P (cons 'a 'b)))
+	(values ($car P)
+		($cdr P)))
+    => 'a 'b)
+
+  (check
+      (let ((P (cons 'a 'b)))
+	($car-set! P 'x)
+	($cdr-set! P 'y)
+	(values ($car P)
+		($cdr P)))
+    => 'x 'y)
+
+  (check
+      (let ((P (cons 'a 'b)))
+	($car-set-immediate! P 88)
+	($cdr-set-immediate! P 99)
+	(values ($car P)
+		($cdr P)))
+    => 88 99)
+
+  (values))
+
+
 (parameterise ((check-test-name		'vectors))
 
   (define-syntax-rule ($vector-ref ?vector ?slot-index)
