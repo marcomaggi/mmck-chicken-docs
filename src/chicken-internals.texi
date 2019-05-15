@@ -130,6 +130,7 @@ and as backup at:
 @menu
 * overview::                    Overview of the document.
 * layout::                      Representation of Scheme values.
+* checks::                      Checking the result of expressions.
 * slots::                       Slots operations.
 * structs::                     Low-level structures.
 
@@ -640,6 +641,52 @@ represented as a record with a special tag and a slot that refers to the byte bl
 actual bignum value.
 
 @c page
+@node checks
+@chapter Checking the result of expressions
+
+
+Some system operations implement assertions against the result of expressions: if the result
+satisfies a predicate, nothing happens; otherwise an exception is raised.
+
+@menu
+* checks unsafe::               Including/excluding checks.
+* checks types::                Checking value types.
+@end menu
+
+@c page
+@node checks unsafe
+@section Including/excluding checks
+
+
+If we want to support compilation of unsafe code, we can wrap a use of these operations into a
+@func{##core#check} form:
+
+@example
+(##core#check (##sys#check-list @qvar{OBJ} @qvar{NAME} @qvar{LOC}))
+@end example
+
+@noindent
+with normal compilation: the use of @func{##sys#check-list} is included; with unsafe compilation:
+the whole form is excluded and replaced with an expression returning @true{}.
+
+@c page
+@node checks types
+@section Checking value types
+
+
+@deffn {System Operation} {##sys#check-list} @qvar{OBJ} @qvar{NAME} @qvar{LOC}
+Check if @qvar{OBJ} is a list.  When successful: just return unspecified values.  Otherwise raise an
+exception using the value @qvar{LOC} as exceptional--condition @code{location} property.
+@end deffn
+
+
+@deffn {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME} @qvar{LOC}
+Check if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}; @ref{structs, Low--level
+structures}.  When successful: just return unspecified values.  Otherwise raise an exception using
+the value @qvar{LOC} as exceptional--condition @code{location} property.
+@end deffn
+
+@c page
 @node slots
 @chapter Slots operations
 
@@ -819,7 +866,7 @@ operations with the following macros:
 
 @c page
 @node structs
-@chapter Low-level structures
+@chapter Low--level structures
 
 
 A number of system operations implement the low--level structure value handling.  A structure is a
@@ -847,25 +894,6 @@ their number.
 @deffn {System Operation} {##sys#structure?} @qvar{OBJ} @qvar{NAME}
 Return @true{} if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}; otherwise return
 @false{}.
-@end deffn
-
-
-@deffn {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME}
-@deffnx {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME} @qvar{loc}
-Check if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}.  When successful: just
-return unspecified values.  Otherwise raise an exception using the optional @qvar{loc} value as
-exceptional--condition @code{location} property.
-
-If we want to support compilation of unsafe code, we can wrap a use of this operation into a
-@func{##core#check} form:
-
-@example
-(##core#check (##sys#check-structure @qvar{OBJ} @qvar{NAME} @qvar{loc}))
-@end example
-
-@noindent
-with normal compilation: the use of @func{##sys#check-structure} is included; with unsafe
-compilation: the whole form is excluded and replaced with an expression returning @true{}.
 @end deffn
 
 @c page
