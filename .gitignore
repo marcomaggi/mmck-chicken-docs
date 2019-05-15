@@ -36,11 +36,11 @@ test-driver
 doc/mdate-sh
 doc/stamp-vti
 doc/texinfo.tex
-doc/version.texi
+doc/vers*.texi
 src/mdate-sh
 src/stamp-vti
 src/texinfo.tex
-src/version.texi
+src/vers*.texi
 install-sh
 missing
 mkinstalldirs

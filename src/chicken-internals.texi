@@ -4,7 +4,7 @@
 @settitle @sc{mmck} @sc{chicken} Internals
 @c %**end of header
 
-@include version.texi
+@include vers-chicken-internals.texi
 @include macros.texi
 
 @c page
@@ -63,10 +63,11 @@
 @c ------------------------------------------------------------
 
 @copying
-This document describes the internals of @chicken{} version @value{CHICKEN_VERSION}; this document
-is part of @value{PACKAGE}, a collection of unofficial documentation about the @chicken{} compiler
-and its development environment.  @chicken{} is a Scheme--to--C compiler supporting the language
-features as defined in the ``Revised^5 Report on Scheme''.
+This document describes the internals of @chicken{} version @value{CHICKEN_VERSION}, it was last
+updated @value{UPDATED}; this document is part of @value{PACKAGE}, a collection of unofficial
+documentation about the @chicken{} compiler and its development environment.  @chicken{} is a
+Scheme--to--C compiler supporting the language features as defined in the ``Revised^5 Report on
+Scheme''.
 
 This package is distributed under the terms of the @url{http://creativecommons.org/licenses/by/3.0/,
 Creative Commons Attribution 3.0 License}.  All code fragments in this document are hereby put in
@@ -94,7 +95,7 @@ and as backup at:
 
 @titlepage
 @title @value{TITLE}
-@subtitle Revision @value{VERSION}
+@subtitle Revision @value{UPDATED}
 @author @value{AUTHOR} @value{AUTHOR_EMAIL}
 @page
 @vskip 0pt plus 1filll
@@ -150,10 +151,22 @@ Indexes
 @chapter Overview of the package
 
 
-This document describes version @value{VERSION} of @value{PACKAGE}, a @chicken{} language library
-implementing a template library.  @chicken{} is a Scheme-to-C compiler supporting the language
-features as defined in the ``Revised^5 Report on Scheme''.
+This document describes the internals of @chicken{} version @value{CHICKEN_VERSION}, it was last
+updated @value{UPDATED}; this document is part of @value{PACKAGE}, a collection of unofficial
+documentation about the @chicken{} compiler and its development environment.  @chicken{} is a
+Scheme--to--C compiler supporting the language features as defined in the ``Revised^5 Report on
+Scheme''.
 
+@menu
+* overview jargon::             Jargon used in this document.
+@end menu
+
+@c page
+@node overview jargon
+@section Jargon used in this document
+
+
+@cindex System operations
 Throughout this document some syntactic bindings are described as @dfn{System Operations}; we can
 think of a system operation as a Scheme macro that, in the end, directly expands into C language
 code integrated at the macro--use site.  As usual with macros: we must take care of not causing
