@@ -732,7 +732,9 @@ last verified May 14, 2019):
 @center @url{https://www.more-magic.net/posts/internals-data-representation.html}
 
 @noindent
-it was reformatted and edited from the original @sc{html}.
+it was reformatted and edited from the original @sc{html}; the section about the garbage collector
+was dropped.  Some editing had the purpose of making it feel less like a weblog and more like
+software documentation.
 
 @c page
 @node references
