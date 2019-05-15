@@ -166,6 +166,8 @@ multiple evaluation of expressions used as arguments to such operations.
 
 @menu
 * layout intro::                Immediate and block values.
+* layout bitfid::               Bit fiddling.
+* layout blocks::               Block objects.
 @end menu
 
 @c page
@@ -289,73 +291,254 @@ flonum.
 The final two pair objects show that slots (like any @code{C_word}) can hold not only immediate
 values, but also pointers to block objects.  This leads us to the question: how to differentiate
 between a pointer to an object and an immediate object?
-@end table
 
 @c page
+@node layout bitfid
+@section Bit fiddling
 
-Bit fiddling
 
-Most platforms require pointers to words to be aligned on a word boundary. Thus, on a 32-bit machine, memory addresses will always have zero in the lower 2 bits, because we can only point to multiples of 4 bytes. On a 64-bit machine, word addresses will have zero in the lower 4 bits.
+Most platforms require pointers to words to be aligned on a word boundary.  Thus, on a 32-bit
+machine, memory addresses will always have zero in the lower 2 bits, because we can only point to
+multiples of 4 bytes.  On a 64-bit machine, word addresses will have zero in the lower 4 bits.
 
-Because the lower two bits are never used, we can perform a simple trick: any value that has either of the lower two bits set cannot be a word pointer, so we enforce immediate objects to have either bit set. It may feel like a gross hack to people who are used to working with "clean", high-level C code, but it is a technique which goes back a long way: Orbit, one of the earliest optimising compilers for Scheme, did exactly the same thing. Other modern Schemes like Larceny and Gambit do the same thing. Even Scheme48, which is probably the cleanest Scheme implementation, uses tagged words. Other Lisps use this representation as well. See Steel Bank Common Lisp, for example.
+Because the lower two bits are never used, we can perform a simple trick: any value that has either
+of the lower two bits set cannot be a word pointer, so we enforce immediate objects to have either
+bit set.
 
-Many other dynamic languages don't use a packed data representation like this. Many prefer the simpler but bulkier struct representation. At the other end of the spectrum, we have statically typed, non-garbage collected languages. They generally don't need to store the type of a value along with it. Instead, they can directly store the "un-boxed" value in memory. This, and the relation to garbage collection, is explained rather well in Appel's 1989 paper "Runtime Tags Aren't Necessary" (sorry, this is in PostScript format).
-Representation of objects
+@menu
+* layout bitfid objrep::        Representation of objects.
+* layout bitfid immediate::     Bit patterns of immediate values.
+@end menu
 
-We've learned how CHICKEN distinguishes between pointers to (block) objects and immediate values. Now we will look into the nitty-gritty details of the object representation.
+@c page
+@node layout bitfid objrep
+@subsection Representation of objects
+
+
+We've learned how @chicken{} distinguishes between pointers to (block) objects and immediate values.
+Now we will look into the nitty--gritty details of the object representation.
 
 We can make the following breakdown of bit patterns (assuming a 32-bit platform):
 
-This shows that the lower two bits can be used to distinguish between block objects (zero) and immediate objects (nonzero). For immediate objects, the low bit can be used to distinguish between fixnum objects and other kinds of immediate objects. The colouring indicates which bits are used for tagging objects of that kind. The uncoloured bits are used for representing the object being stored.
+@example
+XXXXXXXX XXXXXXXX XXXXXXXX XXXXXX00 Pointer to block object
+XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXX1 Fixnum (small integer)
+XXXXXXXX XXXXXXXX XXXXXXXX XXXXYY10 Other immediate object
+@end example
 
-Fixnums are distinguished from "other immediate" values because fixnums are so incredibly common: they are used for indexing into strings, loop counters and many calculations. These have to be represented as efficiently as possible while storing the widest possible range of values. Run time type checking for fixnums should use as few CPU instructions as possible.
+This shows that the lower two bits can be used to distinguish between block objects (zero) and
+immediate objects (nonzero).  For immediate objects, the low bit can be used to distinguish between
+fixnum objects and other kinds of immediate objects.  Notice that for non--fixnum immediate objects:
+the 4 least significant bits @samp{YY10} are used for tagging the value as object of a specific
+kind.
 
-The "other immediate" types are further differentiated through the top two bits of the lower nibble:
+Fixnums are distinguished from ``other immediate'' values because fixnums are so incredibly common:
+they are used for indexing into strings, loop counters and many calculations.  These have to be
+represented as efficiently as possible while storing the widest possible range of values.  Run time
+type checking for fixnums should use as few CPU instructions as possible.
 
-The unused "other immediate" type of 0010 is reserved for future use. To get a good feel for the representation of immediates, let us look at a few example bit patterns. I'll also show you how to construct them in C.
-Bit patterns of immediate values
-Fixnums
+The ``other immediate'' types are further differentiated through the top two bits of the lower
+nibble:
 
-These small integer values are stored in regular old two's complement representation, like the CPU uses. The lowest bit is always 1, due to the fixnum tag bit. The highest bit is used to determine the sign of the number.
+@example
+XXXXXXXX XXXXXXXX XXXXXXXX XXXX0110 Boolean
+XXXXXXXX XXXXXXXX XXXXXXXX XXXX1010 Character
+XXXXXXXX XXXXXXXX XXXXXXXX XXXX1110 Special object
+@end example
 
-The C_fix() macro shifts its argument one bit to the left, and sets the lower bit through a bit-wise OR with 1. To convert a Scheme fixnum back to a C integer, you can use the C_unfix() macro. This shifts its argument one bit to the right.
+The unused ``other immediate'' type of @code{0010} is reserved for future use.  To get a good feel
+for the representation of immediates, let us look at a few example bit patterns.  We'll also see how
+to construct them in C.
 
-You might wonder what happens when you calculate or enter a very large integer. In CHICKEN 4, it will be coerced to a flonum. In CHICKEN 5, it will be stored as a bignum. Bignums are block objects, not immediates, because they may be arbitrarily large.
-Booleans
+@c page
+@node layout bitfid immediate
+@subsection Bit patterns of immediate values
 
-That's a very large bit space for only two values. However, reserving a special type tag just for booleans simplifies type detection code: we only have to compare the lower four bits with 0110 to check whether an object is a boolean.
-Characters
 
-Characters do not make full use of the available bits, because the lower byte's high nibble is always 0000. This means that only 24 bits are available for representing the character on 32-bit platforms. Luckily, this is enough for representing the full Unicode range. If Unicode ever starts using up a bigger code space, we can always sneak in 4 more bits.
-Special objects
+@menu
+* layout bitfid immediate fixnums::     Bit patterns of fixnums.
+* layout bitfid immediate booleans::    Bit patterns of booleans.
+* layout bitfid immediate chars::       Bit patterns of characters.
+* layout bitfid immediate specials::    Bit patterns of special objects.
+@end menu
 
-This list is exhaustive: currently there are only four special objects. There is a lot of room for adding other special objects, if that ever becomes necessary.
+@c page
+@node layout bitfid immediate fixnums
+@subsubsection Bit patterns of fixnums
 
-The "unbound variable" representation cannot be captured by a program: when it is evaluated, it immediately raises an exception. This is its intended function.
-A closer look at block objects
 
-Now that we know all about immediate values, let's turn to block objects. These are represented by a pointer to a C structure with a header and a data block. Slightly simplified, it looks like this:
+@cindex Fixnums, internal representation
+@cindex Internal representation, fixnums
 
+
+These small integer values are stored in the @strong{two's complement} representation, like the
+@cpu{} uses.  The lowest bit is always @samp{1}, due to the fixnum tag bit.  The highest bit is used
+to determine the sign of the number.
+
+@example
+00000000 00000000 00000000 00000001 value= 0 C_fix(0)
+00000000 00000000 00000000 00000011 value= 1 C_fix(+1)
+00000000 00000000 00000000 00000101 value= 2 C_fix(+2)
+11111111 11111111 11111111 11111111 value=-1 C_fix(-1)
+11111111 11111111 11111111 11111101 value=-2 C_fix(-2)
+@end example
+
+The @cfunc{C_fix} preprocessor macro shifts its argument one bit to the left, and sets the lower bit
+through a bitwise OR with 1.  To convert a Scheme fixnum back to a C integer: we can use the
+@cfunc{C_unfix} preprocessor macro, it shifts its argument one bit to the right.  @cfunc{C_fix} and
+@cfunc{C_unfix} are defined in the header file @file{chicken.h}.
+
+We might wonder what happens when we calculate or enter a very large integer: in @chicken{} 4, it
+will be coerced to a flonum; in @chicken{} 5, it will be stored as a bignum.  Bignums are block
+objects, not immediates, because they may be arbitrarily large.
+
+@c page
+@node layout bitfid immediate booleans
+@subsubsection Bit patterns of booleans
+
+
+@cindex Booleans, internal representation
+@cindex Internal representation, booleans
+
+
+The representation in machine words uses the 4 least significant bits as tag:
+
+@example
+00000000 00000000 00000000 00000110 value=#f C_SCHEME_FALSE
+00000000 00000000 00000000 00010110 value=#t C_SCHEME_TRUE
+@end example
+
+That's a very large bit space for only two values.  However, reserving a special type tag just for
+booleans simplifies type detection code: we only have to compare the lower four bits with
+@code{0110} to check whether an object is a boolean.
+
+The constants @code{C_SCHEME_FALSE} and @code{C_SCHEME_TRUE} are preprocessor symbols defined at the
+C language level, in the header file @file{chicken.h}.
+
+@c page
+@node layout bitfid immediate chars
+@subsubsection Bit patterns of characters
+
+
+@cindex Characters, internal representation
+@cindex Internal representation, characters
+
+
+The representation in machine words uses the least significant byte as tag:
+
+@example
+00000000 00000000 00000000 00001010 value=#\nul C_make_character('\0')
+00000000 00000000 01000001 00001010 value=#\A   C_make_character('A')
+@end example
+
+Characters do not make full use of the available bits, because the lower byte's high nibble is
+always @code{0000}.  This means that only 24 bits are available for representing the character on
+32-bit platforms; luckily, this is enough for representing the full Unicode range.  If Unicode ever
+starts using up a bigger code space, we can always sneak in 4 more bits.
+
+The preprocessor macro @cfunc{C_make_character} is defined in the header file @file{chicken.h}.
+
+@c page
+@node layout bitfid immediate specials
+@subsubsection Bit patterns of special objects
+
+
+@cindex Special objects, internal representation
+@cindex Internal representation, special objects
+
+
+The representation in machine words uses the least significant byte:
+
+@example
+00000000 00000000 00000000 00001110 value=()      C_SCHEME_END_OF_LIST
+00000000 00000000 00000000 00011110 value=(void)  C_SCHEME_UNDEFINED
+00000000 00000000 00000000 00101110 unbound-var   C_SCHEME_UNBOUND
+00000000 00000000 00000000 00111110 value=#!eof   C_SCHEME_END_OF_FILE
+@end example
+
+This list is exhaustive: currently there are only four special objects.  There is a lot of room for
+adding other special objects, if that ever becomes necessary.
+
+The ``unbound variable'' representation cannot be captured by a program: when it is evaluated, it
+immediately raises an exception; this is its intended function.
+
+The constants: @code{C_SCHEME_END_OF_LIST}, @code{C_SCHEME_UNDEFINED}, @code{C_SCHEME_UNBOUND},
+@code{C_SCHEME_END_OF_FILE} are preprocessor symbols defined at the C language level, in the header
+file @file{chicken.h}.
+
+@c page
+@node layout blocks
+@section Block objects
+
+
+Block objects are represented by a pointer to a C language structure with a header and a data block;
+slightly simplified, it looks like this:
+
+@example
 #define C_uword  unsigned C_word
 #define C_header C_uword
 
 typedef struct
-{
+@{
   C_header header;
   C_word data[];    /* Variable-length array: header determines length */
-} C_SCHEME_BLOCK;
+@} C_SCHEME_BLOCK;
+@end example
 
 The header's bit pattern is broken up into three parts:
 
-The bottom 24 bits encode the size of the object. On 64-bit machines, the bottom 56 bits are used for the size. The middle 4 bits encode the type of the object. The top 4 bits encode special properties to make the garbage collector's work easier:
+The representation in machine words uses the least significant byte:
 
-    C_GC_FORWARDING_BIT indicates this object has been forwarded elsewhere. To find the object at its new location, the entire header is shifted to the left (which shifts out this bit). Then, the value is reinterpreted as a pointer. Remember, the lowest two bits of word pointers are always zero, so we can do this with impunity!
-    C_BYTEBLOCK_BIT indicates this is a byte blob (size bits are interpreted in bytes, not words).
-    C_SPECIALBLOCK_BIT indicates that the first slot is special and should be skipped by the GC.
-    C_8ALIGN_BIT indicates that for this object, alignment must be maintained at an 8-byte boundary.
+@example
+XXXXYYYY ZZZZZZZZ ZZZZZZZZ ZZZZZZZZ
+ GC type size of object (slot or byte count)
+@end example
 
-The type bits are assigned incrementally. There is room for 16 types, only 2 of which are currently unused. Let's look at the definitions, which should also help to explain the practical use of the latter 3 GC bits:
+@noindent
+this is the meaning of the bit groups:
 
+@itemize
+@item
+The bottom 24 bits encode the size of the object.  On 64-bit machines, the bottom 56 bits are used
+for the size.
+
+@item
+The middle 4 bits encode the type of the object.
+
+@item
+The top 4 bits encode special properties to make the garbage collector's work easier:
+
+@table @code
+@item C_GC_FORWARDING_BIT
+@cindex @code{C_GC_FORWARDING_BIT}, preprocessor constant
+@cindex Preprocessor constant @code{C_GC_FORWARDING_BIT}
+Indicates this object has been forwarded elsewhere.  To find the object at its new location, the
+entire header is shifted to the left (which shifts out this bit).  Then, the value is reinterpreted
+as a pointer.  Remember, the lowest two bits of word pointers are always zero, so we can do this
+with impunity!
+
+@item C_BYTEBLOCK_BIT
+@cindex @code{C_BYTEBLOCK_BIT}, preprocessor constant
+@cindex Preprocessor constant @code{C_BYTEBLOCK_BIT}
+Indicates this is a byte blob (size bits are interpreted in bytes, not words).
+
+@item C_SPECIALBLOCK_BIT
+@cindex @code{C_BYTEBLOCK_BIT}, preprocessor constant
+@cindex Preprocessor constant @code{C_BYTEBLOCK_BIT}
+Indicates that the first slot is special and should be skipped by the garbage collector.
+
+@item C_8ALIGN_BIT
+@cindex @code{C_BYTEBLOCK_BIT}, preprocessor constant
+@cindex Preprocessor constant @code{C_BYTEBLOCK_BIT}
+Indicates that for this object, alignment must be maintained at an 8-byte boundary.
+@end table
+@end itemize
+
+The type bits are assigned incrementally.  There is room for 16 types, only 2 of which are currently
+unused.  Let's look at the definitions, which should also help to explain the practical use of the
+latter 3 GC bits:
+
+@example
 #define C_SYMBOL_TYPE            (0x01000000L)
 #define C_STRING_TYPE            (0x02000000L | C_BYTEBLOCK_BIT)
 #define C_PAIR_TYPE              (0x03000000L)
@@ -367,92 +550,73 @@ The type bits are assigned incrementally. There is room for 16 types, only 2 of 
 #define C_POINTER_TYPE           (0x09000000L | C_SPECIALBLOCK_BIT)
 #define C_LOCATIVE_TYPE          (0x0a000000L | C_SPECIALBLOCK_BIT)
 #define C_TAGGED_POINTER_TYPE    (0x0b000000L | C_SPECIALBLOCK_BIT)
-#define C_SWIG_POINTER_TYPE      (0x0c000000L | C_SPECIALBLOCK_BIT)
 #define C_LAMBDA_INFO_TYPE       (0x0d000000L | C_BYTEBLOCK_BIT)
 /*      unused                   (0x0e000000L ...) */
 #define C_BUCKET_TYPE            (0x0f000000L)
+@end example
 
-Most of the types should be self-explanatory to a seasoned Schemer, but a few things deserve further explanation.
+Most of the types should be self--explanatory to a seasoned Schemer, but a few things deserve
+further explanation.
 
-You'll note that in the STRING type tag, C_BYTEBLOCK_BIT is also set, for obvious reasons: strings do not consist of slots containing Scheme values, but of bytes, which are opaque. Because the header's size bits store the length in bytes instead of in words, we can spot a very important limitation: CHICKEN strings can only hold 16 MiB of data on a 32-bit machine (on a 64-bit machine, strings are "limited" to 65536 TiB).
+@itemize
+@item
+In the STRING type tag, @code{C_BYTEBLOCK_BIT} is also set, for obvious reasons: strings do not
+consist of slots containing Scheme values, but of bytes, which are opaque.  Because the header's
+size bits store the length in bytes instead of in words, we can spot a very important limitation:
+@chicken{} strings can only hold 16 MiB of data on a 32-bit machine (on a 64-bit machine, strings
+are ``limited'' to 65536 TiB).
 
-The CLOSURE type uses C_SPECIALBLOCK_BIT. This indicates to the garbage collector that the first slot contains a raw non-Scheme value. In the case of a closure, it contains a pointer to a C function. The other slots contain free variables that were closed over ("captured") by the lambda, which are normal Scheme objects. The compiled C function "knows" which variable lives in which slot.
+@item
+The @code{CLOSURE} type uses @code{C_SPECIALBLOCK_BIT}.  This indicates to the garbage collector
+that the first slot contains a raw non--Scheme value.  In the case of a closure, it contains a
+pointer to a C function.  The other slots contain free variables that were closed over
+(``captured'') by the lambda, which are normal Scheme objects.  The compiled C function ``knows''
+which variable lives in which slot.
 
-The FLONUM type uses C_BYTEBLOCK_BIT, because an un-boxed C double value is not a Scheme object: we want to treat the data as an opaque blob. On a 32-bit system, the double will take up two machine words, so we can't use C_SPECIALBLOCK_BIT. The header will therefore hold the value 8 as its size. It also has another GC bit: C_8ALIGN_BIT. This ensures that the 64-bit double is aligned on a 8-byte boundary, to avoid unaligned access on 32-bit systems. This adds some complexity to garbage collection and memory allocation.
+@item
+The @code{FLONUM} type uses @code{C_BYTEBLOCK_BIT}, because an unboxed C @code{double} value is not
+a Scheme object: we want to treat the data as an opaque blob.  On a 32-bit system, the @code{double}
+will take up two machine words, so we can't use @code{C_SPECIALBLOCK_BIT}.  The header will
+therefore hold the value 8 as its size.  It also has another GC bit: @code{C_8ALIGN_BIT}.  This
+ensures that the 64-bit @code{double} is aligned on a 8-byte boundary, to avoid unaligned access on
+32-bit systems.  This adds some complexity to garbage collection and memory allocation.
 
-The STRUCTURE type refers to a SRFI-9 type of record object. Its slots hold the record's fields, and the accessors and constructors "know" which field is stored at which index.
+@item
+The @code{STRUCTURE} type refers to a @ansrfi{9} type of record object.  Its slots hold the record's
+fields, and the accessors and constructors ``know'' which field is stored at which index.
 
-The POINTER type holds a raw C pointer inside a Scheme object. Again, because C pointers are not Scheme objects, the object's first (and only) slot is treated specially, via C_SPECIALBLOCK_BIT.
+@item
+The @code{POINTER} type holds a raw C pointer inside a Scheme object.  Again, because C pointers are
+not Scheme objects, the object's first (and only) slot is treated specially, via @code{C_SPECIALBLOCK_BIT}.
 
-The LOCATIVE type represents a rather complicated object. It acts a bit like a pointer into a slab of memory. You can use it as a single value which represents a location inside another block object. This can then be used as an argument to a foreign function that expects a pointer. Its first slot holds a raw pointer. The other slots hold the offset, the type of pointer (encoded as fixnum) and the original object, unless it is a weak reference.
+@item
+The @code{LOCATIVE} type represents a rather complicated object.  It acts a bit like a pointer into
+a slab of memory.  You can use it as a single value which represents a location inside another block
+object.  This can then be used as an argument to a foreign function that expects a pointer.  Its
+first slot holds a raw pointer.  The other slots hold the offset, the type of pointer (encoded as
+fixnum) and the original object, unless it is a weak reference.
 
-The TAGGED_POINTER type is exactly like POINTER, but it has an extra user-defined tag. This can make it easier for code to identify the pointer's type. The tag is a Scheme value held in its second slot.
+@item
+The @code{TAGGED_POINTER} type is exactly like @code{POINTER}, but it has an extra user--defined
+tag.  This can make it easier for code to identify the pointer's type.  The tag is a Scheme value
+held in its second slot.
 
-The SWIG_POINTER has been removed in CHICKEN 5 and was used for compatibility with SWIG. It is basically the same as POINTER, with additional SWIG data added to it.
+@item
+The @code{LAMBDA_INFO} type stores procedure introspection information (mostly for debugging).
 
-The LAMBDA_INFO type stores procedure introspection information (mostly for debugging).
+@item
+The @code{BUCKET} type is a special internal pair--like object which is used in the linked list of
+symbols under a hash table bucket in the symbol table.  It does not count as a reference, so that
+symbols can be garbage collected when only the symbol table still refers to them.
+@end itemize
 
-The BUCKET type is a special internal pair-like object which is used in the linked list of symbols under a hash table bucket in the symbol table. It does not count as a reference, so that symbols can be garbage collected when only the symbol table still refers to them.
+So far, the only numeric types we've seen are fixnums and flonums.  What about the other numeric
+types?  After all, @chicken{} 5 has a full numeric tower!
 
-So far, the only numeric types we've seen are fixnums and flonums. What about the other numeric types? After all, CHICKEN 5 will (finally) have a full numeric tower!
-
-In CHICKEN 5, rational and complex numbers are viewed as two simpler numbers stuck together. They're stored as records with a special tag, which the run-time system recognises. Bignums are a different story altogether. When I first implemented them, they used one of the two unused header types in the list above. For various reasons I won't go into now, they are now also represented as a record with a special tag and a slot that refers to the byte blob containing the actual bignum value. Perhaps this is something for a later blog post.
-Putting it all together in the garbage collector
-
-So far, all of this perhaps sounds rather arbitrary and complex. The data representation is finely tuned to fit the garbage collector, and vice versa, so it may help to see how this simplifies the garbage collector.
-
-The way the data representation is set up, the garbage collector only has to perform a few very basic checks. It does not need to know about any of the data types at all, it only needs to look at the special GC bits, and the size of an object!
-
-Now we're finally ready to understand the heart of the garbage collector, which scans the live data and marks nested objects. This part of CHICKEN implements the Cheney algorithm. It's only 22 lines of code, without any simplifications. This is taken directly from runtime.c, with comments added for exposition:
-
-/* Mark nested values in already moved (marked) blocks
-   in breadth-first manner: */
-while(heap_scan_top < (gc_mode == GC_MINOR ? C_fromspace_top : tospace_top)) {
-  bp = (C_SCHEME_BLOCK *)heap_scan_top; /* Get next object from queue */
-
-  /* If this word is an alignment hole marker, skip it */
-  if(*((C_word *)bp) == ALIGNMENT_HOLE_MARKER)
-    bp = (C_SCHEME_BLOCK *)((C_word *)bp + 1);
-
-  n = C_header_size(bp);  /* Extract size bits from header */
-  h = bp->header;         /* Remember header for masking other bits */
-  bytes = (h & C_BYTEBLOCK_BIT) ? n : n * sizeof(C_word);  /* Size in bytes */
-  p = bp->data;           /* Data block (first slot) */
-
-  if(n > 0 && (h & C_BYTEBLOCK_BIT) == 0) { /* Contains slots, not bytes? */
-    if(h & C_SPECIALBLOCK_BIT) { /* Skip first word (not a Scheme object) */
-      --n;
-      ++p;
-    }
-
-    while(n--) mark(p++); /* Mark Scheme objects in data slots */
-  }
-
-  /* Advance onto next word just after object */
-  heap_scan_top = (C_byte *)bp + C_align(bytes) + sizeof(C_word);
-}
-
-The comment at the start refers to the fact that the "tip of the iceberg" of live data has already been copied; this code scans that set for nested objects referred to by those live objects. See my post about the garbage collector for more about how the GC and Cheney's algorithm work.
-
-If we're in a minor GC, this code scans over the fromspace, which is the memory area into which the nursery objects will be copied. If we're in a major GC, we're scanning over tospace, which is the other half of the heap, to which the fromspace will be copied.
-
-The code above simply advances the heap_scan_top pointer over the objects we need to look at until we hit the end of this space. It then checks for an ALIGNMENT_HOLE_MARKER, which is a magic value that gets used as a placeholder to indicate that this machine word should be skipped. This placeholder may get inserted when allocating a C_8ALIGN_BIT object, to avoid unaligned access.
-
-Next, the size (in bytes) of the object is determined, based on the C_BYTEBLOCK_BIT. Finally, if it's a data block (C_BYTEBLOCK_BIT is not set), we loop over the data slots. The first word is skipped if it's indicated as "special" via C_SPECIALBLOCK_BIT.
-
-The mark() call hides the hairy part. It performs the following steps:
-
-    Check that the word contains a block object. Otherwise, return because it's an immediate value.
-    Check that the word points to memory that's being moved, otherwise return. This avoids copying already copied or evicted data.
-    If the object has the C_GC_FORWARDING_BIT set, just update the marked slot with the new location the object was forwarded to, and return.
-    If we're on a 32-bit machine, the object to be copied has the C_8ALIGN_BIT set, and the current top of the target heap area is not aligned, insert an ALIGNMENT_HOLE_MARKER.
-    In case the target area is too small to hold the object, interrupt the current GC and trigger the "next" GC type. This will be a major collection if we're currently doing a minor collection, or a heap reallocating major collection if we're in a regular major collection.
-    Finally, copy the object via a simple memcpy().
-
-Because this is done by mark() and not by the scanning code shown above, all this is only performed
-if the object in question is a block object which needs to be copied (the mark() macro inlines the
-first check). Just scanning the live data is extremely fast. We can thank the data representation's
-simplicity for that speed!
+In @chicken{} 5, rational and complex numbers are viewed as two simpler numbers stuck together.
+They're stored as records with a special tag, which the runtime system recognises.  Bignums are also
+represented as a record with a special tag and a slot that refers to the byte blob containing the
+actual bignum value.
 
 @c page
 @node slots
