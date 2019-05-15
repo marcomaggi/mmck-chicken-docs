@@ -140,9 +140,9 @@ and as backup at:
 
 [https://bitbucket.org/marcomaggi/mmck-chicken-docs/](https://bitbucket.org/marcomaggi/mmck-chicken-docs/)
 
-the documentation is available online:
+some documents are available online:
 
-[http://marcomaggi.github.io/docs/mmck-chicken-docs.html](http://marcomaggi.github.io/docs/mmck-chicken-docs.html)
+[http://marcomaggi.github.io/docs/chicken-internals.html](http://marcomaggi.github.io/docs/chicken-internals.html)
 
 the GNU Project software can be found here:
 
