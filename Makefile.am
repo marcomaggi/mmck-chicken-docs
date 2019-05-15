@@ -40,17 +40,20 @@ install-html-local:
 EXTRA_DIST		+= \
 	tests/test-version.scm				\
 	tests/test-chicken-internals-slots.scm		\
-	tests/test-chicken-internals-structs.scm
+	tests/test-chicken-internals-structs.scm	\
+	tests/test-chicken-internals-checks.scm
 
 MMCK_CHECK_OBJECTS	= \
 	tests/test-version.$(OBJEXT)			\
 	tests/test-chicken-internals-slots.$(OBJEXT)	\
-	tests/test-chicken-internals-structs.$(OBJEXT)
+	tests/test-chicken-internals-structs.$(OBJEXT)	\
+	tests/test-chicken-internals-checks.$(OBJEXT)
 
 MMCK_CHECK_PROGS	= \
 	tests/test-version.exe				\
 	tests/test-chicken-internals-slots.exe		\
-	tests/test-chicken-internals-structs.exe
+	tests/test-chicken-internals-structs.exe	\
+	tests/test-chicken-internals-checks.exe
 
 CLEANFILES	+= $(MMCK_CHECK_PROGS) $(MMCK_CHECK_OBJECTS)
 
@@ -82,6 +85,14 @@ tests/test-chicken-internals-structs.$(OBJEXT): tests/test-chicken-internals-str
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
 tests/test-chicken-internals-structs.exe: tests/test-chicken-internals-structs.$(OBJEXT)
+	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
+
+## --------------------------------------------------------------------
+
+tests/test-chicken-internals-checks.$(OBJEXT): tests/test-chicken-internals-checks.scm $(MMCK_CHECK_DEPS)
+	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+
+tests/test-chicken-internals-checks.exe: tests/test-chicken-internals-checks.$(OBJEXT)
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 ### end of file

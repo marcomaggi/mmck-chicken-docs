@@ -650,9 +650,105 @@ Some system operations implement assertions against the result of expressions: i
 satisfies a predicate, nothing happens; otherwise an exception is raised.
 
 @menu
-* checks unsafe::               Including/excluding checks.
 * checks types::                Checking value types.
+* checks unsafe::               Including/excluding checks.
 @end menu
+
+@c page
+@node checks types
+@section Checking value types
+
+
+@macro DefineCheckSystemOperation{SYSOP_NAME,VALUE_TYPE}
+@deffn {System Operation} {\SYSOP_NAME\} @qvar{OBJ}
+@deffnx {System Operation} {\SYSOP_NAME\} @qvar{OBJ} @qvar{LOC}
+Check if @qvar{OBJ} is a \VALUE_TYPE\.  When successful: just return unspecified values.  Otherwise
+raise an exception of kind @code{(exn type)} using the optional argument @qvar{LOC} as
+exceptional--condition @code{location} property.
+@end deffn
+@end macro
+
+@c ------------------------------------------------------------------------
+
+@DefineCheckSystemOperation{##sys#check-blob, blob}
+
+
+@DefineCheckSystemOperation{##sys#check-byte-vector, bytevector}
+
+
+@DefineCheckSystemOperation{##sys#check-pair, pair}
+
+
+@DefineCheckSystemOperation{##sys#check-list, list}
+
+
+@DefineCheckSystemOperation{##sys#check-string, string}
+
+
+@DefineCheckSystemOperation{##sys#check-number, number}
+
+
+@DefineCheckSystemOperation{##sys#check-fixnum, fixnum}
+
+
+@DefineCheckSystemOperation{##sys#check-exact, exact number}
+
+
+@DefineCheckSystemOperation{##sys#check-inexact, inexact number}
+
+
+@DefineCheckSystemOperation{##sys#check-symbol, symbol}
+
+
+@DefineCheckSystemOperation{##sys#check-vector, vector}
+
+
+@DefineCheckSystemOperation{##sys#check-char, character}
+
+
+@DefineCheckSystemOperation{##sys#check-boolean, boolean}
+
+
+@DefineCheckSystemOperation{##sys#check-locative, locative}
+
+
+@DefineCheckSystemOperation{##sys#check-integer, integer}
+
+
+@DefineCheckSystemOperation{##sys#check-exact-integer, exact integer}
+
+
+@DefineCheckSystemOperation{##sys#check-exact-uinteger, exact unsigned integer}
+
+
+@DefineCheckSystemOperation{##sys#check-real, real number}
+
+
+@c FIXME What does this do?  Really?  (Marco Maggi; May 15, 2019)
+@c
+@c @DefineCheckSystemOperation{##sys#check-special, special value}
+
+
+@DefineCheckSystemOperation{##sys#check-closure, closure}
+
+
+@deffn {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME} @qvar{LOC}
+Check if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}; @ref{structs, Low--level
+structures}.  When successful: just return unspecified values.  Otherwise raise an exception with
+kind @code{(exn type)} using the value @qvar{LOC} as exceptional--condition @code{location}
+property.
+@end deffn
+
+
+@deffn {System Operation} {##sys#check-range} @qvar{IDX} @qvar{FROM} @qvar{TO} @qvar{LOC}
+Check that @qvar{IDX} is a fixnum; if it is not: raise an exception with kind @code{(exn type)}
+using the value @qvar{LOC} as exceptional--condition @code{location} property.
+
+Then check if the fixnum @qvar{IDX} is: greater than or equal to @var{FROM} and less than @var{TO};
+the arguments @qvar{FROM} and @qvar{TO} must be fixnums.  When successful: just return unspecified
+values.  Otherwise raise an exception of kind @code{(exn bounds)} using the value @qvar{LOC} as
+exceptional--condition @code{location} property.
+@end deffn
 
 @c page
 @node checks unsafe
@@ -663,29 +759,12 @@ If we want to support compilation of unsafe code, we can wrap a use of these ope
 @func{##core#check} form:
 
 @example
-(##core#check (##sys#check-list @qvar{OBJ} @qvar{NAME} @qvar{LOC}))
+(##core#check (##sys#check-list @qvar{OBJ} @qvar{LOC}))
 @end example
 
 @noindent
 with normal compilation: the use of @func{##sys#check-list} is included; with unsafe compilation:
 the whole form is excluded and replaced with an expression returning @true{}.
-
-@c page
-@node checks types
-@section Checking value types
-
-
-@deffn {System Operation} {##sys#check-list} @qvar{OBJ} @qvar{NAME} @qvar{LOC}
-Check if @qvar{OBJ} is a list.  When successful: just return unspecified values.  Otherwise raise an
-exception using the value @qvar{LOC} as exceptional--condition @code{location} property.
-@end deffn
-
-
-@deffn {System Operation} {##sys#check-structure} @qvar{OBJ} @qvar{NAME} @qvar{LOC}
-Check if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME}; @ref{structs, Low--level
-structures}.  When successful: just return unspecified values.  Otherwise raise an exception using
-the value @qvar{LOC} as exceptional--condition @code{location} property.
-@end deffn
 
 @c page
 @node slots
