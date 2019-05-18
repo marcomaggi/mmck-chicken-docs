@@ -65,7 +65,7 @@
 @copying
 This document describes the internals of @chicken{} version @value{CHICKEN_VERSION}, it was last
 updated @value{UPDATED}; this document is part of @value{PACKAGE}, a collection of unofficial
-documentation about the @chicken{} compiler and its development environment.  @chicken{} is a
+documentation about the @chicken{} compiler and its development ecosystem.  @chicken{} is a
 Scheme--to--C compiler supporting the language features as defined in the ``Revised^5 Report on
 Scheme''.
 

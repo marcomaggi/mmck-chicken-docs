@@ -38,7 +38,7 @@ doc/stamp-vti
 doc/texinfo.tex
 doc/vers*.texi
 src/mdate-sh
-src/stamp-vti
+src/stamp*
 src/texinfo.tex
 src/vers*.texi
 install-sh
