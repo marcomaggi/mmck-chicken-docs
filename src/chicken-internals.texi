@@ -133,6 +133,7 @@ and as backup at:
 * checks::                      Checking the result of expressions.
 * slots::                       Slots operations.
 * structs::                     Low-level structures.
+* procs::                       Handling procedure objects.
 
 Appendices
 
@@ -1045,6 +1046,132 @@ here are some usage examples:
           (colour-green col)
           (colour-blue  col)))
 @result{} 0.5 0.6 0.7
+@end lisp
+
+@c page
+@node procs
+@chapter Handling procedure objects
+
+
+@menu
+* procs decoration::            Decorating a procedure object.
+@end menu
+
+@c page
+@node procs decoration
+@section Decorating a procedure object
+
+
+@cindex decorations block, procedure objects
+@cindex Procedure objects, decorations block
+
+
+@chicken{} allows us to associate a number of values to a procedure object, storing them in the
+procedure object itself, which is a block object similar to a Scheme vector; the maximum number of
+decorations approaches the maximum length of a Scheme vector.  When adding a decoration value: we
+must make sure that we can identify it by applying a predicate to it.
+
+
+@deffn {System Operation} {##sys#lambda-decoration} @var{proc} @var{pred}
+Iterate over the decoration slots of the procedure object @var{proc} searching for a decoration
+value that matches the predicate @var{pred}.  If a match is found: return that value; otherwise
+return @false{}.
+@end deffn
+
+
+@deffn {System Operation} {##sys#decorate-lambda} @var{proc} @var{pred} @var{decorator}
+Iterate over the decoration slots of the procedure object @var{proc} searching for a decoration
+value that matches the predicate @var{pred}:
+
+@itemize
+@item
+If a matching decoration value is found: apply the function @var{decorator} to two values, the
+procedure object itself and the index of the slot in which the matching decoration value is stored.
+
+@item
+If no matching decoration value is found: @strong{reallocate the procedure object} adding a new
+slot, available for this call and left uninitialised.  Then apply the function @var{decorator} to
+two values: the new procedure object; the index of the new slot.
+@end itemize
+
+Return the values returned by the @var{decorator} application.  @var{decorator} should return the
+procedure object it received as argument, because, in case of reallocation, that value is the
+replacement of @var{proc}; we have to assume @var{proc} itself is no more a valid Scheme object
+after a call to this system operation.
+@end deffn
+
+@c ------------------------------------------------------------------------
+
+@subsubheading Keyed pair as decoration value
+
+
+Let's define an @api{} to decorate procedure objects, the decoration value is a pair object with a
+``type symbol'' as car:
+
+@lisp
+(define MY_PROCEDURE_DECORATION_KEY
+  'Sau0oosh8coodahthoa4Ohquic6oshoh)
+
+(define (make-my-procedure-decoration-value proc)
+  ;;Build a new decoration value.
+  ;;
+  (cons MY_PROCEDURE_DECORATION_KEY proc))
+
+(define (my-procedure-decoration-value? obj)
+  ;;Return #t if OBJ is a decoration value; otherwise return #f.
+  ;;
+  (and (pair? obj)
+       (eq? MY_PROCEDURE_DECORATION_KEY (car obj))))
+
+(define (decorate-my-procedure proc decoration-value-payload)
+  ;;Decorate the procedure PROC with a new payload value.  Return
+  ;;the, possibly reallocated, procedure object.
+  ;;
+  (##sys#decorate-lambda proc my-procedure-decoration-value?
+    (lambda (new-proc slotidx)
+      (##sys#setslot new-proc slotidx
+                     (make-my-procedure-decoration-value
+                        decoration-value-payload))
+      new-proc)))
+
+(define (my-procedure-decoration-payload proc)
+  ;;Retrieve the payload from the decoration value associated to
+  ;;the procedure object PROC.  Raise an error if no such decoration
+  ;;is present.
+  ;;
+  (cond ((##sys#lambda-decoration proc my-procedure-decoration-value?)
+         => cdr)
+        (else
+         (error 'my-procedure-decoration-payload
+           "expected procedure object decorated with my payload"
+           proc))))
+@end lisp
+
+@noindent
+now we can decorate procedures as follows:
+
+@lisp
+(define (the-proc)
+  123)
+
+(set! the-proc (decorate-my-procedure the-proc "ciao"))
+
+(my-procedure-decoration-payload the-proc))
+@result{} "ciao"
+@end lisp
+
+@noindent
+or as follows:
+
+@lisp
+(define the-proc
+  (decorate-my-procedure
+      (lambda ()
+        123)
+    "ciao"))
+
+(my-procedure-decoration-payload the-proc))
+@result{} "ciao"
 @end lisp
 
 @c page
