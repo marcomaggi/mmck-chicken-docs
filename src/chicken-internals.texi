@@ -69,6 +69,12 @@ documentation about the @chicken{} compiler and its development ecosystem.  @chi
 Scheme--to--C compiler supporting the language features as defined in the ``Revised^5 Report on
 Scheme''.
 
+@quotation
+@strong{Use at your own risk!}  All the facilities described in this document are @strong{not} part
+of the official @chicken{} @api{}: they may change in a backwards incompatible way with every
+@chicken{} release!
+@end quotation
+
 This package is distributed under the terms of the @url{http://creativecommons.org/licenses/by/3.0/,
 Creative Commons Attribution 3.0 License}.  All code fragments in this document are hereby put in
 the public domain.
@@ -159,6 +165,12 @@ updated @value{UPDATED}; this document is part of @value{PACKAGE}, a collection 
 documentation about the @chicken{} compiler and its development environment.  @chicken{} is a
 Scheme--to--C compiler supporting the language features as defined in the ``Revised^5 Report on
 Scheme''.
+
+@quotation
+@strong{Use at your own risk!}  All the facilities described in this document are @strong{not} part
+of the official @chicken{} @api{}: they may change in a backwards incompatible way with every
+@chicken{} release!
+@end quotation
 
 @menu
 * overview jargon::             Jargon used in this document.
