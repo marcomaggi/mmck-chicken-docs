@@ -772,12 +772,18 @@ If we want to support compilation of unsafe code, we can wrap a use of these ope
 @func{##core#check} form:
 
 @example
-(##core#check (##sys#check-list @qvar{OBJ} @qvar{LOC}))
+(##core#check (##sys#check-list @qvar{obj} @qvar{loc}))
 @end example
 
 @noindent
 with normal compilation: the use of @func{##sys#check-list} is included; with unsafe compilation:
 the whole form is excluded and replaced with an expression returning @true{}.
+
+
+@deffn {System Operation} {##core#check} @qvar{form}
+If safe compilation is enabled: expand to @qvar{form}.  If unsafe compilation is enabled: expand to
+@true{}.
+@end deffn
 
 @c page
 @node slots
