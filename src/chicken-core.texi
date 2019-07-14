@@ -163,18 +163,26 @@ defined in the ``Revised^5 Report on Scheme''.
 @chapter Module @library{chicken blob}
 
 
+@cindex @library{chicken blob} module
+@cindex Module @library{chicken blob}
+
+
 @c page
 @node condition
 @chapter Module @library{chicken condition}
+
+
+@cindex @library{chicken condition} module
+@cindex Module @library{chicken condition}
 
 
 This module provides various procedures and special forms for raising and handling exceptions with
 ``condition objects''.  Condition objects provide a structured and composable way to encode the kind
 of exception that took place, and provide the necessary context.
 
-@chicken{}'s exception handling is based on the @ansrfi{12}
-(@url{http://srfi.schemers.org/srfi-12/srfi-12.html}) exception system.  This chapter contains the
-core of the @ansrfi{12} spec as well as @chicken{} implementation specifics.
+@chicken{}'s exception handling is based on the
+@url{@url{http://srfi.schemers.org/srfi-12/srfi-12.html}, @ansrfi{12}} exception system.  This
+chapter contains the core of the @ansrfi{12} spec as well as @chicken{} implementation specifics.
 
 There is also a @code{srfi-12} or @library{srfi 12} module which only includes the standard
 procedures and macros from the @srfi{} document, without the @chicken{} extensions.
@@ -646,6 +654,9 @@ other object.  The output is prefixed by the @var{header}, which defaults to @co
 @node continuation
 @chapter Module @library{chicken continuation}
 
+
+@cindex @library{chicken continuation} module
+@cindex Module @library{chicken continuation}
 
 @c page
 @node document license
