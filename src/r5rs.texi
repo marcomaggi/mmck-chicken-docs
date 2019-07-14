@@ -1,8 +1,3 @@
-@c \input texinfo @c -*-texinfo-*-
-@c @c %**start of header
-@c @setfilename r5rs.info
-@c @settitle Revised(5) Scheme
-
 @c This copy of r5rs.texi differs from Aubrey Jaffer's master copy
 @c by a set of changes to allow the building of r5rs.dvi from r5rs.texi.
 @c Aubrey Jaffer's view - which I agree with - is that, given that
@@ -21,177 +16,9 @@
 @c
 @c NJ 2001/1/26
 
-@c \documentclass[twoside]{algol60}
-
-@c \pagestyle{headings}
-@c \showboxdepth=0
-
-
-
-@c \def\headertitle{Revised$^{5}$ Scheme}
-@c \def\integerversion{5}
-
-@c  Sizes and dimensions
-
-@c \topmargin -.375in       %    Nominal distance from top of page to top of
-
-@c     box containing running head.
-@c \headsep 15pt            %    Space between running head and text.
-
-@c \textheight 663pt        % Height of text (including footnotes and figures,
-
-@c  excluding running head and foot).
-
-@c \textwidth 523pt         % Width of text line.
-@c \columnsep 15pt          % Space between columns
-@c \columnseprule 0pt       % Width of rule between columns.
-
-@c \parskip 5pt plus 2pt minus 2pt % Extra vertical space between paragraphs.
-@c \parindent 0pt                  % Width of paragraph indentation.
-@c \topsep 0pt plus 2pt            % Extra vertical space, in addition to
-
-@c  \parskip, added above and below list and
-
-@c  paragraphing environments.
-
-@c \oddsidemargin  -.5in    % Left margin on odd-numbered pages.
-@c \evensidemargin -.5in    % Left margin on even-numbered pages.
-
-@c % End of sizes and dimensions
-
-@c @paragraphindent 0
-@c %**end of header
-@c syncodeindex fn cp
-
-@c @ifinfo
-@c @dircategory The Algorithmic Language Scheme
-@c @direntry
-@c * R5RS: (r5rs).                 The Revised(5) Report on Scheme.
-@c @end direntry
-@c @end ifinfo
-
-
-@c \parindent 0pt %!! 15pt                    % Width of paragraph indentation.
-
-@c @b{20 February 1998}
-@c \hfil \today{}
-
-@c @include{first}
-@titlepage
-
-@c HTML first page
-@c @title Scheme
-@c @subtitle Revised(5) Report on the Algorithmic Language Scheme
-@c  First page
-
-@c \thispagestyle{empty}
-
-@c  \todo{"another" report?}
-
-
-@author R@sc{ICHARD} K@sc{ELSEY}, W@sc{ILLIAM} C@sc{LINGER, AND} J@sc{ONATHAN} R@sc{EES} (@i{Editors})
-@author H. A@sc{BELSON}
-@author R. K. D@sc{YBVIG}
-@author C. T. H@sc{AYNES}
-@author G. J. R@sc{OZAS}
-@author N. I. A@sc{DAMS IV}
-@author D. P. F@sc{RIEDMAN}
-@author E. K@sc{OHLBECKER}
-@author G. L. S@sc{TEELE} J@sc{R}.
-@author D. H. B@sc{ARTLEY}
-@author R. H@sc{ALSTEAD}
-@author D. O@sc{XLEY}
-@author G. J. S@sc{USSMAN}
-@author G. B@sc{ROOKS}
-@author C. H@sc{ANSON}
-@author K. M. P@sc{ITMAN}
-@author M. W@sc{AND}
-
-
-@c  {\it Dedicated to the Memory of ALGOL 60}
-@i{Dedicated to the Memory of Robert Hieb}
-@c  [For the macros in R5RS -RK]
-
-
-
-
-@c @majorheading Summary
-
-
-The report gives a defining description of the programming language
-Scheme.  Scheme is a statically scoped and properly tail-recursive
-dialect of the Lisp programming language invented by Guy Lewis
-Steele Jr.@: and Gerald Jay Sussman.  It was designed to have an
-exceptionally clear and simple semantics and few different ways to
-form expressions.  A wide variety of programming paradigms, including
-imperative, functional, and message passing styles, find convenient
-expression in Scheme.
-
-The introduction offers a brief history of the language and of
-the report.
-
-The first three chapters present the fundamental ideas of the
-language and describe the notational conventions used for describing the
-language and for writing programs in the language.
-
-Chapters @ref{Expressions} and @ref{Program structure} describe
-the syntax and semantics of expressions, programs, and definitions.
-
-Chapter @ref{Standard procedures} describes Scheme's built-in
-procedures, which include all of the language's data manipulation and
-input/output primitives.
-
-Chapter @ref{Formal syntax and semantics} provides a formal syntax for Scheme
-written in extended BNF, along with a formal denotational semantics.
-An example of the use of the language follows the formal syntax and
-semantics.
-
-The report concludes with a list of references and an
-alphabetic index.
-
-@ignore todo
-expand the summary so that it fills up the column.
-@end ignore
-
-
-@c \vfill
-@c \begin{center}
-@c {\large \bf
-@c *** DRAFT*** \\
-@c %August 31, 1989
-@c \today
-@c }\end{center}
-
-
-
-
-
-@c \addvspace{3.5pt}                  % don't shrink this gap
-@c \renewcommand{\tocshrink}{-3.5pt}  % value determined experimentally
-
-
-
-
-
-
-@page
-
-@end titlepage
-
-@c INFO first page
-@ifnottex
-
-@c  First page
-
-@c \thispagestyle{empty}
-
-@c  \todo{"another" report?}
-
-
-@node top, Introduction, (dir), (dir)
-@top  Revised(5) Report on the Algorithmic Language   Scheme
-
-@sp 1
+@c page
+@node r5rs
+@chapter Revised(5) Report on the Algorithmic Language Scheme
 
 
 @quotation
@@ -206,110 +33,61 @@ R@sc{ichard} K@sc{elsey}, W@sc{illiam} C@sc{linger, and} J@sc{onathan} R@sc{ees}
 @end multitable
 @end quotation
 
-
-@sp 2
-
-@c  {\it Dedicated to the Memory of ALGOL 60}
 @i{Dedicated to the Memory of Robert Hieb}
-@c  [For the macros in R5RS -RK]
-
-@sp 3
-
-
-
-
-@majorheading Summary
-
-
-The report gives a defining description of the programming language
-Scheme.  Scheme is a statically scoped and properly tail-recursive
-dialect of the Lisp programming language invented by Guy Lewis
-Steele Jr.@: and Gerald Jay Sussman.  It was designed to have an
-exceptionally clear and simple semantics and few different ways to
-form expressions.  A wide variety of programming paradigms, including
-imperative, functional, and message passing styles, find convenient
-expression in Scheme.
-
-The introduction offers a brief history of the language and of
-the report.
-
-The first three chapters present the fundamental ideas of the
-language and describe the notational conventions used for describing the
-language and for writing programs in the language.
-
-Chapters @ref{Expressions} and @ref{Program structure} describe
-the syntax and semantics of expressions, programs, and definitions.
-
-Chapter @ref{Standard procedures} describes Scheme's built-in
-procedures, which include all of the language's data manipulation and
-input/output primitives.
-
-Chapter @ref{Formal syntax and semantics} provides a formal syntax for Scheme
-written in extended BNF, along with a formal denotational semantics.
-An example of the use of the language follows the formal syntax and
-semantics.
-
-The report concludes with a list of references and an
-alphabetic index.
-
-@ignore todo
-expand the summary so that it fills up the column.
-@end ignore
-
-
-@c \vfill
-@c \begin{center}
-@c {\large \bf
-@c *** DRAFT*** \\
-@c %August 31, 1989
-@c \today
-@c }\end{center}
-
-
-
-
-
-@c \addvspace{3.5pt}                  % don't shrink this gap
-@c \renewcommand{\tocshrink}{-3.5pt}  % value determined experimentally
-
-@unnumbered Contents
 
 @menu
-* Introduction::
-* Overview of Scheme::
-* Lexical conventions::
-* Basic concepts::
-* Expressions::
-* Program structure::
-* Standard procedures::
-* Formal syntax and semantics::
-* Notes::
-* Additional material::
-* Example::
-* Bibliography::
-* Index::
+* r5rs summary::
+* r5rs Introduction::
+* r5rs Overview of Scheme::
+* r5rs Lexical conventions::
+* r5rs Basic concepts::
+* r5rs Expressions::
+* r5rs Program structure::
+* r5rs Standard procedures::
+* r5rs Formal syntax and semantics::
+* r5rs Notes::
+* r5rs Additional material::
+* r5rs Example::
+* r5rs Bibliography::
 @end menu
 
+@c page
+@node r5rs summary
+@section @rnrs{5} summary
 
 
+The report gives a defining description of the programming language Scheme.  Scheme is a statically
+scoped and properly tail-recursive dialect of the Lisp programming language invented by Guy Lewis
+Steele Jr.@: and Gerald Jay Sussman.  It was designed to have an exceptionally clear and simple
+semantics and few different ways to form expressions.  A wide variety of programming paradigms,
+including imperative, functional, and message passing styles, find convenient expression in Scheme.
 
+The introduction offers a brief history of the language and of the report.
 
-@page
+The first three chapters present the fundamental ideas of the language and describe the notational
+conventions used for describing the language and for writing programs in the language.
 
-@end ifnottex
+Chapters @ref{r5rs Expressions} and @ref{r5rs Program structure} describe the syntax and semantics of
+expressions, programs, and definitions.
 
+Chapter @ref{r5rs Standard procedures} describes Scheme's built-in procedures, which include all of the
+language's data manipulation and input/output primitives.
 
-@c @include{intro}
-@node Introduction, Overview of Scheme, top, top
-@unnumbered Introduction
+Chapter @ref{r5rs Formal syntax and semantics} provides a formal syntax for Scheme written in extended
+BNF, along with a formal denotational semantics.  An example of the use of the language follows the
+formal syntax and semantics.
+
+The report concludes with a list of references and an aalphabetic index.
+
+@c page
+@node r5rs Introduction
+@section Introduction
+
 
 @menu
-* Background::
-* Acknowledgements::
+* r5rs Background::
+* r5rs Acknowledgements::
 @end menu
-
-
-
 
 Programming languages should be designed not by piling feature on top of
 feature, but by removing the weaknesses and restrictions that make additional
@@ -338,35 +116,10 @@ an extension of Common Lisp's generic arithmetic.
 More recently, Scheme became the first programming language to support
 hygienic macros, which permit the syntax of a block-structured language
 to be extended in a consistent and reliable manner.
-@c  A few
-@c of these innovations have recently been incorporated into Common Lisp, while
-@c others remain to be adopted.
 
-@ignore todo
-Ramsdell:
-I would like to make a few comments on presentation.  The most
-important comment is about section organization.  Newspaper writers
-spend most of their time writing the first three paragraphs of any
-article.  This part of the article is often the only part read by
-readers, and is important in enticing readers to continue.  In the
-same way, The first page is most likely to be the only page read by
-many SIGPLAN readers.  If I had my choice of what I would ask them to
-read, it would be the material in section 1.1, the Semantics section
-that notes that scheme is lexically scoped, tail recursive, weakly
-typed, ... etc.  I would expand on the discussion on continuations,
-as they represent one important difference between Scheme and other
-languages.  The introduction, with its history of scheme, its history
-of scheme reports and meetings, and acknowledgements giving names of
-people that the reader will not likely know, is not that one page I
-would like all to read.  I suggest moving the history to the back of
-the report, and use the first couple of pages to convince the reader
-that the language documented in this report is worth studying.
-
-@end ignore
-
-
-@node Background, Acknowledgements, Introduction, Introduction
-@unnumberedsec Background
+@c page
+@node r5rs Background
+@subsection Background
 
 
 The first description of Scheme was written in
@@ -437,8 +190,9 @@ necessary.
 
 
 
-@node Acknowledgements,  , Background, Introduction
-@unnumberedsec Acknowledgements
+@c page
+@node r5rs Acknowledgements
+@subsection Acknowledgements
 
 
 We would like to thank the following people for their help: Alan Bawden, Michael
@@ -481,25 +235,27 @@ University work was provided by NSF grants NCS 83-04567 and NCS
 
 @c  1. Structure of the language
 
-@node Overview of Scheme, Lexical conventions, Introduction, top
-@chapter Overview of Scheme
+@c page
+@node r5rs Overview of Scheme
+@section Overview of Scheme
 
 @menu
-* Semantics::
-* Syntax::
-* Notation and terminology::
+* r5rs Semantics::
+* r5rs Syntax::
+* r5rs Notation and terminology::
 @end menu
 
 
-@node Semantics, Syntax, Overview of Scheme, Overview of Scheme
-@section Semantics
+@c page
+@node r5rs Semantics
+@subsection Semantics
 
 
 
 This section gives an overview of Scheme's semantics.  A
 detailed informal semantics is the subject of
-chapters @ref{Basic concepts} through @ref{Standard procedures}.  For reference
-purposes, section @ref{Formal semantics} provides a formal
+chapters @ref{r5rs Basic concepts} through @ref{r5rs Standard procedures}.  For reference
+purposes, section @ref{r5rs Formal semantics} provides a formal
 semantics of Scheme.
 
 Following Algol, Scheme is a statically scoped programming
@@ -530,7 +286,7 @@ even if the iterative computation is described by a syntactically
 recursive procedure.  Thus with a properly tail-recursive implementation,
 iteration can be expressed using the ordinary procedure-call
 mechanics, so that special iteration constructs are useful only as
-syntactic sugar.  See section @ref{Proper tail recursion}.
+syntactic sugar.  See section @ref{r5rs Proper tail recursion}.
 
 Scheme procedures are objects in their own right.  Procedures can be
 created dynamically, stored in data structures, returned as results of
@@ -545,7 +301,7 @@ One distinguishing feature of Scheme is that continuations, which
 in most other languages only operate behind the scenes, also have
 ``first-class'' status.  Continuations are useful for implementing a
 wide variety of advanced control constructs, including non-local exits,
-backtracking, and coroutines.  See section @ref{Control features}.
+backtracking, and coroutines.  See section @ref{r5rs Control features}.
 
 Arguments to Scheme procedures are always passed by value, which
 means that the actual argument expressions are evaluated before the
@@ -573,8 +329,9 @@ which corresponds to the mathematical ideal, and inexact arithmetic on
 approximations.  As in Common Lisp, exact arithmetic is not limited to
 integers.
 
-@node Syntax, Notation and terminology, Semantics, Overview of Scheme
-@section Syntax
+@c page
+@node r5rs Syntax
+@subsection Syntax
 
 
 Scheme, like most dialects of Lisp, employs a fully parenthesized prefix
@@ -587,26 +344,28 @@ as data.
 
 The @samp{read} procedure performs syntactic as well as lexical decomposition of
 the data it reads.  The @samp{read} procedure parses its input as data
-(section @pxref{External representation}), not as program.
+(section @pxref{r5rs External representation}), not as program.
 
-The formal syntax of Scheme is described in section @ref{Formal syntax}.
+The formal syntax of Scheme is described in section @ref{r5rs Formal syntax}.
 
 
-@node Notation and terminology,  , Syntax, Overview of Scheme
-@section Notation and terminology
+@c page
+@node r5rs Notation and terminology
+@subsection Notation and terminology
 
 @menu
-* Primitive; library; and optional features::
-* Error situations and unspecified behavior::
-* Entry format::
-* Evaluation examples::
-* Naming conventions::
+* r5rs Primitive; library; and optional features::
+* r5rs Error situations and unspecified behaviour::
+* r5rs Entry format::
+* r5rs Evaluation examples::
+* r5rs Naming conventions::
 @end menu
 
 
 
-@node Primitive; library; and optional features, Error situations and unspecified behavior, Notation and terminology, Notation and terminology
-@subsection Primitive; library; and optional features
+@c page
+@node r5rs Primitive; library; and optional features,
+@subsubsection Primitive; library; and optional features
 
 
 
@@ -626,8 +385,9 @@ primitive, features.  They are redundant in the strict sense of
 the word, but they capture common patterns of usage, and are therefore
 provided as convenient abbreviations.
 
-@node Error situations and unspecified behavior, Entry format, Primitive; library; and optional features, Notation and terminology
-@subsection Error situations and unspecified behavior
+@c page
+@node r5rs Error situations and unspecified behaviour
+@subsubsection Error situations and unspecified behavior
 
 
 
@@ -675,11 +435,12 @@ Look at KMP's situations paper.
 
 
 
-@node Entry format, Evaluation examples, Error situations and unspecified behavior, Notation and terminology
-@subsection Entry format
+@c page
+@node r5rs Entry format
+@subsubsection Entry format
 
 
-Chapters @ref{Expressions} and @ref{Standard procedures} are organized
+Chapters @ref{r5rs Expressions} and @ref{r5rs Standard procedures} are organized
 into entries.  Each entry describes one language feature or a group of
 related features, where a feature is either a syntactic construct or a
 built-in procedure.  An entry begins with one or more header lines of the form
@@ -699,7 +460,7 @@ for required, primitive features, or
 @end deffn
 
 where @var{qualifier} is either ``library'' or ``optional'' as defined
- in section @ref{Primitive; library; and optional features}.
+ in section @ref{r5rs Primitive; library; and optional features}.
 
 If @var{category} is ``syntax'', the entry describes an expression
 type, and the template gives the syntax of the expression type.
@@ -752,20 +513,19 @@ either one or two arguments.
 It is an error for an operation to be presented with an argument that it
 is not specified to handle.  For succinctness, we follow the convention
 that if an argument name is also the name of a type listed in
-section @ref{Disjointness of types}, then that argument must be of the named type.
+section @ref{r5rs Disjointness of types}, then that argument must be of the named type.
 For example, the header line for @t{vector-ref} given above dictates that the
 first argument to @t{vector-ref} must be a vector.  The following naming
 conventions also imply type restrictions:
 @c \newcommand{\foo}[1]{\vr{#1}, \vri{#1}, $\ldots$ \vrj{#1}, $\ldots$}
 
 
-@center @c begin-tabular
 @quotation
 @table @asis
 @item @var{obj}
 any object
 @item @var{list}, @var{list1}, @dots{} @var{listj}, @dots{}
-list (see section @pxref{Pairs and lists})
+list (see section @pxref{r5rs Pairs and lists})
 @item @var{z}, @var{z1}, @dots{} @var{zj}, @dots{}
 complex number
 @item @var{x}, @var{x1}, @dots{} @var{xj}, @dots{}
@@ -778,7 +538,6 @@ rational number
 integer
 @item @var{k}, @var{k1}, @dots{} @var{kj}, @dots{}
 exact non-negative integer
-@item
 @end table
 @end quotation
 
@@ -791,8 +550,9 @@ Provide an example entry??
 
 
 
-@node Evaluation examples, Naming conventions, Entry format, Notation and terminology
-@subsection Evaluation examples
+@c page
+@node r5rs Evaluation examples
+@subsubsection Evaluation examples
 
 
 The symbol ``@result{}'' used in program examples should be read
@@ -809,11 +569,12 @@ The symbol ``@result{}'' used in program examples should be read
 means that the expression @t{(* 5 8)} evaluates to the object @t{40}.
 Or, more precisely:  the expression given by the sequence of characters
 ``@t{(* 5 8)}'' evaluates, in the initial environment, to an object
-that may be represented externally by the sequence of characters ``@t{40}''.  See section @ref{External representations} for a discussion of external
+that may be represented externally by the sequence of characters ``@t{40}''.  See section @ref{r5rs External representations} for a discussion of external
 representations of objects.
 
-@node Naming conventions,  , Evaluation examples, Notation and terminology
-@subsection Naming conventions
+@c page
+@node r5rs Naming conventions
+@subsubsection Naming conventions
 
 
 By convention, the names of procedures that always return a boolean
@@ -822,7 +583,7 @@ in ``@code{?}''.  Such procedures are called predicates.
 @vindex @w{?}
 
 By convention, the names of procedures that store values into previously
-allocated locations (see section @pxref{Storage model}) usually end in
+allocated locations (see section @pxref{r5rs Storage model}) usually end in
 ``@code{!}''.
 @vindex @w{!}
 Such procedures are called mutation procedures.
@@ -846,27 +607,29 @@ Terms that need defining: thunk, command (what else?).
 @c  Lexical structure
 
 @c %\vfill\eject
-@node Lexical conventions, Basic concepts, Overview of Scheme, top
-@chapter Lexical conventions
+@c page
+@node r5rs Lexical conventions
+@section Lexical conventions
 
 @menu
-* Identifiers::
-* Whitespace and comments::
-* Other notations::
+* r5rs Identifiers::
+* r5rs Whitespace and comments::
+* r5rs Other notations::
 @end menu
 
 
 This section gives an informal account of some of the lexical
 conventions used in writing Scheme programs.  For a formal syntax of
-Scheme, see section @ref{Formal syntax}.
+Scheme, see section @ref{r5rs Formal syntax}.
 
 Upper and lower case forms of a letter are never distinguished
 except within character and string constants.  For example, @samp{Foo} is
 the same identifier as @samp{FOO}, and @t{#x1AB} is the same number as
 @t{#X1ab}.
 
-@node Identifiers, Whitespace and comments, Lexical conventions, Lexical conventions
-@section Identifiers
+@c page
+@node r5rs Identifiers
+@subsection Identifiers
 
 
 
@@ -904,7 +667,7 @@ they were letters.  The following are extended alphabetic characters:
 @end example
 
 
-See section @ref{Lexical structure} for a formal syntax of identifiers.
+See section @ref{r5rs Lexical structure} for a formal syntax of identifiers.
 
 Identifiers have two uses within Scheme programs:
 
@@ -914,12 +677,12 @@ Identifiers have two uses within Scheme programs:
 @item
 Any identifier may be used as a variable
 or as a syntactic keyword
-(see sections @pxref{Variables; syntactic keywords; and regions} and @pxref{Macros}).
+(see sections @pxref{r5rs Variables; syntactic keywords; and regions} and @pxref{r5rs Macros}).
 
 @item
 When an identifier appears as a literal or within a literal
-(see section @pxref{Literal expressions}), it is being used to denote a @emph{symbol}
-(see section @pxref{Symbols}).
+(see section @pxref{r5rs Literal expressions}), it is being used to denote a @emph{symbol}
+(see section @pxref{r5rs Symbols}).
 
 
 @end itemize
@@ -948,8 +711,9 @@ When an identifier appears as a literal or within a literal
 @c resolved vary between implementations.
 
 
-@node Whitespace and comments, Other notations, Identifiers, Lexical conventions
-@section Whitespace and comments
+@c page
+@node r5rs Whitespace and comments
+@subsection Whitespace and comments
 
 
 @dfn{Whitespace} characters are spaces and newlines.
@@ -986,8 +750,9 @@ number.
 
 
 
-@node Other notations,  , Whitespace and comments, Lexical conventions
-@section Other notations
+@c page
+@node r5rs Other notations
+@subsection Other notations
 
 
 @ignore todo
@@ -996,7 +761,7 @@ Rewrite?
 
 
 For a description of the notations used for numbers, see
-section @ref{Numbers}.
+section @ref{r5rs Numbers}.
 
 
 @table @t
@@ -1007,32 +772,32 @@ These are used in numbers, and may also occur anywhere in an identifier
 except as the first character.  A delimited plus or minus sign by itself
 is also an identifier.
 A delimited period (not occurring within a number or identifier) is used
-in the notation for pairs (section @pxref{Pairs and lists}), and to indicate a
-rest-parameter in a  formal parameter list (section @pxref{Procedures}).
+in the notation for pairs (section @pxref{r5rs Pairs and lists}), and to indicate a
+rest-parameter in a  formal parameter list (section @pxref{r5rs Procedures}).
 A delimited sequence of three successive periods is also an identifier.
 
 @item @t{( )}
 Parentheses are used for grouping and to notate lists
-(section @pxref{Pairs and lists}).
+(section @pxref{r5rs Pairs and lists}).
 
 @item @t{'}
-The single quote character is used to indicate literal data (section @pxref{Literal expressions}).
+The single quote character is used to indicate literal data (section @pxref{r5rs Literal expressions}).
 
 @item @t{`}
 The backquote character is used to indicate almost-constant
-data (section @pxref{Quasiquotation}).
+data (section @pxref{r5rs Quasiquotation}).
 
 @item @t{, ,@@}
 The character comma and the sequence comma at-sign are used in conjunction
-with backquote (section @pxref{Quasiquotation}).
+with backquote (section @pxref{r5rs Quasiquotation}).
 
 @item @t{"}
-The double quote character is used to delimit strings (section @pxref{Strings}).
+The double quote character is used to delimit strings (section @pxref{r5rs Strings}).
 
 @item \
 Backslash is used in the syntax for character constants
-(section @pxref{Characters}) and as an escape character within string
-constants (section @pxref{Strings}).
+(section @pxref{r5rs Characters}) and as an escape character within string
+constants (section @pxref{r5rs Strings}).
 
 @c  A box used because \verb is not allowed in command arguments.
 
@@ -1045,39 +810,37 @@ are reserved for possible future extensions to the language.
 the character that immediately follows it:
 
 @item @t{#t} @t{#f}
-These are the boolean constants (section @pxref{Booleans}).
+These are the boolean constants (section @pxref{r5rs Booleans}).
 
 @item #\
-This introduces a character constant (section @pxref{Characters}).
+This introduces a character constant (section @pxref{r5rs Characters}).
 
 @item #@t{(}
-This introduces a vector constant (section @pxref{Vectors}).  Vector constants
+This introduces a vector constant (section @pxref{r5rs Vectors}).  Vector constants
 are terminated by @t{)} .
 
 @item @t{#e #i #b #o #d #x}
-These are used in the notation for numbers (section @pxref{Syntax of numerical constants}).
+These are used in the notation for numbers (section @pxref{r5rs Syntax of numerical constants}).
 
 @end table
 
-
-@c @include{basic}
-
-@c \vfill\eject
-@node Basic concepts, Expressions, Lexical conventions, top
-@chapter Basic concepts
+@c page
+@node r5rs Basic concepts
+@section Basic concepts
 
 @menu
-* Variables; syntactic keywords; and regions::
-* Disjointness of types::
-* External representations::
-* Storage model::
-* Proper tail recursion::
+* r5rs Variables; syntactic keywords; and regions::
+* r5rs Disjointness of types::
+* r5rs External representations::
+* r5rs Storage model::
+* r5rs Proper tail recursion::
 @end menu
 
 
 
-@node Variables; syntactic keywords; and regions, Disjointness of types, Basic concepts, Basic concepts
-@section Variables; syntactic keywords; and regions
+@c page
+@node r5rs Variables; syntactic keywords; and regions
+@subsection Variables; syntactic keywords; and regions
 
 
 
@@ -1119,13 +882,13 @@ expression types create new locations and bind variables to those
 locations.  These expression types are called @emph{binding constructs}.
 
 @cindex @w{binding construct}
-Those that bind syntactic keywords are listed in section @ref{Macros}.
+Those that bind syntactic keywords are listed in section @ref{r5rs Macros}.
 The most fundamental of the variable binding constructs is the
 @samp{lambda} expression, because all other variable binding constructs
 can be explained in terms of @samp{lambda} expressions.  The other
 variable binding constructs are @samp{let}, @samp{let*}, @samp{letrec},
-and @samp{do} expressions (see sections @pxref{Procedures}, @pxref{Binding constructs}, and
-@pxref{Iteration}).
+and @samp{do} expressions (see sections @pxref{r5rs Procedures}, @pxref{r5rs Binding constructs}, and
+@pxref{r5rs Iteration}).
 
 @c Note: internal definitions not mentioned here.
 
@@ -1142,7 +905,7 @@ refers to the binding of the identifier that established the
 innermost of the regions containing the use.  If there is no binding of
 the identifier whose region contains the use, then the use refers to the
 binding for the variable in the top level environment, if any
-(chapters @pxref{Expressions} and @pxref{Standard procedures}); if there is no
+(chapters @pxref{r5rs Expressions} and @pxref{r5rs Standard procedures}); if there is no
 binding for the identifier,
 it is said to be @dfn{unbound}.
 @cindex @w{top level environment}
@@ -1171,8 +934,9 @@ agree on which programming environment provides the best approximation.
 @end ignore
 
 
-@node Disjointness of types, External representations, Variables; syntactic keywords; and regions, Basic concepts
-@section Disjointness of types
+@c page
+@node r5rs Disjointness of types
+@subsection Disjointness of types
 
 
 
@@ -1209,7 +973,7 @@ object of its own type; it satisfies none of the above predicates.
 
 Although there is a separate boolean type,
 any Scheme value can be used as a boolean value for the purpose of a
-conditional test.  As explained in section @ref{Booleans}, all
+conditional test.  As explained in section @ref{r5rs Booleans}, all
 values count as true in such a test except for @t{#f}.
 @c  and possibly the empty list.
 @c  The only value that is guaranteed to count as
@@ -1221,8 +985,9 @@ Scheme value except @t{#f}, and the word ``false'' to refer to
 @cindex @w{false}
 @cindex @w{true}
 
-@node External representations, Storage model, Disjointness of types, Basic concepts
-@section External representations
+@c page
+@node r5rs External representations
+@subsection External representations
 
 
 
@@ -1235,18 +1000,18 @@ of the integers 8 and 13 is the sequence of characters ``@t{(8 13)}''.
 The external representation of an object is not necessarily unique.  The
 integer 28 also has representations ``@t{#e28.000}'' and ``@t{#x1c}'', and the
 list in the previous paragraph also has the representations ``@t{( 08 13
-)}'' and ``@t{(8 .@: (13 .@: ()))}'' (see section @pxref{Pairs and lists}).
+)}'' and ``@t{(8 .@: (13 .@: ()))}'' (see section @pxref{r5rs Pairs and lists}).
 
 Many objects have standard external representations, but some, such as
 procedures, do not have standard representations (although particular
 implementations may define representations for them).
 
 An external representation may be written in a program to obtain the
-corresponding object (see @samp{quote}, section @pxref{Literal expressions}).
+corresponding object (see @samp{quote}, section @pxref{r5rs Literal expressions}).
 
 External representations can also be used for input and output.  The
-procedure @samp{read} (section @pxref{Input}) parses external
-representations, and the procedure @samp{write} (section @pxref{Output})
+procedure @samp{read} (section @pxref{r5rs Input}) parses external
+representations, and the procedure @samp{write} (section @pxref{r5rs Output})
 generates them.  Together, they provide an elegant and powerful
 input/output facility.
 
@@ -1264,10 +1029,11 @@ compilers that treat programs as data (or vice versa).
 
 The syntax of external representations of various kinds of objects
 accompanies the description of the primitives for manipulating the
-objects in the appropriate sections of chapter @ref{Standard procedures}.
+objects in the appropriate sections of chapter @ref{r5rs Standard procedures}.
 
-@node Storage model, Proper tail recursion, External representations, Basic concepts
-@section Storage model
+@c page
+@node r5rs Storage model
+@subsection Storage model
 
 
 
@@ -1283,7 +1049,7 @@ An object fetched from a location, by a variable reference or by
 a procedure such as @samp{car}, @samp{vector-ref}, or @samp{string-ref}, is
 equivalent in the sense of @code{eqv?}
 @c  and \ide{eq?} ??
-(section @pxref{Equivalence predicates})
+(section @pxref{r5rs Equivalence predicates})
 @vindex @w{eqv?}
 to the object last stored in the location before the fetch.
 
@@ -1309,8 +1075,9 @@ created by the other procedures listed in this report are mutable.  It is an
 error to attempt to store a new value into a location that is denoted by an
 immutable object.
 
-@node Proper tail recursion,  , Storage model, Basic concepts
-@section Proper tail recursion
+@c page
+@node r5rs Proper tail recursion
+@subsection Proper tail recursion
 
 
 
@@ -1383,7 +1150,7 @@ shown as @r{<tail expression>} below, occurs in a tail context.
 If one of the following expressions is in a tail context,
 then the subexpressions shown as <tail expression> are in a tail context.
 These were derived from rules in the grammar given in
-chapter @ref{Formal syntax and semantics} by replacing some occurrences of <expression>
+chapter @ref{r5rs Formal syntax and semantics} by replacing some occurrences of <expression>
 with <tail expression>.  Only those rules that contain tail contexts
 are shown here.
 
@@ -1487,14 +1254,15 @@ implementation-dependent.)
 
 @c @include{expr}
 
-@c \vfill\eject
-@node Expressions, Program structure, Basic concepts, top
-@chapter Expressions
+
+@c page
+@node r5rs Expressions
+@section Expressions
 
 @menu
-* Primitive expression types::
-* Derived expression types::
-* Macros::
+* r5rs Primitive expression types::
+* r5rs Derived expression types::
+* r5rs Macros::
 @end menu
 
 
@@ -1512,24 +1280,26 @@ Derived expression types are not semantically primitive, but can instead
 be defined as macros.
 With the exception of @samp{quasiquote}, whose macro definition is complex,
 the derived expressions are classified as library features.
-Suitable definitions are given in section @ref{Derived expression type}.
+Suitable definitions are given in section @ref{r5rs Derived expression type}.
 
-@node Primitive expression types, Derived expression types, Expressions, Expressions
-@section Primitive expression types
+@c page
+@node r5rs Primitive expression types
+@subsection Primitive expression types
 
 @menu
-* Variable references::
-* Literal expressions::
-* Procedure calls::
-* Procedures::
-* Conditionals::
-* Assignments::
+* r5rs Variable references::
+* r5rs Literal expressions::
+* r5rs Procedure calls::
+* r5rs Procedures::
+* r5rs Conditionals::
+* r5rs Assignments::
 @end menu
 
 
 
-@node Variable references, Literal expressions, Primitive expression types, Primitive expression types
-@subsection Variable references
+@c page
+@node r5rs Variable references
+@subsubsection Variable references
 
 
 
@@ -1538,7 +1308,7 @@ Suitable definitions are given in section @ref{Derived expression type}.
 
 An expression consisting of a variable
 @cindex @w{variable}
-(section @pxref{Variables; syntactic keywords; and regions}) is a variable reference.  The value of
+(section @pxref{r5rs Variables; syntactic keywords; and regions}) is a variable reference.  The value of
 the variable reference is the value stored in the location to which the
 variable is bound.  It is an error to reference an
 unbound variable.
@@ -1553,8 +1323,9 @@ x                                      ==>  28
 
 @end deffn
 
-@node Literal expressions, Procedure calls, Variable references, Primitive expression types
-@subsection Literal expressions
+@c page
+@node r5rs Literal expressions
+@subsubsection Literal expressions
 
 
 
@@ -1571,7 +1342,7 @@ x                                      ==>  28
 @cindex @w{'}
 @r{<Datum>}
 may be any external representation of a Scheme object (see
-section @pxref{External representations}).  This notation is used to include literal
+section @pxref{r5rs External representations}).  This notation is used to include literal
 constants in Scheme code.
 
 
@@ -1615,15 +1386,16 @@ constants evaluate ``to themselves''; they need not be quoted.
 @end format
 
 
-As noted in section @ref{Storage model}, it is an error to alter a constant
+As noted in section @ref{r5rs Storage model}, it is an error to alter a constant
 (i.e. the value of a literal expression) using a mutation procedure like
 @samp{set-car!} or @samp{string-set!}.
 
 @end deffn
 
 
-@node Procedure calls, Procedures, Literal expressions, Primitive expression types
-@subsection Procedure calls
+@c page
+@node r5rs Procedure calls
+@subsubsection Procedure calls
 
 
 
@@ -1650,7 +1422,7 @@ A number of procedures are available as the values of variables in the
 initial environment; for example, the addition and multiplication
 procedures in the above examples are the values of the variables @samp{+}
 and @samp{*}.  New procedures are created by evaluating lambda expressions
-(see section @pxref{Procedures}).
+(see section @pxref{r5rs Procedures}).
 @ignore todo
 At Friedman's request, flushed mention of other ways.
 @end ignore
@@ -1659,7 +1431,7 @@ At Friedman's request, flushed mention of other ways.
 
 Procedure calls may return any number of values (see @code{values} in
 @vindex @w{values}
-section @pxref{Control features}).  With the exception of @samp{values}
+section @pxref{r5rs Control features}).  With the exception of @samp{values}
 the procedures available in the initial environment return one
 value or, for procedures such as @samp{apply}, pass on the values returned
 by a call to one of their arguments.
@@ -1712,8 +1484,9 @@ for leaving the order unspecified.
 @end deffn
 
 
-@node Procedures, Conditionals, Procedure calls, Primitive expression types
-@subsection Procedures
+@c page
+@node r5rs Procedures
+@subsubsection Procedures
 
 
 
@@ -1803,14 +1576,15 @@ Each procedure created as the result of evaluating a lambda expression is
 (conceptually) tagged
 with a storage location, in order to make @code{eqv?} and
 @vindex @w{eqv?}
-@code{eq?} work on procedures (see section @pxref{Equivalence predicates}).
+@code{eq?} work on procedures (see section @pxref{r5rs Equivalence predicates}).
 @vindex @w{eq?}
 
 @end deffn
 
 
-@node Conditionals, Assignments, Procedures, Primitive expression types
-@subsection Conditionals
+@c page
+@node r5rs Conditionals
+@subsubsection Conditionals
 
 
 
@@ -1826,7 +1600,7 @@ expressions.
 An @samp{if} expression is evaluated as follows: first,
 @r{<test>} is evaluated.  If it yields a true value (see
 @cindex @w{true}
-section @pxref{Booleans}), then @r{<consequent>} is evaluated and
+section @pxref{r5rs Booleans}), then @r{<consequent>} is evaluated and
 its value(s) is(are) returned.  Otherwise @r{<alternate>} is evaluated and its
 value(s) is(are) returned.  If @r{<test>} yields a false value and no
 @r{<alternate>} is specified, then the result of the expression is
@@ -1846,8 +1620,9 @@ unspecified.
 @end deffn
 
 
-@node Assignments,  , Conditionals, Primitive expression types
-@subsection Assignments
+@c page
+@node r5rs Assignments
+@subsubsection Assignments
 
 
 
@@ -1874,23 +1649,24 @@ unspecified.
 @end deffn
 
 
-@node Derived expression types, Macros, Primitive expression types, Expressions
-@section Derived expression types
+@c page
+@node r5rs Derived expression types
+@subsection Derived expression types
 
 @menu
-* Conditional::
-* Binding constructs::
-* Sequencing::
-* Iteration::
-* Delayed evaluation::
-* Quasiquotation::
+* r5rs Conditional::
+* r5rs Binding constructs::
+* r5rs Sequencing::
+* r5rs Iteration::
+* r5rs Delayed evaluation::
+* r5rs Quasiquotation::
 @end menu
 
 
 
 The constructs in this section are hygienic, as discussed in
-section @ref{Macros}.
-For reference purposes, section @ref{Derived expression type} gives macro definitions
+section @ref{r5rs Macros}.
+For reference purposes, section @ref{r5rs Derived expression type} gives macro definitions
 that will convert most of the constructs described in this section
 into the primitive constructs described in the previous section.
 
@@ -1899,8 +1675,9 @@ Mention that no definition of backquote is provided?
 @end ignore
 
 
-@node Conditional, Binding constructs, Derived expression types, Derived expression types
-@subsection Conditionals
+@c page
+@node r5rs Conditional
+@subsubsection Conditionals
 
 
 
@@ -1940,7 +1717,7 @@ A @samp{cond} expression is evaluated by evaluating the @r{<test>}
 expressions of successive @r{<clause>}s in order until one of them
 evaluates to a true value (see
 @cindex @w{true}
-section @pxref{Booleans}).  When a @r{<test>} evaluates to a true
+section @pxref{r5rs Booleans}).  When a @r{<test>} evaluates to a true
 value, then the remaining @r{<expression>}s in its @r{<clause>} are
 evaluated in order, and the result(s) of the last @r{<expression>} in the
 @r{<clause>} is(are) returned as the result(s) of the entire @samp{cond}
@@ -2005,7 +1782,7 @@ The last @r{<clause>} may be an ``else clause,'' which has the form
 A @samp{case} expression is evaluated as follows.  @r{<Key>} is
 evaluated and its result is compared against each @r{<datum>}.  If the
 result of evaluating @r{<key>} is equivalent (in the sense of
-@samp{eqv?}; see section @pxref{Equivalence predicates}) to a @r{<datum>}, then the
+@samp{eqv?}; see section @pxref{r5rs Equivalence predicates}) to a @r{<datum>}, then the
 expressions in the corresponding @r{<clause>} are evaluated from left
 to right and the result(s) of the last expression in the @r{<clause>} is(are)
 returned as the result(s) of the @samp{case} expression.  If the result of
@@ -2038,7 +1815,7 @@ otherwise the result of the @samp{case} expression is unspecified.
 
 The @r{<test>} expressions are evaluated from left to right, and the
 value of the first expression that evaluates to a false value (see
-section @pxref{Booleans}) is returned.  Any remaining expressions
+section @pxref{r5rs Booleans}) is returned.  Any remaining expressions
 are not evaluated.  If all the expressions evaluate to true values, the
 value of the last expression is returned.  If there are no expressions
 then @t{#t} is returned.
@@ -2061,7 +1838,7 @@ then @t{#t} is returned.
 
 The @r{<test>} expressions are evaluated from left to right, and the value of the
 first expression that evaluates to a true value (see
-section @pxref{Booleans}) is returned.  Any remaining expressions
+section @pxref{r5rs Booleans}) is returned.  Any remaining expressions
 are not evaluated.  If all expressions evaluate to false values, the
 value of the last expression is returned.  If there are no
 expressions then @t{#f} is returned.
@@ -2080,8 +1857,9 @@ expressions then @t{#f} is returned.
 @end deffn
 
 
-@node Binding constructs, Sequencing, Conditional, Derived expression types
-@subsection Binding constructs
+@c page
+@node r5rs Binding constructs
+@subsubsection Binding constructs
 
 
 The three binding constructs @samp{let}, @samp{let*}, and @samp{letrec}
@@ -2133,7 +1911,7 @@ region.
 @end format
 
 
-See also named @samp{let}, section @ref{Iteration}.
+See also named @samp{let}, section @ref{r5rs Iteration}.
 
 @end deffn
 
@@ -2230,8 +2008,9 @@ lambda expressions and the restriction is satisfied automatically.
 @end deffn
 
 
-@node Sequencing, Iteration, Binding constructs, Derived expression types
-@subsection Sequencing
+@c page
+@node r5rs Sequencing
+@subsubsection Sequencing
 
 
 
@@ -2259,8 +2038,9 @@ output.
 @end deffn
 
 
-@node Iteration, Delayed evaluation, Sequencing, Derived expression types
-@subsection Iteration
+@c page
+@node r5rs Iteration
+@subsubsection Iteration
 
 @c \unsection
 
@@ -2282,7 +2062,7 @@ the @r{<variable>}s are bound to fresh locations, the results of the
 @r{<variable>}s, and then the iteration phase begins.
 
 Each iteration begins by evaluating @r{<test>}; if the result is
-false (see section @pxref{Booleans}), then the @r{<command>}
+false (see section @pxref{r5rs Booleans}), then the @r{<command>}
 expressions are evaluated in order for effect, the @r{<step>}
 expressions are evaluated in some unspecified order, the
 @r{<variable>}s are bound to fresh locations, the results of the
@@ -2359,8 +2139,9 @@ invoking the procedure named by @r{<variable>}.
 @end deffn
 
 
-@node Delayed evaluation, Quasiquotation, Iteration, Derived expression types
-@subsection Delayed evaluation
+@c page
+@node r5rs Delayed evaluation
+@subsubsection Delayed evaluation
 
 
 
@@ -2388,14 +2169,15 @@ Bartley's white lie; OK?
 The effect of @r{<expression>} returning multiple values
 is unspecified.
 
-See the description of @samp{force} (section @pxref{Control features}) for a
+See the description of @samp{force} (section @pxref{r5rs Control features}) for a
 more complete description of @samp{delay}.
 
 @end deffn
 
 
-@node Quasiquotation,  , Delayed evaluation, Derived expression types
-@subsection Quasiquotation
+@c page
+@node r5rs Quasiquotation
+@subsubsection Quasiquotation
 
 
 
@@ -2492,12 +2274,13 @@ positions within a @r{<qq template>} otherwise than as described above.
 
 @end deffn
 
-@node Macros,  , Derived expression types, Expressions
-@section Macros
+@c page
+@node r5rs Macros
+@subsection Macros
 
 @menu
-* Binding constructs for syntactic keywords::
-* Pattern language::
+* r5rs Binding constructs for syntactic keywords::
+* r5rs Pattern language::
 @end menu
 
 
@@ -2570,7 +2353,7 @@ If a macro transformer inserts a binding for an identifier
 (variable or keyword), the identifier will in effect be renamed
 throughout its scope to avoid conflicts with other identifiers.
 Note that a @code{define} at top level may or may not introduce a binding;
-see section @ref{Definitions}.
+see section @ref{r5rs Definitions}.
 
 @item
 If a macro transformer inserts a free reference to an
@@ -2589,8 +2372,9 @@ bindings that may surround the use of the macro.
 @c  The fourth section describes some features that would make the
 @c  low-level macro facility easier to use directly.
 
-@node Binding constructs for syntactic keywords, Pattern language, Macros, Macros
-@subsection Binding constructs for syntactic keywords
+@c page
+@node r5rs Binding constructs for syntactic keywords
+@subsubsection Binding constructs for syntactic keywords
 
 
 
@@ -2598,7 +2382,7 @@ bindings that may surround the use of the macro.
 analogous to @samp{let} and @samp{letrec}, but they bind
 syntactic keywords to macro transformers instead of binding variables
 to locations that contain values.  Syntactic keywords may also be
-bound at top level; see section @ref{Syntax definitions}.
+bound at top level; see section @ref{r5rs Syntax definitions}.
 
 
 @deffn {syntax} let-syntax  @r{<bindings>} @r{<body>}
@@ -2688,8 +2472,9 @@ introduced by the @samp{letrec-syntax} expression.
 
 @end deffn
 
-@node Pattern language,  , Binding constructs for syntactic keywords, Macros
-@subsection Pattern language
+@c page
+@node r5rs Pattern language
+@subsubsection Pattern language
 
 
 
@@ -2873,7 +2658,7 @@ in effect renamed to prevent inadvertent captures of free identifiers.
 As an example, if @code{let} and @code{cond} are defined as in
 @vindex @w{cond}
 @vindex @w{let}
-section @ref{Derived expression type} then they are hygienic (as required) and
+section @ref{r5rs Derived expression type} then they are hygienic (as required) and
 the following is not an error.
 
 
@@ -2916,24 +2701,26 @@ which would result in an invalid procedure call.
 @page
 
 @c @include{prog}
-@node Program structure, Standard procedures, Expressions, top
-@chapter Program structure
+@c page
+@node r5rs Program structure
+@section Program structure
 
 @menu
-* Programs::
-* Definitions::
-* Syntax definitions::
+* r5rs Programs::
+* r5rs Definitions::
+* r5rs Syntax definitions::
 @end menu
 
 
 
-@node Programs, Definitions, Program structure, Program structure
-@section Programs
+@c page
+@node r5rs Programs
+@subsection Programs
 
 
 A Scheme program consists of a sequence of expressions, definitions,
 and syntax definitions.
-Expressions are described in chapter @ref{Expressions};
+Expressions are described in chapter @ref{r5rs Expressions};
 definitions and syntax definitions are the subject of the rest of the
 present chapter.
 
@@ -2963,12 +2750,13 @@ Cromarty, etc.: disclaimer about top level?
 @end ignore
 
 
-@node Definitions, Syntax definitions, Programs, Program structure
-@section Definitions
+@c page
+@node r5rs Definitions
+@subsection Definitions
 
 @menu
-* Top level definitions::
-* Internal definitions::
+* r5rs Top level definitions::
+* r5rs Internal definitions::
 @end menu
 
 
@@ -3021,8 +2809,9 @@ variable.  This form is equivalent to
 @end itemize
 
 
-@node Top level definitions, Internal definitions, Definitions, Definitions
-@subsection Top level definitions
+@c page
+@node r5rs Top level definitions
+@subsubsection Top level definitions
 
 
 At the top level of a program, a definition
@@ -3070,8 +2859,9 @@ Rozas: equal time for opposition semantics?
 
 
 
-@node Internal definitions,  , Top level definitions, Definitions
-@subsection Internal definitions
+@c page
+@node r5rs Internal definitions
+@subsubsection Internal definitions
 
 
 
@@ -3128,8 +2918,9 @@ is equivalent to the sequence of definitions
 that form the body of the @code{begin}.
 @vindex @w{begin}
 
-@node Syntax definitions,  , Definitions, Program structure
-@section Syntax definitions
+@c page
+@node r5rs Syntax definitions
+@subsection Syntax definitions
 
 
 Syntax definitions are valid only at the top level of a @r{<program>}.
@@ -3202,17 +2993,18 @@ that follow the group.  For example, the following are errors:
 
 @c  Initial environment
 
-@c \vfill\eject
-@node Standard procedures, Formal syntax and semantics, Program structure, top
-@chapter Standard procedures
+
+@c page
+@node r5rs Standard procedures
+@section Standard procedures
 
 @menu
-* Equivalence predicates::
-* Numbers::
-* Other data types::
-* Control features::
-* Eval::
-* Input and output::
+* r5rs Equivalence predicates::
+* r5rs Numbers::
+* r5rs Other data types::
+* r5rs Control features::
+* r5rs Eval::
+* r5rs Input and output::
 @end menu
 
 
@@ -3236,13 +3028,14 @@ can easily be written in terms of other built-in procedures are identified as
 ``library procedures''.
 
 A program may use a top-level definition to bind any variable.  It may
-subsequently alter any such binding by an assignment (see @pxref{Assignments}).
+subsequently alter any such binding by an assignment (see @pxref{r5rs Assignments}).
 These operations do not modify the behavior of Scheme's built-in
 procedures.  Altering any top-level binding that has not been introduced by a
 definition has an unspecified effect on the behavior of the built-in procedures.
 
-@node Equivalence predicates, Numbers, Standard procedures, Standard procedures
-@section Equivalence predicates
+@c page
+@node r5rs Equivalence predicates
+@subsection Equivalence predicates
 
 
 
@@ -3297,7 +3090,7 @@ The @samp{eqv?} procedure returns @t{#t} if:
 @quotation
 @emph{Note:}
 This assumes that neither @var{obj1} nor @var{obj2} is an ``uninterned
-symbol'' as alluded to in section @ref{Symbols}.  This report does
+symbol'' as alluded to in section @ref{r5rs Symbols}.  This report does
 not presume to specify the behavior of @samp{eqv?} on implementation-dependent
 extensions.
 @end quotation
@@ -3305,24 +3098,24 @@ extensions.
 
 @item
 @var{obj1} and @var{obj2} are both numbers, are numerically
-equal (see @samp{=}, section @pxref{Numbers}), and are either both
+equal (see @samp{=}, section @pxref{r5rs Numbers}), and are either both
 exact or both inexact.
 
 @item
 @var{obj1} and @var{obj2} are both characters and are the same
 character according to the @samp{char=?} procedure
-(section @pxref{Characters}).
+(section @pxref{r5rs Characters}).
 
 @item
 both @var{obj1} and @var{obj2} are the empty list.
 
 @item
 @var{obj1} and @var{obj2} are pairs, vectors, or strings that denote the
-same locations in the store (section @pxref{Storage model}).
+same locations in the store (section @pxref{r5rs Storage model}).
 
 @item
 @var{obj1} and @var{obj2} are procedures whose location tags are
-equal (section @pxref{Procedures}).
+equal (section @pxref{r5rs Procedures}).
 
 @end itemize
 
@@ -3337,7 +3130,7 @@ The @samp{eqv?} procedure returns @t{#f} if:
 
 @item
 @var{obj1} and @var{obj2} are of different types
-(section @pxref{Disjointness of types}).
+(section @pxref{r5rs Disjointness of types}).
 
 @item
 one of @var{obj1} and @var{obj2} is @t{#t} but the other is
@@ -3585,16 +3378,17 @@ circular data structures.
 @end deffn
 
 
-@node Numbers, Other data types, Equivalence predicates, Standard procedures
-@section Numbers
+@c page
+@node r5rs Numbers
+@subsection Numbers
 
 @menu
-* Numerical types::
-* Exactness::
-* Implementation restrictions::
-* Syntax of numerical constants::
-* Numerical operations::
-* Numerical input and output::
+* r5rs Numerical types::
+* r5rs Exactness::
+* r5rs Implementation restrictions::
+* r5rs Syntax of numerical constants::
+* r5rs Numerical operations::
+* r5rs Numerical input and output::
 @end menu
 
 
@@ -3633,8 +3427,9 @@ floating point are referred to by names such as @i{fixnum} and
 @c  numbers before the discussion of the Scheme numbers, hoping that this
 @c  would help to motivate the discussion of representation independence.
 
-@node Numerical types, Exactness, Numbers, Numbers
-@subsection Numerical types
+@c page
+@node r5rs Numerical types
+@subsubsection Numerical types
 
 
 
@@ -3703,8 +3498,9 @@ In order to catch uses of inexact numbers where exact numbers are
 required, Scheme explicitly distinguishes exact from inexact numbers.
 This distinction is orthogonal to the dimension of type.
 
-@node Exactness, Implementation restrictions, Numerical types, Numbers
-@subsection Exactness
+@c page
+@node r5rs Exactness
+@subsubsection Exactness
 
 
 @c %R4%% I tried to direct the following paragraph away from philosophizing
@@ -3742,7 +3538,7 @@ then it may either report the violation of an implementation restriction
 or it may silently coerce its
 result to an @r{inexact} value.
 @c %R4%%Such a coercion may cause an error later.
-See section @ref{Implementation restrictions}.
+See section @ref{r5rs Implementation restrictions}.
 
 With the exception of @code{inexact->exact}, the operations described in
 @vindex @w{inexact->exact}
@@ -3753,15 +3549,16 @@ arguments.  For example, multiplication of any number by an @r{exact} zero
 may produce an @r{exact} zero result, even if the other argument is
 @r{inexact}.
 
-@node Implementation restrictions, Syntax of numerical constants, Exactness, Numbers
-@subsection Implementation restrictions
+@c page
+@node r5rs Implementation restrictions
+@subsubsection Implementation restrictions
 
 
 
 @cindex @w{implementation restriction}
 
 Implementations of Scheme are not required to implement the whole
-tower of subtypes given in section @ref{Numerical types},
+tower of subtypes given in section @ref{r5rs Numerical types},
 but they must implement a coherent subset consistent with both the
 purposes of the implementation and the spirit of the Scheme language.
 For example, an implementation in which all numbers are @r{real}
@@ -3888,8 +3685,9 @@ violation of an implementation restriction or it may silently represent the
 constant by an @r{inexact} number.
 
 
-@node Syntax of numerical constants, Numerical operations, Implementation restrictions, Numbers
-@subsection Syntax of numerical constants
+@c page
+@node r5rs Syntax of numerical constants
+@subsubsection Syntax of numerical constants
 
 
 
@@ -3909,7 +3707,7 @@ constant by an @r{inexact} number.
 @c the user wants to see.
 
 The syntax of the written representations for numbers is described formally in
-section @ref{Lexical structure}.  Note that case is not significant in numerical
+section @ref{r5rs Lexical structure}.  Note that case is not significant in numerical
 constants.
 
 @c %R4%%  See section~\ref{numberformats} for many examples.
@@ -3974,11 +3772,12 @@ implementations may wish to allow this default to be set by the user.
 
 
 
-@node Numerical operations, Numerical input and output, Syntax of numerical constants, Numbers
-@subsection Numerical operations
+@c page
+@node r5rs Numerical operations
+@subsubsection Numerical operations
 
 
-The reader is referred to section @ref{Entry format} for a summary
+The reader is referred to section @ref{r5rs Entry format} for a summary
 of the naming conventions used to specify restrictions on the types of
 arguments to numerical routines.
 @c %R4%% The following sentence has already been said twice, and the
@@ -4600,14 +4399,15 @@ then a violation of an implementation restriction may be reported.
 
 These procedures implement the natural one-to-one correspondence between
 @r{exact} and @r{inexact} integers throughout an
-implementation-dependent range.  See section @ref{Implementation restrictions}.
+implementation-dependent range.  See section @ref{r5rs Implementation restrictions}.
 
 @end deffn
 
 @sp 3
 
-@node Numerical input and output,  , Numerical operations, Numbers
-@subsection Numerical input and output
+@c page
+@node r5rs Numerical input and output
+@subsubsection Numerical input and output
 
 
 
@@ -4713,24 +4513,26 @@ a decimal point is used.
 
 @end deffn
 
-@node Other data types, Control features, Numbers, Standard procedures
-@section Other data types
+@c page
+@node r5rs Other data types
+@subsection Other data types
 
 @menu
-* Booleans::
-* Pairs and lists::
-* Symbols::
-* Characters::
-* Strings::
-* Vectors::
+* r5rs Booleans::
+* r5rs Pairs and lists::
+* r5rs Symbols::
+* r5rs Characters::
+* r5rs Strings::
+* r5rs Vectors::
 @end menu
 
 
 This section describes operations on some of Scheme's non-numeric data types:
 booleans, pairs, lists, symbols, characters, strings and vectors.
 
-@node Booleans, Pairs and lists, Other data types, Other data types
-@subsection Booleans
+@c page
+@node r5rs Booleans
+@subsubsection Booleans
 
 
 
@@ -4838,8 +4640,9 @@ in programs.
 @end deffn
 
 
-@node Pairs and lists, Symbols, Booleans, Other data types
-@subsection Pairs and lists
+@c page
+@node r5rs Pairs and lists
+@subsubsection Pairs and lists
 
 
 
@@ -5002,9 +4805,9 @@ Can or need this be stated
 more carefully?
 @end ignore
  That is, according to Scheme's grammar, every
-<expression> is also a <datum> (see section @pxref{External representation}).
+<expression> is also a <datum> (see section @pxref{r5rs External representation}).
 Among other things, this permits the use of the @samp{read} procedure to
-parse Scheme programs.  See section @ref{External representations}.
+parse Scheme programs.  See section @ref{r5rs External representations}.
 
 
 
@@ -5418,8 +5221,9 @@ than just @t{#t} or @t{#f}.
 @end deffn
 
 
-@node Symbols, Characters, Pairs and lists, Other data types
-@subsection Symbols
+@c page
+@node r5rs Symbols
+@subsubsection Symbols
 
 
 
@@ -5433,8 +5237,8 @@ are useful for many other applications; for instance, they may be used
 the way enumerated values are used in Pascal.
 
 The rules for writing a symbol are exactly the same as the rules for
-writing an identifier; see sections @ref{Identifiers}
-and @ref{Lexical structure}.
+writing an identifier; see sections @ref{r5rs Identifiers}
+and @ref{r5rs Lexical structure}.
 
 It is guaranteed that any symbol that has been returned as part of
 a literal expression, or read using the @samp{read} procedure, and
@@ -5484,7 +5288,7 @@ Returns @t{#t} if @var{obj} is a symbol, otherwise returns @t{#f}.
 
 Returns the name of @var{symbol} as a string.  If the symbol was part of
 an object returned as the value of a literal expression
-(section @pxref{Literal expressions}) or by a call to the @samp{read} procedure,
+(section @pxref{r5rs Literal expressions}) or by a call to the @samp{read} procedure,
 and its name contains alphabetic characters, then the string returned
 will contain characters in the implementation's preferred standard
 case---some implementations will prefer upper case, others lower case.
@@ -5548,8 +5352,9 @@ lower case:
 @end deffn
 
 
-@node Characters, Strings, Symbols, Other data types
-@subsection Characters
+@c page
+@node r5rs Characters
+@subsubsection Characters
 
 
 
@@ -5565,7 +5370,6 @@ For example:
 
 
 
-@center @c begin-tabular
 @quotation
 @table @asis
 @item @t{#\a}
@@ -5580,7 +5384,6 @@ For example:
 ; the preferred way to write a space
 @item @t{#\newline}
 ; the newline character
-@item
 @end table
 @end quotation
 
@@ -5764,8 +5567,9 @@ result of @samp{char-downcase} is lower case.
 @end deffn
 
 
-@node Strings, Vectors, Characters, Other data types
-@subsection Strings
+@c page
+@node r5rs Strings
+@subsubsection Strings
 
 
 
@@ -5982,8 +5786,9 @@ unspecified value.
 @end deffn
 
 
-@node Vectors,  , Strings, Other data types
-@subsection Vectors
+@c page
+@node r5rs Vectors
+@subsubsection Vectors
 
 
 
@@ -6150,8 +5955,9 @@ The value returned by @samp{vector-fill!} is unspecified.
 @end deffn
 
 
-@node Control features, Eval, Other data types, Standard procedures
-@section Control features
+@c page
+@node r5rs Control features
+@subsection Control features
 
 
 
@@ -6277,7 +6083,7 @@ last, and the value returned by @samp{for-each} is unspecified.
 
 Forces the value of @var{promise} (see @code{delay},
 @vindex @w{delay}
-section @pxref{Delayed evaluation}).  If no value has been computed for
+section @pxref{r5rs Delayed evaluation}).  If no value has been computed for
 @cindex @w{promise}
 the promise, then a value is computed and returned.  The value of the
 promise is cached (or ``memoized'') so that if it is forced a second
@@ -6694,8 +6500,9 @@ extent of a call to @var{before} or @var{after} is undefined.
 
 @end deffn
 
-@node Eval, Input and output, Control features, Standard procedures
-@section Eval
+@c page
+@node r5rs Eval
+@subsection Eval
 
 
 
@@ -6766,19 +6573,21 @@ expressions dynamically typed by the user.
 
 @end deffn
 
-@node Input and output,  , Eval, Standard procedures
-@section Input and output
+@c page
+@node r5rs Input and output
+@subsection Input and output
 
 @menu
-* Ports::
-* Input::
-* Output::
-* System interface::
+* r5rs Ports::
+* r5rs Input::
+* r5rs Output::
+* r5rs System interface::
 @end menu
 
 
-@node Ports, Input, Input and output, Input and output
-@subsection Ports
+@c page
+@node r5rs Ports
+@subsubsection Ports
 
 
 
@@ -6949,8 +6758,9 @@ A port isn't necessarily still a port after it has been closed?
 @end deffn
 
 
-@node Input, Output, Ports, Input and output
-@subsection Input
+@c page
+@node r5rs Input
+@subsubsection Input
 
 
 
@@ -6970,8 +6780,8 @@ The input routines have some things in common, maybe explain here.
 
 @samp{Read} converts external representations of Scheme objects into the
 objects themselves.  That is, it is a parser for the nonterminal
-<datum> (see sections @pxref{External representation} and
-@pxref{Pairs and lists}).  @samp{Read} returns the next
+<datum> (see sections @pxref{r5rs External representation} and
+@pxref{r5rs Pairs and lists}).  @samp{Read} returns the next
 object parsable from the given input @var{port}, updating @var{port} to point to
 the first character past the end of the external representation of the object.
 
@@ -7067,8 +6877,9 @@ port that has no ready characters.
 @end deffn
 
 
-@node Output, System interface, Input, Input and output
-@subsection Output
+@c page
+@node r5rs Output
+@subsubsection Output
 
 
 
@@ -7143,8 +6954,9 @@ returned by @samp{current-output-port}.
 @end deffn
 
 
-@node System interface,  , Output, Input and output
-@subsection System interface
+@c page
+@node r5rs System interface
+@subsubsection System interface
 
 
 Questions of system interface generally fall outside of the domain of this
@@ -7203,13 +7015,14 @@ returned by these procedures are unspecified.
 @page
 
 @c @include{syn}
-@node Formal syntax and semantics, Notes, Standard procedures, top
-@chapter Formal syntax and semantics
+@c page
+@node r5rs Formal syntax and semantics
+@section Formal syntax and semantics
 
 @menu
-* Formal syntax::
-* Formal semantics::
-* Derived expression type::
+* r5rs Formal syntax::
+* r5rs Formal semantics::
+* r5rs Derived expression type::
 @end menu
 
 
@@ -7223,16 +7036,17 @@ Allow grammar to say that else clause needn't be last?
 
 
 
-@node Formal syntax, Formal semantics, Formal syntax and semantics, Formal syntax and semantics
-@section Formal syntax
+@c page
+@node r5rs Formal syntax
+@subsection Formal syntax
 
 @menu
-* Lexical structure::
-* External representation::
-* Expression::
-* Quasiquotations::
-* Transformers::
-* Programs and definitions::
+* r5rs Lexical structure::
+* r5rs External representation::
+* r5rs Expression::
+* r5rs Quasiquotations::
+* r5rs Transformers::
+* r5rs Programs and definitions::
 @end menu
 
 
@@ -7250,8 +7064,9 @@ concise:  <thing>* means zero or more occurrences of
 <thing>.
 
 
-@node Lexical structure, External representation, Formal syntax, Formal syntax
-@subsection Lexical structure
+@c page
+@node r5rs Lexical structure
+@subsubsection Lexical structure
 
 
 This section describes how individual tokens (identifiers,
@@ -7271,32 +7086,20 @@ The following five characters are reserved for future extensions to the
 language: @t{[ ] @{ @} |}
 
 
-@format
-@t{<token> --> <identifier> | <boolean> | <number>
-@cindex @w{identifier}
+@example
+<token> --> <identifier> | <boolean> | <number>
      | <character> | <string>
      | ( | ) | #( | @t{'} | @t{`} | , | ,@@ | @b{.}
 <delimiter> --> <whitespace> | ( | ) | " | ;
 <whitespace> --> <space or newline>
 <comment> --> ;  <@r{all subsequent characters up to a}
                  @r{line break>}
-@cindex @w{comment}
 <atmosphere> --> <whitespace> | <comment>
-<intertoken space> --> <atmosphere>*}
+<intertoken space> --> <atmosphere>*
+@end example
 
-@end format
-
-
-
-
-
-
-@c  This is a kludge, but \multicolumn doesn't work in tabbing environments.
-
-
-
-@format
-@t{<identifier> --> <initial> <subsequent>*
+@example
+<identifier> --> <initial> <subsequent>*
      | <peculiar identifier>
 <initial> --> <letter> | <special initial>
 <letter> --> a | b | c | ... | z
@@ -7309,8 +7112,6 @@ language: @t{[ ] @{ @} |}
 <special subsequent> --> + | - | .@: | @@
 <peculiar identifier> --> + | - | ...
 <syntactic keyword> --> <expression keyword>
-@cindex @w{syntactic keyword}
-@cindex @w{keyword}
      | else | => | define
      | unquote | unquote-splicing
 <expression keyword> --> quote | lambda | if
@@ -7319,7 +7120,6 @@ language: @t{[ ] @{ @} |}
      | quasiquote
 
 @w{@samp{<variable> @result{} <}}@r{any <identifier> that isn't}
-@cindex @w{variable}
        @w{         @r{also a <syntactic keyword>>}}
 
 <boolean> --> #t | #f
@@ -7329,9 +7129,8 @@ language: @t{[ ] @{ @} |}
 
 <string> --> " <string element>* "
 <string element> --> <any character other than " or \>
-     | \" | \\ }
-
-@end format
+     | \" | \\
+@end example
 
 
 
@@ -7381,45 +7180,29 @@ Mark Meyer and David Bartley want to fix this.  (What? -- Will)
 
 @end format
 
-
-
-
 @format
 @t{<suffix> --> <empty>
     | <exponent marker> <sign> <digit 10>+
 <exponent marker> --> e | s | f | d | l
 <sign> --> <empty>  | + |  -
 <exactness> --> <empty> | #i | #e
-@vindex #e
-@vindex #i
 <radix 2> --> #b
-@vindex #b
 <radix 8> --> #o
-@vindex #o
 <radix 10> --> <empty> | #d
 <radix 16> --> #x
-@vindex #x
 <digit 2> --> 0 | 1
 <digit 8> --> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 <digit 10> --> <digit>
 <digit 16> --> <digit 10> | a | b | c | d | e | f }
-
 @end format
 
-
-
-@ignore todo
-Mark Meyer of TI sez, shouldn't we allow @t{1e3/2}?
-@end ignore
-
-
-
-@node External representation, Expression, Lexical structure, Formal syntax
-@subsection External representations
+@c page
+@node r5rs External representation
+@subsubsection External representations
 
 
 
-<Datum> is what the @code{read} procedure (section @pxref{Input})
+<Datum> is what the @code{read} procedure (section @pxref{r5rs Input})
 @vindex @w{read}
 successfully parses.  Note that any string that parses as an
 <ex@-pres@-sion> will also parse as a <datum>.
@@ -7442,8 +7225,9 @@ successfully parses.  Note that any string that parses as an
 
 
 
-@node Expression, Quasiquotations, External representation, Formal syntax
-@subsection Expressions
+@c page
+@node r5rs Expression
+@subsubsection Expressions
 
 
 
@@ -7527,8 +7311,9 @@ successfully parses.  Note that any string that parses as an
 
 
 
-@node Quasiquotations, Transformers, Expression, Formal syntax
-@subsection Quasiquotations
+@c page
+@node r5rs Quasiquotations
+@subsubsection Quasiquotations
 
 
 The following grammar for quasiquote expressions is not context-free.
@@ -7567,8 +7352,9 @@ un@-quo@-ta@-tion D>.  The interpretation as an
 <un@-quo@-ta@-tion> or <splicing
 un@-quo@-ta@-tion D> takes precedence.
 
-@node Transformers, Programs and definitions, Quasiquotations, Formal syntax
-@subsection Transformers
+@c page
+@node r5rs Transformers
+@subsubsection Transformers
 
 
 
@@ -7603,8 +7389,9 @@ un@-quo@-ta@-tion D> takes precedence.
 
 
 
-@node Programs and definitions,  , Transformers, Formal syntax
-@subsection Programs and definitions
+@c page
+@node r5rs Programs and definitions
+@subsubsection Programs and definitions
 
 
 
@@ -7627,8 +7414,9 @@ un@-quo@-ta@-tion D> takes precedence.
 
 
 
-@node Formal semantics, Derived expression type, Formal syntax, Formal syntax and semantics
-@section Formal semantics
+@c page
+@node r5rs Formal semantics
+@subsection Formal semantics
 
 
 This section provides a formal denotational semantics for the primitive
@@ -7643,14 +7431,15 @@ the original document from which this was derived.
 
 
 @c @include{derive}
-@node Derived expression type,  , Formal semantics, Formal syntax and semantics
-@section Derived expression types
+@c page
+@node r5rs Derived expression type
+@subsection Derived expression types
 
 
 
 This section gives macro definitions for the derived expression types in
 terms of the primitive expression types (literal, variable, call, @samp{lambda},
-@samp{if}, @samp{set!}).  See section @ref{Control features} for a possible
+@samp{if}, @samp{set!}).  See section @ref{r5rs Control features} for a possible
 definition of @samp{delay}.
 
 
@@ -7893,43 +7682,29 @@ value.
 @page
 
 @c @include{notes}
-@node Notes, Additional material, Formal syntax and semantics, top
-@unnumbered Notes
+@c page
+@node r5rs Notes
+@section Notes
 
 @menu
-* Language changes::
+* r5rs Language changes::
 @end menu
 
+@c page
+@node r5rs Language changes
+@subsection Language changes
 
 
-@ignore todo
-Perhaps this section should be made to disappear.
-Can these remarks be moved somewhere else?
-@end ignore
-
-
-@node Language changes,  , Notes, Notes
-@unnumberedsec Language changes
-
-
-
-This section enumerates the changes that have been made to Scheme since
-the ``Revised^4 report'' [R4RS] was published.
-
-
+This section enumerates the changes that have been made to Scheme since the ``Revised^4 report''
+[R4RS] was published.
 
 @itemize @bullet
-
-
 @item
 The report is now a superset of the IEEE standard for Scheme
 [IEEEScheme]: implementations that conform to the report will
 also conform to the standard.  This required the following changes:
 
-
 @itemize @bullet
-
-
 @item
 The empty list is now required to count as true.
 
@@ -7976,102 +7751,25 @@ for possible future extensions.
 
 @end itemize
 
-
-@c %R4%%
-@c \subsection*{Keywords as variable names}
-
-@c Some implementations allow arbitrary syntactic
-@c keywords \index{keyword}\index{syntactic keyword}to be used as variable
-@c names, instead of reserving them, as this report would have
-@c it.\index{variable} But this creates ambiguities in the interpretation
-@c of expressions: for example, in the following, it's not clear whether
-@c the expression {\tt (if 1 2 3)} should be treated as a procedure call or
-@c as a conditional.
-
-@c \begin{scheme}
-@c (define if list)
-@c (if 1 2 3)    \ev  2 {\em{}or} (1 2 3)%
-@c \end{scheme}
-
-@c These ambiguities are usually resolved in some consistent way within any
-@c given implementation, but no particular treatment stands out as being
-@c clearly superior to any other, so these situations were excluded for the
-@c purposes of this report.
-
-@c %R4%%
-@c \subsection*{Macros}
-
-@c Scheme does not have any standard facility for defining new kinds of
-@c expressions.\index{macros}
-
-@c \vest The ability to alter the syntax of the language creates
-@c numerous problems.  All current implementations of Scheme have macro
-@c facilities that solve those problems to one degree or another, but the
-@c solutions are quite different and it isn't clear at this time which
-@c solution is best, or indeed whether any of the solutions are truly
-@c adequate.  Rather than standardize, we are encouraging implementations
-@c to continue to experiment with different solutions.
-
-@c \vest The main problems with traditional macros are: They must be
-@c defined to the system before any code using them is loaded; this is a
-@c common source of obscure bugs.  They are usually global; macros can be
-@c made to follow lexical scope rules \todo{flushed: ``as in Common
-@c Lisp's {\tt macrolet}''; OK?}, but many people find the resulting scope rules
-@c confusing.  Unless they are written very carefully, macros are
-@c vulnerable to inadvertent capture of free variables; to get around this,
-@c for example, macros may have to generate code in which procedure values
-@c appear as quoted constants.  There is a similar problem with syntactic
-@c keywords if the keywords of special forms are not reserved.  If keywords
-@c are reserved, then either macros introduce new reserved words,
-@c invalidating old code, or else special forms defined by the programmer
-@c do not have the same status as special forms defined by the system.
-
-@c \todo{Refer to Pitman's special forms paper.}
-@c \todo{Pitman sez: Discuss importance of having a small number of special forms
-@c so that programs can inspect each other.}
-
-@ignore todo
-Move cwcc history back here? --- Andy Cromarty is concerned about
-confusion over who the audience is.
-@end ignore
-
-
-@ignore todo
-Cromarty:
-23. NOTES, p.35ff.: This material should stay somehow.  We need to
-    make it clear that R^3 Scheme is not being touted as Yet Another
-    Ultimate Solution To The Programming Language Problem, but rather
-    as a snapshot of a *process* of good design, for which not all
-    answers have yet been found.  We also ought to use the opportunity
-    for publicity afforded us by SIGPLAN to advertise some of the thorny
-    unsolved problems that need further research, and encourage
-    language designers to work on them.
-@end ignore
-
-
-@c @include{repository}
-@node Additional material, Example, Notes, top
-@unnumbered Additional material
+@c page
+@node r5rs Additional material
+@section Additional material
 
 
 The Internet Scheme Repository at
 
-@center
 @center @url{http://www.cs.indiana.edu/scheme-repository/}
-@center
 
-contains an extensive Scheme bibliography, as well as papers,
-programs, implementations, and other material related to Scheme.
+contains an extensive Scheme bibliography, as well as papers, programs, implementations, and other
+material related to Scheme.
 
 @page
 
 @c @include{example}
 
-@node Example, Bibliography, Additional material, top
-@unnumbered Example
-
-@c  -*- Mode: Lisp; Package: SCHEME; Syntax: Common-lisp -*-
-
+@c page
+@node r5rs Example
+@section Example
 
 @samp{Integrate-system} integrates the system
 
@@ -8290,8 +7988,9 @@ Show some output?
 @c  The bibliography now contains only items referenced within the report.
 @c   -- Richard, 1996.
 
-@node Bibliography, Index, Example, top
-@unnumbered Bibliography
+@c page
+@node r5rs Bibliography
+@section Bibliography
 
 
 @itemize @bullet
@@ -8498,39 +8197,6 @@ MIT Press, Cambridge, 1977.
 Texas Instruments, Inc.
 TI Scheme Language Reference Manual.
 Preliminary version 1.0, November 1985.
-
 @end itemize
 
-
-
-
-@page
-
-
-@c  Adjustment to avoid having the last index entry on a page by itself.
-@c \addtolength{\baselineskip}{-0.1pt}
-
-@node Index,  , Bibliography, top
-@unnumbered Alphabetic index of definitions of concepts, keywords, and procedures
-
-
-
-The principal entry for each term, procedure, or keyword is listed
-first, separated from the other entries by a semicolon.
-
-@sp 6
-
-@unnumberedsec Concepts
-@printindex cp
-@page
-@unnumberedsec Procedures
-@printindex fn
-
-@ifinfo
-@unnumberedsec References
-@printindex pg
-@end ifinfo
-
-
-@contents
-@bye
+@c end of file

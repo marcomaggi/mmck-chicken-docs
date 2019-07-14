@@ -160,8 +160,6 @@ development ecosystem.  @chicken{} is a Scheme--to--C compiler supporting the la
 defined in the ``Revised^5 Report on Scheme''.
 
 @c page
-@node r5rs
-@chapter The Revised(5) Report on Scheme
 
 @include r5rs.texi
 
