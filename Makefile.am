@@ -16,6 +16,7 @@ info_TEXINFOS	= \
 	src/chicken-internals.texi
 
 src_chicken_core_TEXINFOS = \
+	src/r5rs.texi			\
 	src/macros.texi
 
 src_chicken_internals_TEXINFOS = \

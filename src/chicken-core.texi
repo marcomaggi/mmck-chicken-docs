@@ -129,6 +129,7 @@ Copyright @copyright{} @value{COPYRIGHT_YEARS} by @value{AUTHOR} @value{AUTHOR_E
 
 @menu
 * overview::                    Overview of the package.
+* r5rs::                        The Revised(5) Report on Scheme.
 * blob::                        Module @library{chicken blob}.
 * condition::                   Module @library{chicken condition}.
 * continuation::                Module @library{chicken continuation}.
@@ -157,6 +158,12 @@ This document describes the core Application Programming Interface of @chicken{}
 @value{PACKAGE}, a collection of unofficial documentation about the @chicken{} compiler and its
 development ecosystem.  @chicken{} is a Scheme--to--C compiler supporting the language features as
 defined in the ``Revised^5 Report on Scheme''.
+
+@c page
+@node r5rs
+@chapter The Revised(5) Report on Scheme
+
+@include r5rs.texi
 
 @c page
 @node blob
