@@ -1,22 +1,3 @@
-@c This copy of r5rs.texi differs from Aubrey Jaffer's master copy
-@c by a set of changes to allow the building of r5rs.dvi from r5rs.texi.
-@c Aubrey Jaffer's view - which I agree with - is that, given that
-@c people have the option of building r5rs.dvi from the original
-@c LaTeX distribution for R5RS, it is not worth fixing his master
-@c copy of r5rs.texi and the tool which autogenerates it.  On the
-@c other hand, it is a marginal convenience for people to be able to
-@c build hardcopy from r5rs.texi, even if the results are less good
-@c than with the original LaTeX.  Hence the following fixes.
-@c (lines 714, 725, 728, 1614, 2258): Remove invalid parentheses from
-@c @deffn statements.
-@c (line 2316): Change @deffnx to @deffn, and insert `@end deffn' to
-@c terminate preceding @deffn.
-@c (line 7320): Insert `@c ' at beginning of lines that are intended
-@c to be @ignore'd.
-@c
-@c NJ 2001/1/26
-
-@c page
 @node r5rs
 @chapter Revised(5) Report on the Algorithmic Language Scheme
 
@@ -27,13 +8,12 @@ R@sc{ichard} K@sc{elsey}, W@sc{illiam} C@sc{linger, and} J@sc{onathan} R@sc{ees}
 @multitable @columnfractions 0.25 0.25 0.25 0.25
 @item H. A@sc{belson}     @tab R. K. D@sc{ybvig}   @tab C. T. H@sc{aynes}   @tab G. J. R@sc{ozas}
 @item N. I. A@sc{dams IV} @tab D. P. F@sc{riedman} @tab E. K@sc{ohlbecker}  @tab G. L. S@sc{teele} J@sc{r}.
-@item D. H. B@sc{artley}  @tab R. H@sc{alstead}    @tab D. O@sc{xley}      @tab G. J. S@sc{ussman}
-@item G. B@sc{rooks}            @tab C. H@sc{anson}             @tab K. M. P@sc{itman}   @tab M. W@sc{and}
-@item
+@item D. H. B@sc{artley}  @tab R. H@sc{alstead}    @tab D. O@sc{xley}       @tab G. J. S@sc{ussman}
+@item G. B@sc{rooks}      @tab C. H@sc{anson}      @tab K. M. P@sc{itman}   @tab M. W@sc{and}
 @end multitable
 @end quotation
 
-@i{Dedicated to the Memory of Robert Hieb}
+@i{Dedicated to the Memory of Robert Hieb.}
 
 @menu
 * r5rs summary::
