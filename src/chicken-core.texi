@@ -278,25 +278,42 @@ Set or return the current exception handler, a procedure of one argument, the ex
 
 
 @defun with-exception-handler @var{handler} @var{thunk}
-Return the result(s) of invoking @var{thunk}.  The @var{handler} procedure is installed as the
-current exception handler in the dynamic context of invoking @var{thunk}.
+Install the procedure @var{handler} as current exception handler in the dynamic environment, then
+invoke @var{thunk}.  When @var{thunk} returns successfully: return the values returned by
+@var{thunk}.
 
-Example:
+@strong{NOTE} When using @chicken{}'s default exception handler: the @var{handler} must @strong{not}
+return locally: instead it must escape to a different continuation.  A normal return will cause an
+exception to be raised in the same dynamic environment, with the same handler, so entering an
+infinite loop.
+
+Usage examples:
 
 @lisp
 (call-with-current-continuation
-   (lambda (k)
-     (with-exception-handler
-         (lambda (x)
-           (k '()))
-       (lambda ()
-         (car '())))))
-@result{} ()
-@end lisp
+    (lambda (escape)
+      (with-exception-handler
+          (lambda (E)
+            (escape 456))
+        (lambda ()
+          123))))
+@result{} 123
 
-Note that the handler procedure must somehow return non-locally out of the dynamic extent of the
-@func{with-exception-handler} form, because returning normally will signal yet another exception and
-thus result in non-termination.
+(call-with-current-continuation
+    (lambda (escape)
+      (with-exception-handler
+          (lambda (E)
+            (escape (list (condition-who E)
+                          (condition-message E)
+                          (condition-irritants E))))
+        (lambda ()
+          (signal
+            (make-property-condition 'demo
+                                     'location 'me
+                                     'message "the message"
+                                     'irritants '(1 2 3)))))))
+@result{} (me "the message" (1 2 3))
+@end lisp
 @end defun
 
 
