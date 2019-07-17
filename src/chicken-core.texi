@@ -65,11 +65,13 @@
 @copying
 This document describes the core Application Programming Interface of @chicken{} version
 @value{CHICKEN_VERSION}, it was last updated @value{UPDATED}; this document is part of
-@value{PACKAGE}, a collection of unofficial documentation about the @chicken{} compiler and its
-development ecosystem.  @chicken{} is a Scheme--to--C compiler supporting the language features as
-defined in the ``Revised^5 Report on Scheme''.
+@value{PACKAGE}, a collection of @strong{unofficial} documentation about the @chicken{} compiler and
+its development ecosystem.  @chicken{} is a Scheme--to--C compiler supporting the language features
+as defined in the ``Revised^5 Report on Scheme''.
 
-Most of this document is a reorganisation of the official @chicken{} documentation.
+Most of this document is a reorganisation and editing of the official @chicken{} documentation.
+This document includes the original @rnrs{5} document translated into @gnu{} Texinfo format
+(retrieved from the source distribution of @gnu{} Guile).
 
 The latest release can be downloaded from:
 
@@ -87,6 +89,40 @@ and as backup at:
 
 @noindent
 Copyright @copyright{} @value{COPYRIGHT_YEARS} by @value{AUTHOR} @value{AUTHOR_EMAIL}
+
+@chicken{} and its original documentation falls under the following main license:
+
+@noindent
+Copyright @copyright{} 2007-2019, The CHICKEN Team@*
+Copyright @copyright{} 2000-2007, Felix L. Winkelmann@*
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted
+provided that the following conditions are met:
+
+@enumerate
+@item
+Redistributions of source code must retain the above copyright notice, this list of conditions and
+the following disclaimer.
+
+@item
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions
+and the following disclaimer in the documentation and/or other materials provided with the
+distribution.
+
+@item
+The name of the authors may not be used to endorse or promote products derived from this software
+without specific prior written permission.
+@end enumerate
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHORS ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
 @end copying
 
 @c page
@@ -155,9 +191,13 @@ Indexes
 
 This document describes the core Application Programming Interface of @chicken{} version
 @value{CHICKEN_VERSION}, it was last updated @value{UPDATED}; this document is part of
-@value{PACKAGE}, a collection of unofficial documentation about the @chicken{} compiler and its
-development ecosystem.  @chicken{} is a Scheme--to--C compiler supporting the language features as
-defined in the ``Revised^5 Report on Scheme''.
+@value{PACKAGE}, a collection of @strong{unofficial} documentation about the @chicken{} compiler and
+its development ecosystem.  @chicken{} is a Scheme--to--C compiler supporting the language features
+as defined in the ``Revised^5 Report on Scheme''.
+
+Most of this document is a reorganisation and editing of the official @chicken{} documentation.
+This document includes the original @rnrs{5} document translated into @gnu{} Texinfo format
+(retrieved from the source distribution of @gnu{} Guile).
 
 @c page
 
@@ -564,32 +604,97 @@ raises one of these signals once again, the process will abort with an error mes
 @subsection Additional @api{}
 
 
-@deffn Syntax condition-case @qvar{expression} @qvar{clause} @dots{}
-Evaluate @qvar{expression} and handle any exceptions that are covered by @qvar{clause}, where
-@qvar{clause} should be of the following form:
+@deffn Syntax condition-case @qvar{expr} @qvar{clause} @dots{}
+Build an exception handler using the given clauses and install it; then evaluate the expression
+@qvar{expr} in the resulting dynamic environment.
+
+@itemize
+@item
+When @qvar{expr} returns locally: return the values returned by @qvar{expr}.
+
+@item
+When @qvar{expr} raises an exception: the installed exception handler is invoked: its argument is
+the raised object; it will select the clause with matching condition kind and evaluate its body
+forms; the return value of @syntax{condition-case} is the return value of the body forms.
+@end itemize
+
+Each @qvar{clause} must have one of the formats:
 
 @example
-@qvar{clause} = ([@qvar{variable}] (@qvar{kind} ...) @qvar{body} ...)
+(@qvar{kindlist} @qvaro{body} @qvar{body} @dots{})
+(@qvar{var} @qvar{kindlist} @qvaro{body} @qvar{body} @dots{})
 @end example
 
-If provided, @qvar{variable} will be bound to the signalled exception object.  The @qvar{body} forms
-are executed when the exception is a property or composite condition with the kinds given
-@qvar{kind} (unevaluated).  If no clause applies, the exception is re--signalled in the same dynamic
-context as the @syntax{condition-case} form.
+@noindent
+and the element @qvar{kindlist} must have the format:
+
+@example
+(@qvaro{kind} @qvar{kind} @dots{})
+@end example
+
+@noindent
+only the system exceptions are allowed to use a list of symbols as condition kind, so for all the
+custom exceptional conditions the available formats are just:
+
+@example
+()
+(@qvar{kind})
+@end example
+
+@noindent
+an empty list of condition kinds will match any condition kind; we can use this rule to implement an
+``else'' clause.
+
+When present: @qvar{var} is a local variable bound to the raised object; we can use it in the
+@qvar{body} forms.
+
+Some usage examples:
 
 @lisp
-(define (check thunk)
-  (condition-case (thunk)
-    ((exn file) (print "file error"))
-    ((exn)      (print "other error"))
-    (var ()     (print "something else"))))
+(condition-case
+    (raise (make-error))
+  (()   'here))
+@result{} here
 
-(check (lambda () (open-input-file "")))   @result{} "file error"
-(check (lambda () some-unbound-variable))  @result{} "othererror"
-(check (lambda () (signal 99)))            @result{} "something else"
+(condition-case
+    (raise (make-error))
+  ((&warning)   'warning)
+  ((&error)     'error)
+  (()           'else))
+@result{} error
 
-(condition-case some-unbound-variable
-  ((exn file) (print "ignored")) )      @error{} signals error
+(condition-case
+    (raise (make-who-condition 'me))
+  ((&warning)   'warning)
+  ((&error)     'error)
+  (()           'else))
+@result{} else
+
+(condition-case
+    (raise (make-error))
+  (var ()
+    (list 'here (condition-kinds var))))
+@result{}(here (&error &serious &condition))
+
+(condition-case
+    (raise (make-error))
+  ((&warning)
+   'warning)
+  (var (&error)
+    (list 'error (condition-kinds var)))
+  (()
+   'else))
+@result{} (error (&error &serious &condition))
+
+(condition-case
+    (raise (make-warning))
+  ((&syntax)
+   'syntax)
+  ((&error)
+   'error)
+  (var ()
+    (list 'else (condition-kinds var))))
+@result{} (else (&warning &condition))
 @end lisp
 @end deffn
 

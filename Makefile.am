@@ -57,36 +57,23 @@ install-html-local:
 # understand how to use this interface for "make check".
 #
 
-EXTRA_DIST		+= \
-	tests/test-version.scm				\
-	tests/test-chicken-internals-slots.scm		\
-	tests/test-chicken-internals-structs.scm	\
-	tests/test-chicken-internals-checks.scm		\
-	tests/test-chicken-internals-procs.scm
+# The list of object files.  We will store it in CLEANFILES.
+#
+MMCK_CHECK_OBJECTS	=
 
-MMCK_CHECK_OBJECTS	= \
-	tests/test-version.$(OBJEXT)			\
-	tests/test-chicken-internals-slots.$(OBJEXT)	\
-	tests/test-chicken-internals-structs.$(OBJEXT)	\
-	tests/test-chicken-internals-checks.$(OBJEXT)	\
-	tests/test-chicken-internals-procs.$(OBJEXT)
+# The list of test programs.  We will set TESTS to it.
+#
+MMCK_CHECK_PROGS	=
 
-MMCK_CHECK_PROGS	= \
-	tests/test-version.exe				\
-	tests/test-chicken-internals-slots.exe		\
-	tests/test-chicken-internals-structs.exe	\
-	tests/test-chicken-internals-procs.exe		\
-	tests/test-chicken-internals-checks.exe
-
-CLEANFILES	+= $(MMCK_CHECK_PROGS) $(MMCK_CHECK_OBJECTS)
-
-if MMCK_TESTING_ENABLED
-TESTS		= $(MMCK_CHECK_PROGS)
-endif
-
-#MMCK_CHECK_DEPS	+=
+# Dependencies common to all the test programs.
+#
+MMCK_CHECK_DEPS		+= $(MMCK_ALL_RUNTIME_SHARED_LIBS) $(MMCK_ALL_IMPORT_LIBS)
 
 ## --------------------------------------------------------------------
+
+EXTRA_DIST		+= tests/test-version.scm
+MMCK_CHECK_OBJECTS	+= tests/test-version.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-version.exe
 
 tests/test-version.$(OBJEXT): tests/test-version.scm $(MMCK_CHECK_DEPS)
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
@@ -94,7 +81,12 @@ tests/test-version.$(OBJEXT): tests/test-version.scm $(MMCK_CHECK_DEPS)
 tests/test-version.exe: tests/test-version.$(OBJEXT)
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
-## --------------------------------------------------------------------
+
+#### tests associated to the document "chicken-internals"
+
+EXTRA_DIST		+= tests/test-chicken-internals-slots.scm
+MMCK_CHECK_OBJECTS	+= tests/test-chicken-internals-slots.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-chicken-internals-slots.exe
 
 tests/test-chicken-internals-slots.$(OBJEXT): tests/test-chicken-internals-slots.scm $(MMCK_CHECK_DEPS)
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
@@ -104,6 +96,10 @@ tests/test-chicken-internals-slots.exe: tests/test-chicken-internals-slots.$(OBJ
 
 ## --------------------------------------------------------------------
 
+EXTRA_DIST		+= tests/test-chicken-internals-structs.scm
+MMCK_CHECK_OBJECTS	+= tests/test-chicken-internals-structs.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-chicken-internals-structs.exe
+
 tests/test-chicken-internals-structs.$(OBJEXT): tests/test-chicken-internals-structs.scm $(MMCK_CHECK_DEPS)
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
@@ -111,6 +107,10 @@ tests/test-chicken-internals-structs.exe: tests/test-chicken-internals-structs.$
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 ## --------------------------------------------------------------------
+
+EXTRA_DIST		+= tests/test-chicken-internals-checks.scm
+MMCK_CHECK_OBJECTS	+= tests/test-chicken-internals-checks.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-chicken-internals-checks.exe
 
 tests/test-chicken-internals-checks.$(OBJEXT): tests/test-chicken-internals-checks.scm $(MMCK_CHECK_DEPS)
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
@@ -120,10 +120,36 @@ tests/test-chicken-internals-checks.exe: tests/test-chicken-internals-checks.$(O
 
 ## --------------------------------------------------------------------
 
+EXTRA_DIST		+= tests/test-chicken-internals-procs.scm
+MMCK_CHECK_OBJECTS	+= tests/test-chicken-internals-procs.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-chicken-internals-procs.exe
+
 tests/test-chicken-internals-procs.$(OBJEXT): tests/test-chicken-internals-procs.scm $(MMCK_CHECK_DEPS)
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
 tests/test-chicken-internals-procs.exe: tests/test-chicken-internals-procs.$(OBJEXT)
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
+
+
+#### tests associated to the document "chicken-internals"
+
+EXTRA_DIST		+= tests/test-chicken-core-condition.scm
+MMCK_CHECK_OBJECTS	+= tests/test-chicken-core-condition.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-chicken-core-condition.exe
+
+tests/test-chicken-core-condition.$(OBJEXT): tests/test-chicken-core-condition.scm $(MMCK_CHECK_DEPS)
+	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+
+tests/test-chicken-core-condition.exe: tests/test-chicken-core-condition.$(OBJEXT)
+	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
+
+
+#### wrapping up tests
+
+CLEANFILES	+= $(MMCK_CHECK_PROGS) $(MMCK_CHECK_OBJECTS)
+
+if MMCK_TESTING_ENABLED
+TESTS		= $(MMCK_CHECK_PROGS)
+endif
 
 ### end of file
