@@ -1344,8 +1344,7 @@ Expand into a @syntax{lambda} that invokes the body following the first matching
 (plus 1 2 3)    @result{} 6
 @end lisp
 
-For more information see the documentation for @ansrfi{16}
-(http://srfi.schemers.org/srfi-16/srfi-16.html).
+For more information see the documentation for @ansrfi{16}; @ref{srfi case-lambda}.
 
 This special form is also compatible with the definition from the @rnrs{7} @library{scheme
 case-lambda} library.
@@ -2834,7 +2833,7 @@ POSSIBILITY OF SUCH DAMAGE.
 @c * srfi let-values::             @ansrfi{11} syntax for receiving
 @c                                 multiple values.
 @c * srfi strings::                @ansrfi{13} string library.
-@c * srfi case-lambda::            @ansrfi{16} syntax for procedures of
+* srfi case-lambda::            @ansrfi{16} syntax for procedures of
 @c                                 variable arity.
 @c * srfi time::                   @ansrfi{19} time data types and procedures.
 * srfi error-reporting::        @ansrfi{23} error reporting mechanism.
@@ -2856,6 +2855,7 @@ POSSIBILITY OF SUCH DAMAGE.
 @c * srfi environment-variables::  @ansrfi{98} environment variables.
 @end menu
 
+@include srfi-16-case-lambda.texi
 @include srfi-23-error-reporting.texi
 @include srfi-45-lazy-evaluation.texi
 
