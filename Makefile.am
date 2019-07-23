@@ -8,6 +8,8 @@ include meta/automake/mmck-rules.make
 EXTRA_DIST		+= src/mmck-chicken-docs.style.css
 CLEANFILES		+= src/mmck-chicken-docs.css
 
+AM_MAKEINFOFLAGS	+= -I$(srcdir)
+
 AM_MAKEINFOHTMLFLAGS	+= --css-ref=mmck-chicken-docs.css \
 	-c PRE_BODY_CLOSE=''
 
@@ -16,8 +18,9 @@ info_TEXINFOS	= \
 	src/chicken-internals.texi
 
 src_chicken_core_TEXINFOS = \
-	src/r5rs.texi			\
-	src/macros.texi
+	src/r5rs.texi				\
+	src/macros.texi				\
+	src/srfi-45-lazy-evaluation.texi
 
 src_chicken_internals_TEXINFOS = \
 	src/macros.texi
