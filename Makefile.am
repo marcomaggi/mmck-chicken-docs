@@ -131,7 +131,7 @@ tests/test-chicken-internals-procs.exe: tests/test-chicken-internals-procs.$(OBJ
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 
-#### tests associated to the document "chicken-internals"
+#### tests associated to the document "chicken-core"
 
 EXTRA_DIST		+= tests/test-chicken-core-condition.scm
 MMCK_CHECK_OBJECTS	+= tests/test-chicken-core-condition.$(OBJEXT)
@@ -141,6 +141,18 @@ tests/test-chicken-core-condition.$(OBJEXT): tests/test-chicken-core-condition.s
 	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
 
 tests/test-chicken-core-condition.exe: tests/test-chicken-core-condition.$(OBJEXT)
+	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
+
+## --------------------------------------------------------------------
+
+EXTRA_DIST		+= tests/test-chicken-core-base.scm
+MMCK_CHECK_OBJECTS	+= tests/test-chicken-core-base.$(OBJEXT)
+MMCK_CHECK_PROGS	+= tests/test-chicken-core-base.exe
+
+tests/test-chicken-core-base.$(OBJEXT): tests/test-chicken-core-base.scm $(MMCK_CHECK_DEPS)
+	$(MMCK_CHECK_ENV) $(CSC_COMPILE_OBJECT_STATIC) $(@) $(<)
+
+tests/test-chicken-core-base.exe: tests/test-chicken-core-base.$(OBJEXT)
 	$(MMCK_CHECK_ENV) $(CSC_LINK_PROGRAM) $(@) $(<)
 
 
