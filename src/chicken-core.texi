@@ -477,8 +477,7 @@ global and not thread--local.
 @defunx error @var{string} @var{exp} @dots{}
 @defunx error @var{symbol} @var{string} @var{exp} @dots{}
 Print an error message, write all extra arguments to the value of @code{(current-error-port)} and
-invoke the current exception--handler.  This conforms to @ansrfi{23}
-(@url{http://srfi.schemers.org/srfi-23/srfi-23.html}).
+invoke the current exception--handler.  This conforms to @ansrfi{23}; @ref{srfi error-reporting}.
 
 If the first argument is a symbol: it specifies the @code{location} property of the raised
 exceptional--condition object: the name of the procedure where the error occurred.
@@ -2838,7 +2837,7 @@ POSSIBILITY OF SUCH DAMAGE.
 @c * srfi case-lambda::            @ansrfi{16} syntax for procedures of
 @c                                 variable arity.
 @c * srfi time::                   @ansrfi{19} time data types and procedures.
-@c * srfi error-reporting::        @ansrfi{23} error reporting mechanism.
+* srfi error-reporting::        @ansrfi{23} error reporting mechanism.
 @c * srfi shared structures::      @ansrfi{38} representation for data with
 @c                                 shared structure.
 @c * srfi specialize-procedures::  @ansrfi{26} notation for specializing
@@ -2857,6 +2856,7 @@ POSSIBILITY OF SUCH DAMAGE.
 @c * srfi environment-variables::  @ansrfi{98} environment variables.
 @end menu
 
+@include srfi-23-error-reporting.texi
 @include srfi-45-lazy-evaluation.texi
 
 @c page

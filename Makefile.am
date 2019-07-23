@@ -20,6 +20,7 @@ info_TEXINFOS	= \
 src_chicken_core_TEXINFOS = \
 	src/r5rs.texi				\
 	src/macros.texi				\
+	src/srfi-23-error-reporting.texi	\
 	src/srfi-45-lazy-evaluation.texi
 
 src_chicken_internals_TEXINFOS = \
