@@ -325,6 +325,26 @@
   (values))
 
 
+(parameterise ((check-test-name		'ports))
+
+  (check
+      (let ((port (open-output-string)))
+	(display "ciao" port)
+	(display " mamma" port)
+	(get-output-string port))
+    => "ciao mamma")
+
+
+  (check
+      (let ((port (open-input-string "ciao mamma")))
+	(let* ((A (read port))
+	       (B (read port)))
+	  (list A B)))
+    => '(ciao mamma))
+
+  (values))
+
+
 ;;;; done
 
 (check-report)

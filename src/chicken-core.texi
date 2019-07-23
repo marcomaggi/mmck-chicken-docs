@@ -2142,18 +2142,32 @@ executing.  Otherwise, the whole process is put to sleep.
 @section Ports
 
 
-@defun get-output-string @var{port}
-Return accumulated output of a port created with @code{(open-output-string)}.
+@defun open-output-string
+@defunx get-output-string @var{port}
+@func{open-output-string} returns a ``string output port'' for accumulating output in a string.
+@func{get-output-string} returns the output accumulated in a string port created with
+@code{(open-output-string)}.
+
+@lisp
+(let ((port (open-output-string)))
+  (display "ciao" port)
+  (display " mamma" port)
+  (get-output-string port))
+@result{} "ciao mamma"
+@end lisp
 @end defun
 
 
 @defun open-input-string @var{string}
 Return a port for reading from @var{string}.
-@end defun
 
-
-@defun open-output-string
-Return a port for accumulating output in a string.
+@lisp
+(let ((port (open-input-string "ciao mamma")))
+  (let* ((A (read port))
+         (B (read port)))
+    (list A B)))
+@result{} (ciao mamma)
+@end lisp
 @end defun
 
 
