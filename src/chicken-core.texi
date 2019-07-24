@@ -2786,6 +2786,7 @@ other object.  The output is prefixed by the @var{header}, which defaults to @co
 
 @cindex @library{chicken plist} module
 @cindex Module @library{chicken plist}
+@cindex Property lists
 
 
 As in other Lisp dialects, @chicken{} supports ``property lists'' associated with symbols.
