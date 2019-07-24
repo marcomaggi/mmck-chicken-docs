@@ -170,6 +170,7 @@ POSSIBILITY OF SUCH DAMAGE.
 * blob::                        Module @library{chicken blob}.
 * condition::                   Module @library{chicken condition}.
 * continuation::                Module @library{chicken continuation}.
+* plist::                       Module @library{chicken plist}.
 
 Appendices
 
@@ -2777,6 +2778,80 @@ other object.  The output is prefixed by the @var{header}, which defaults to @co
 
 @cindex @library{chicken continuation} module
 @cindex Module @library{chicken continuation}
+
+@c page
+@node plist
+@chapter Module @library{chicken plist}
+
+
+@cindex @library{chicken plist} module
+@cindex Module @library{chicken plist}
+
+
+As in other Lisp dialects, @chicken{} supports ``property lists'' associated with symbols.
+Properties are accessible via a key that can be any kind of value but which will be compared using
+@func{eq?}.
+
+
+@defun get @var{symbol} @var{property}
+@defunx get @var{symbol} @var{property} @var{DEFAULT}
+Return the value stored under the key @var{property} in the property list of @var{symbol}.  If no
+such property is stored, returns @var{default}.  The @var{default} is optional and defaults to
+@false{}.
+
+Notice that @func{get} is a getter with setter, so:
+
+@lisp
+(set! (get @var{symbol} @var{property}) @var{value})
+@end lisp
+
+@noindent
+is equivalent to:
+
+@lisp
+(put! @var{symbol} @var{property} @var{value})
+@end lisp
+@end defun
+
+
+@defun put! @var{symbol} @var{property} @var{value}
+Store @var{value} under the key @var{property} in the property list of @var{symbol} replacing any
+previously stored value.
+@end defun
+
+
+@defun {remprop!} @var{symbol} @var{property}
+Delete the first property matching the key @var{property} in the property list of @var{symbol}.
+Return @true{} when a deletion performed, and @false{} otherwise.
+@end defun
+
+
+@defun symbol-plist @var{symbol}
+Return the property list of @var{symbol}.  The property list is a flat list of alternating
+properties and values.  This list is not guaranteed to be a fresh copy, so we must avoid mutating it
+directly.
+
+The function @func{symbol-plist} is a getter with setter, so we can use:
+
+@lisp
+(set! (symbol-plist @var{symbol}) @var{lst})
+@end lisp
+
+@noindent
+to set a new property list.
+@end defun
+
+
+@defun get-properties @var{symbol} @var{properties}
+Search the property list of @var{symbol} for the first property with a key in the list
+@var{properties}.  Return 3 values: the matching property key, value, and the tail of property list
+after the matching property.  When no match found all values are @false{}.
+
+This tail of the property list is not guaranteed to be a fresh copy, so we must avoid mutating it
+directly.
+
+@var{properties} may also be an atom, in which case it is treated as a list of one element.
+@end defun
 
 @c page
 @node document license
