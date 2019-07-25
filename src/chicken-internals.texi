@@ -995,6 +995,11 @@ Return @true{} if @qvar{OBJ} is a structure with name @func{eq?} to @qvar{NAME};
 @false{}.
 @end deffn
 
+
+@deffn {System Operation} {##sys#generic-structure?} @qvar{obj}
+Return @true{} if @qvar{OBJ} is a structure of any type; otherwise return @false{}.
+@end deffn
+
 @c page
 @node structs sample
 @section Example of structure handling @api{}
