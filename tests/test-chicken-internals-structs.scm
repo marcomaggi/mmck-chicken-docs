@@ -143,6 +143,27 @@
   (values))
 
 
+(parameterise ((check-test-name		'predicates))
+
+  (check
+      (let ((stru (##sys#make-structure '<colour> 1 2 3)))
+	(##sys#generic-structure? stru))
+    => #t)
+
+  (values))
+
+
+(parameterise ((check-test-name		'inspection))
+
+  ;;How to retrieve a struct's symbol name.
+  ;;
+  (check
+      (##sys#slot (##sys#make-structure '<colour> 1 2 3) 0)
+    => '<colour>)
+
+  (values))
+
+
 ;;;; done
 
 (check-report)
