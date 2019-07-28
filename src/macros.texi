@@ -791,6 +791,10 @@ Revised^6 Report on the algorithmic language Scheme
 @var{?\THING\n}
 @end macro
 
+@macro qvarn1{THING}
+@var{?\THING\n+1}
+@end macro
+
 @macro qvark{THING}
 @var{?\THING\k}
 @end macro
