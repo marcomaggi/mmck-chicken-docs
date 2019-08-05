@@ -167,6 +167,7 @@ POSSIBILITY OF SUCH DAMAGE.
 * overview::                    Overview of the package.
 * r5rs::                        The Revised(5) Report on Scheme.
 * base::                        Module @library{chicken base}.
+* fixnum::                      Module @library{chicken fixnum}.
 * blob::                        Module @library{chicken blob}.
 * condition::                   Module @library{chicken condition}.
 * continuation::                Module @library{chicken continuation}.
@@ -2197,6 +2198,102 @@ Return @true{} if the given @var{PORT} closed in all directions; otherwise retur
 @defun port? @var{X}
 Return @true{} if @var{X} is a port object; return @false{} otherwise.
 @end defun
+
+@c page
+@node fixnum
+@chapter Module @library{chicken fixnum}
+
+
+@cindex @library{chicken fixnum} module
+@cindex Module @library{chicken fixnum}
+
+
+Because @chicken{} supports a full numeric tower, operations can sometimes incur a substantial
+overhead to simply detect the type of numbers you're passing in; when we know the arguments are
+fixnums, we can choose to use fixnum--specific operations to avoid this overhead.
+
+This is purely a performance hack.  We might want to consider adding @emph{type annotations}
+instead, this often gives the same performance boost without having to rewrite all numeric operators
+in our code.
+
+@menu
+* fixnum arth::                 Arithmetic fixnum operations.
+* fixnum over::                 Overflow-aware fixnum operations.
+* fixnum pred::                 Fixnum comparison and predicates.
+* fixnum limits::               Fixnum limits.
+@end menu
+
+@c page
+@node fixnum arth
+@section Arithmetic fixnum operations
+
+
+@defun fx+ @vari{N} @varii{N}
+@defunx fx- @vari{N} @varii{N}
+@defunx fx* @vari{N} @varii{N}
+@defunx fx/ @vari{N} @varii{N}
+@defunx fxmod @vari{N} @varii{N}
+@defunx fxrem @vari{N} @varii{N}
+@defunx fxneg @var{N}
+@defunx fxmin @vari{N} @varii{N}
+@defunx fxmax @vari{N} @varii{N}
+@defunx fxand @vari{N} @varii{N}
+@defunx fxior @vari{N} @varii{N}
+@defunx fxxor @vari{N} @varii{N}
+@defunx fxnot @var{N}
+@defunx fxshl @vari{N} @varii{N}
+@defunx fxshr @vari{N} @varii{N}
+@defunx fxgcd @vari{N} @varii{N}
+Arithmetic fixnum operations.  @strong{These procedures do not check their arguments}, so
+non--fixnum parameters will result in incorrect results.  @func{fxneg} negates its argument.
+
+On division by zero: @func{fx/}, @func{fxmod} and @func{fxrem} signal a condition of kind @code{(exn
+arithmetic)}.
+
+@func{fxshl} and @func{fxshr} perform arithmetic shift left and right, respectively.
+@end defun
+
+@c page
+@node fixnum over
+@section Overflow--aware fixnum operations
+
+
+@defun fx+? @vari{N} @varii{N}
+@defunx fx-? @vari{N} @varii{N}
+@defunx fx*? @vari{N} @varii{N}
+@defunx fx/? @vari{N} @varii{N}
+These procedures behave similarly to their standard counterparts with the exception that @false{} is
+returned if an argument is not a fixnum or the result of the operation overflows.
+
+Chaining of such procedures is well--defined and causes the overflow error to be propagated.
+@end defun
+
+@c page
+@node fixnum pred
+@section Fixnum comparison and predicates
+
+
+@defun fxodd? @var{N}
+@defunx fxeven? @var{N}
+@defunx fx= @vari{N} @varii{N}
+@defunx fx> @vari{N} @varii{N}
+@defunx fx< @vari{N} @varii{N}
+@defunx fx>= @vari{N} @varii{N}
+@defunx fx<= @vari{N} @varii{N}
+Comparison of fixnums and predicates on them.
+@end defun
+
+@c page
+@node fixnum limits
+@section Fixnum limits
+
+
+@defvr Constant most-positive-fixnum
+@defvrx Constant most-negative-fixnum
+@defvrx Constant fixnum-bits
+@defvrx Constant fixnum-precision
+Platform--specific fixnum limits.
+@end defvr
 
 @c page
 @node blob
