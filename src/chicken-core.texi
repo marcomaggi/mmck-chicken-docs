@@ -3978,7 +3978,7 @@ procedures that we can call from a syntax transformer.
 
 
 @deffn Syntax define-for-syntax (@qvar{name} @qvar{var} ...) @var{exp} @dots{}
-@deffnx Syntax define-for-syntax (@qvar{name} @qvari{var} @dots{} @qvarn{var} . @qvarn1{var}) @qvari{exp} @dots{}
+@deffnx Syntax define-for-syntax (@qvar{name} @qvari{var} @dots{} @qvarn{var} . @qvarn{var}) @qvari{exp} @dots{}
 @deffnx Syntax define-for-syntax @qvar{name}
 @deffnx Syntax define-for-syntax @qvar{name} @qvar{value}
 Define the toplevel variable @qvar{name} at macro--expansion time.  This can be helpful when we want
