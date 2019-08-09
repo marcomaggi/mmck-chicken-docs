@@ -167,6 +167,7 @@ POSSIBILITY OF SUCH DAMAGE.
 * overview::                    Overview of the package.
 * r5rs::                        The Revised(5) Report on Scheme.
 * base::                        Module @library{chicken base}.
+* types::                       Types.
 * fixnum::                      Module @library{chicken fixnum}.
 * blob::                        Module @library{chicken blob}.
 * condition::                   Module @library{chicken condition}.
@@ -2198,6 +2199,685 @@ Return @true{} if the given @var{PORT} closed in all directions; otherwise retur
 @defun port? @var{X}
 Return @true{} if @var{X} is a port object; return @false{} otherwise.
 @end defun
+
+@c page
+@node types
+@chapter Types
+
+
+@cindex @library{chicken type} module
+@cindex Module @library{chicken type}
+
+
+A dynamically typed language like Scheme does not restrict the type of values bound or assigned to
+variables to be constant throughout the run--time of a program.  This provides a lot of flexibility
+and makes it easy to get code up and running quickly, but can make maintenance of larger code bases
+more difficult as the implicit assignment of types to variables done by the programmer has to be
+``recovered'' when the code is inspected or debugged again.  Statically typed languages enforce
+distinct types for all variables, optionally providing type--inference to compute types without
+requiring the user to specify explicit type declarations in many cases.
+
+If the compiler has some knowledge of the types of local or global variables then it can help in
+catching type--related errors like passing a value of the wrong type to a user--defined or built--in
+procedure.  Type--information also can be used to generate more efficient code by omitting
+unnecessary type-checks.
+
+@chicken{} provides an intra--procedural flow--analysis pass and two compiler options for using
+type-information in this manner:
+
+@table @asis
+@item @option{-specialize}
+Will replace certain generic library procedure calls with faster type--specific operations.
+
+@item @option{-strict-types}
+Makes type--analysis more optimistic and gives more opportunities for specialization, but may result
+in unsafe code if type--declarations are violated.
+@end table
+
+Note that the interpreter will always ignore type--declarations and will not perform any
+flow--analysis of interpreted code.
+
+@menu
+* types declaring::             Declaring types.
+* types syntax::                Type syntax.
+* types pred::                  Predicates.
+* types purity::                Purity.
+* types exts::                  Using type information in extensions.
+* types optim::                 Optimisations done by specialisation.
+* types caveats::               Caveats.
+@end menu
+
+@c page
+@node types declaring
+@section Declaring types
+
+
+@cindex @syntax{type} declaration
+@cindex Declaring @syntax{type}
+Type information for all core library units is available by default.  User--defined global variables
+can be declared to have a type using the @code{(declare (type ...))} or @code{:} syntax.
+
+All syntax described hereafter is exported from the @library{chicken type} module.
+
+
+@deffn Syntax : @qvar{identifier} @qvar{type}
+Declare that the global variable @qvar{identifier} is of the given @qvar{type}.
+@end deffn
+
+
+@deffn Syntax the @qvar{type} @qvar{expression}
+Equivalent to @qvar{expression}, but declare that the result will be of the given @qvar{type}.  Note
+that this form always declares the type of a single result, @syntax{the} can not be used to declare
+types for multiple result values.  @qvar{type} should be a subtype of the type inferred for
+@qvar{expression}, the compiler will issue a warning if this should not be the case.
+@end deffn
+
+
+@deffn Syntax assume ((@qvar{variable} @qvar{type}) @dots{}) @qvar{body} @dots{}
+Declare that at the start of execution of @qvar{body}, the variables will be of the given types.
+This is equivalent to:
+
+@lisp
+(let ((@qvar{variable} (the @qvar{type} @qvar{variable})) ...)
+  @qvar{body} ...)
+@end lisp
+@end deffn
+
+
+@deffn Syntax define-type @qvar{name} @qvar{type}
+Define a type--abbreviation @qvar{name} that can be used in place of @qvar{type}.
+Type--abbreviations defined inside a module are not visible outside of that module.
+@end deffn
+
+@c page
+@node types syntax
+@section Type syntax
+
+
+Types declared with the @syntax{type} declaration or @syntax{:} should follow the syntax given
+in this section.
+
+
+@menu
+* types syntax type::           Full type syntaxes.
+* types syntax value::          Value types syntaxes.
+* types syntax basic::          Basic type syntaxes.
+* types syntax complex::        Complex type syntaxes.
+* types syntax result::         Result type syntaxes.
+* types syntax struct::         Struct type syntaxes.
+* types syntax alias::          Alias type syntaxes.
+@end menu
+
+@c page
+@node types syntax type
+@subsection Full type syntaxes
+
+
+@table @code
+@item deprecated
+Any use of this variable will generate a warning.
+
+@item deprecated @qvar{name}
+Generate a warning and advise alternative @qvar{name}.
+
+@item @qvar{valuetype}
+@ref{types syntax value, Value types syntaxes} for details.
+@end table
+
+@c page
+@node types syntax value
+@subsection Value types syntaxes
+
+
+The following are the type syntaxes for @qvar{valuetype}.
+
+
+@table @code
+@item @qvar{basictype}
+For details @ref{types syntax basic, Basic type syntaxes}.
+
+@item @qvar{typevar}
+@qvar{variable} or @code{(@qvar{variable} @qvar{type})}.
+
+@item @qvar{complextype}
+For details @ref{types syntax complex, Complex type syntaxes}.
+
+@item (or @qvar{valuetype} @dots{})
+@cindex Value type syntax @syntax{or}
+@cindex @syntax{or}, value type syntax
+``Union'' or ``sum'' type.
+
+@item (not @qvar{valuetype})
+Non--matching type.
+
+@quotation
+@strong{NOTE} No type--variables are bound inside @code{(not @qvar{type})}.
+@end quotation
+
+@item (struct @qvar{structurename})
+@cindex Value type syntax @syntax{struct}
+@cindex @syntax{struct}, value type syntax
+Record structure of given kind.
+
+@item (procedure [@qvar{name}] (@qvar{valuetype} @dots{} [#!optional @qvar{valuetype} @dots{}] [#!rest [@qvar{valuetype}]]) . @qvar{results})
+@cindex Value type syntax @syntax{procedure}
+@cindex @syntax{procedure}, value type syntax
+Procedure type, optionally with name.
+
+@item (@qvar{valuetype} @dots{} [#!optional @qvar{valuetype} @dots{}] [#!rest [@qvar{valuetype}]] -> . @qvar{results})
+Alternative procedure type syntax.
+
+@item (@qvar{valuetype} @dots{} [#!optional @qvar{valuetype} @dots{}] [#!rest [@qvar{valuetype}]] --> . @qvar{results})
+Procedure type that is declared not to modify locally held state.
+
+@item (@qvar{valuetype} -> @qvar{valuetype} : @qvar{valuetype})
+Predicate procedure type.
+
+@item (forall (@qvar{typevar} @dots{}) @qvar{valuetype})
+@cindex Value type syntax @syntax{forall}
+@cindex @syntax{forall}, value type syntax
+Polymorphic type.
+
+We can use a shorthand @code{(quote @qvar{symbol})} for introducing free variables in
+@syntax{forall} types, for example:
+
+@lisp
+('a -> 'a)
+@end lisp
+
+@noindent
+is translated to
+
+@lisp
+(forall (a) (a -> a))
+@end lisp
+
+If a @syntax{forall} already exists, quotes around the free variables introduced by it will be
+stripped:
+
+@lisp
+(forall (a) ('a -> a))
+@end lisp
+
+@noindent
+Is translated to:
+
+@lisp
+(forall (a) (a -> a))
+@end lisp
+
+Note that type--variables in @syntax{forall} types may be given ``constraint'' types, i.e.
+
+@lisp
+(: sort (forall (@var{elm} (@var{object} (or (vector-of @var{elm}) (list-of @var{elm}))))
+          (@var{object} (@var{elm} @var{elm} -> *) -> @var{object})))
+@end lisp
+
+@noindent
+declares that @func{sort} is a procedure of two arguments:
+
+@enumerate
+@item
+A vector or list of an undetermined element type @var{elm}; it is named @var{object} and defined as:
+
+@lisp
+(@var{object} (or (vector-of @var{elm}) (list-of @var{elm})))
+@end lisp
+
+@item
+A procedure that takes two arguments of the element type, and returns a single value of any type; it
+has no name and it is defined as:
+
+@lisp
+(@var{elm} @var{elm} -> *)
+@end lisp
+@end enumerate
+
+The result of @func{sort} is of the same type as the first argument.
+@end table
+
+@c page
+@node types syntax basic
+@subsection Basic type syntaxes
+
+
+These are the syntaxes for @qvar{BASICTYPE}.
+
+
+@deftp {Basic Type} *
+Any value.
+@end deftp
+
+
+@deftp {Basic Type} bignum
+Arbitrary precision integer.
+@end deftp
+
+
+@deftp {Basic Type} blob
+Byte vector.
+@end deftp
+
+
+@deftp {Basic Type} boolean
+Boolean @true{} or @false{}.
+@end deftp
+
+
+@deftp {Basic Type} char
+Character.
+@end deftp
+
+
+@deftp {Basic Type} cplxnum
+Complex number.
+@end deftp
+
+
+@deftp {Basic Type} eof
+End--of--file object.
+@end deftp
+
+
+@deftp {Basic Type} false
+Boolean @false{}.
+@end deftp
+
+
+@deftp {Basic Type} fixnum
+Word--sized integer.
+@end deftp
+
+
+@deftp {Basic Type} float
+Floating-.point number.
+@end deftp
+
+
+@deftp {Basic Type} integer
+Exact integer (either fixnum or bignum).
+@end deftp
+
+
+@deftp {Basic Type} list
+Null or pair.
+@end deftp
+
+
+@deftp {Basic Type} locative
+Locative object.
+@end deftp
+
+
+@deftp {Basic Type} null
+Empty list.
+@end deftp
+
+
+@deftp {Basic Type} number
+Fixnum or float.
+@end deftp
+
+
+@deftp {Basic Type} pair
+Pair objects.
+@end deftp
+
+
+@deftp {Basic Type} pointer-vector
+Vector or native pointers.
+@end deftp
+
+
+@deftp {Basic Type} pointer
+Native pointer
+@end deftp
+
+
+@deftp {Basic Type} input-port
+@deftpx {Basic Type} output-port
+Input or output port.
+@end deftp
+
+
+@deftp {Basic Type} procedure
+Unspecified procedure.
+@end deftp
+
+
+@deftp {Basic Type} ratnum
+Rational number.
+@end deftp
+
+
+@deftp {Basic Type} string
+String object.
+@end deftp
+
+
+@deftp {Basic Type} symbol
+Symbol object.
+@end deftp
+
+
+@deftp {Basic Type} keyword
+Keyword object.
+@end deftp
+
+
+@deftp {Basic Type} true
+The boolean @true{}
+@end deftp
+
+
+@deftp {Basic Type} vector
+Vector object.
+@end deftp
+
+@c page
+@node types syntax complex
+@subsection Complex type syntaxes
+
+
+These are the syntaxes for @qvar{COMPLEXTYPE}.
+
+@table @code
+@item (pair @qvari{type} @qvarii{TYPE})
+Pair with given component types.
+
+@item (list-of @qvar{type})
+Proper list with given element type.
+
+@item (list @qvar{type} @dots{})
+Proper list with given length and element types.
+
+@item (vector-of @qvar{type})
+Vector with given element types.
+
+@item (vector @qvar{type} @dots{})
+Vector with given length and element types.
+@end table
+
+@c page
+@node types syntax result
+@subsection Result type syntaxes
+
+
+The following are the syntaxes for @qvar{results}.
+
+@table @code
+@item *
+Any number of unspecific results.
+
+@item (@qvar{resulttype} @dots{})
+Specific number of results with given types.
+@end table
+
+The following are the syntaxes for @qvar{resulttype}.
+
+@table @code
+@item undefined
+A single undefined result.
+
+@item noreturn
+Procedure does not return normally.
+
+@item @qvar{valuetype}
+@end table
+
+@c page
+@node types syntax struct
+@subsection Struct type syntaxes
+
+
+Some types are internally represented as structure types, but we can also use these names directly
+in type--specifications; @qvar{type} corresponds to @code{(struct @qvar{type})} in this case.
+
+
+@deftp {Struct Type} u8vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} s8vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} u16vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} s16vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} u32vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} s32vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} u64vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} s64vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} f32vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} f64vector
+@ansrfi{4} byte vector.
+@end deftp
+
+
+@deftp {Struct Type} thread
+@ansrfi{18} thread.
+@end deftp
+
+
+@deftp {Struct Type} environment
+Evaluation environment.
+@end deftp
+
+
+@deftp {Struct Type} time
+@ansrfi{18} @code{time} object.
+@end deftp
+
+
+@deftp {Struct Type} continuation
+Continuation object.
+@end deftp
+
+
+@deftp {Struct Type} lock
+Lock object from @code{posix} unit.
+@end deftp
+
+
+@deftp {Struct Type} condition
+Object representing exception.
+@end deftp
+
+
+@deftp {Struct Type} hash-table
+@ansrfi{69} hash--table.
+@end deftp
+
+
+@deftp {Struct Type} tcp-listener
+Listener object from @code{tcp} unit.
+@end deftp
+
+@c page
+@node types syntax alias
+@subsection Alias type syntaxes
+
+
+Additionally, some aliases are allowed:
+
+@table @code
+@item any
+An alias for @code{*}.
+
+@item immediate
+An alias for:
+
+@lisp
+(or eof null fixnum char boolean)
+@end lisp
+
+@item port
+An alias for:
+
+@lisp
+(or input-port output-port)
+@end lisp
+
+@item void
+An alias for @code{undefined}.
+@end table
+
+For portability the aliases @code{&optional} and @code{&rest} are allowed in procedure type
+declarations as an alternative to @code{#!optional} and @code{#!rest}, respectively.
+
+@c page
+@node types pred
+@section Predicates
+
+
+Procedure--types of the form:
+
+@lisp
+(@qvar{dom} -> @qvar{rng} : @qvar{type})
+@end lisp
+
+@noindent
+specify that the declared procedure will be a predicate, i.e. it accepts a single argument of type
+@qvar{dom}, returns a result of type @qvar{rng} (usually a boolean) and returns a @true{} value if
+the argument is of type @qvar{type} and @false{} otherwise.
+
+@c page
+@node types purity
+@section Purity
+
+
+Procedure types are assumed to be not referentially transparent and are assumed to possibly modify
+locally held state.  Using the
+
+@lisp
+(... --> ...)
+@end lisp
+
+@noindent
+syntax, we can declare a procedure to not modify local state, i.e. not causing any side--effects on
+local variables or data contained in local variables.  This gives more opportunities for
+optimisation but may not be violated or the results are undefined.
+
+@c page
+@node types exts
+@section Using type information in extensions
+
+
+Type information of declared toplevel variables can be used in client code that refers to the
+definitions in a compiled file.  The following compiler options allow saving type--declarations to a
+file and consulting the type declarations retained in this manner:
+
+@table @code
+@item -emit-types-file @var{filename}
+Writes the type--information for all declared definitions in an internal format to @var{filename}.
+
+@item -consult-types-file @var{filename}
+Loads and registers the type--information in @var{filename} which should be a file generated through
+a previous use of @option{-emit-types-file}.
+@end table
+
+If library code is used with @syntax{import} and a @code{.types} file of the same name exists in the
+extension repository path, then it is automatically consulted.  This allows code using these
+libraries to take advantage of type--information for library definitions.
+
+Note that procedure--definitions in dynamically loaded code that was compiled with
+@option{-strict-types} will not check the types of their arguments which will result in unsafe code.
+Invoking such procedures with incorrectly typed arguments will result in undefined program
+behaviour.
+
+@c page
+@node types optim
+@section Optimizations done by specialization
+
+
+If argument types are known, then calls to known library procedures are replaced with non--checking
+variants (if available).  Additionally, procedure checks can be omitted in cases where the value in
+operator position of a procedure call is known to be a procedure.  Performance results will vary
+greatly depending on the nature of the compiled code.  In general, specialisation will not make code
+that is compiled in unsafe mode any faster: compilation in unsafe mode will omit most type checks
+anyway.  But specialisation can often improve the performance of code compiled in safe (default)
+mode.
+
+Specialisations can also be defined by the user.
+
+
+@deffn Syntax define-specialization (@qvar{name} @qvar{argument} ...) @qvar{results} @qvar{body}
+@deffnx Syntax define-specialization (@qvar{name} @qvar{argument} ...) @qvar{body}
+Declare that calls to the globally defined procedure @qvar{name} with arguments matching the types
+given by @qvar{argument}s should be replaced by @qvar{body} (a single expression).  Each
+@qvar{argument} should be an identifier naming a formal parameter, or a list of the form
+@code{(@qvar{identifier} @qvar{type})}.  In the former case, this argument specialises on the
+@code{*} type.
+
+If given, @qvar{results} (which follows the syntax given in @ref{types syntax result, Result type
+syntaxes}) adjusts the result types from those previously declared for @qvar{name}.
+
+@qvar{name} must have a declared type (for example by using @syntax{:}).  If it doesn't, the
+specialisation is ignored.
+
+User--defined specialisations are always local to the compilation unit in which they occur and
+cannot be exported.  When encountered in the interpreter, @syntax{define-specialization} does
+nothing and returns an unspecified result.
+
+When multiple specialisations may apply to a given call, they are prioritised by the order in which
+they were defined, with early specializations taking precedence over latter ones.
+
+There is currently no way of ensuring specialisations take place.  We can use the @code{-debug o}
+compiler options to see the total number of specialisations performed on a particular named function
+call during compilation.
+@end deffn
+
+
+@deffn Syntax compiler-typecase @qvar{exp} (@qvar{type} @qvar{body} @dots{}) @dots{}
+@deffnx Syntax compiler-typecase @qvar{exp} (@qvar{type} @qvar{body} @dots{}) @dots{} (else @qvar{body} @dots{})
+Evaluate @qvar{exp} and execute the first clause which names a type that matches the type inferred
+during flow analysis as the result of @qvar{exp}.  The result of @qvar{exp} is ignored and should be
+a single value.  If a @syntax{compiler-typecase} form occurs in evaluated code, or if it occurs in
+compiled code but specialisation is not enabled, then it must have an @syntax{else} clause which
+specifies the default code to be executed after @qvar{exp}.  If no @syntax{else} clause is given and
+no @qvar{type} matches, then a compile--time error is signalled.
+@end deffn
+
+@c page
+@node types caveats
+@section Caveats
+
+
+Assignments make flow--analysis much harder and remove opportunities for optimisation.  Generally we
+should avoid using a lot of mutations of both local variables and data held in local variables.  It
+may even make our code do unexpected things when these mutations violate type--declarations.
+
+Note that using threads which modify local state makes all type--analysis pointless.
 
 @c page
 @node fixnum
