@@ -2245,6 +2245,7 @@ flow--analysis of interpreted code.
 * types exts::                  Using type information in extensions.
 * types optim::                 Optimisations done by specialisation.
 * types caveats::               Caveats.
+* types examples::              Usage examples for type declarations.
 @end menu
 
 @c page
@@ -2878,6 +2879,104 @@ should avoid using a lot of mutations of both local variables and data held in l
 may even make our code do unexpected things when these mutations violate type--declarations.
 
 Note that using threads which modify local state makes all type--analysis pointless.
+
+@c page
+@node types examples
+@section Usage examples for type declarations
+
+
+@menu
+* types examples 1::            Example for @func{call-with-string-output-port}.
+@end menu
+
+@c page
+@node types examples 1
+@subsection Example for @func{call-with-string-output-port}
+
+
+Let's consider this code, which defines the well--known function
+@func{call-with-string-output-port}:
+
+@lisp
+(import (scheme)
+        (chicken base)
+        (chicken type))
+
+(define (open-string-output-port)
+  (let ((port (open-output-string)))
+    (values port (lambda ()
+                   (get-output-string port)))))
+
+(define (call-with-string-output-port proc)
+  (receive (port extract)
+      (open-string-output-port)
+    (proc port)
+    (extract)))
+
+(display (call-with-string-output-port
+             (lambda (port)
+               (display "ciao\n" port))))
+(newline)
+@end lisp
+
+@noindent
+the following are alternative possibilities to declare types for the functions:
+
+@lisp
+(declare
+  (type (open-string-output-port         procedure))
+  (type (call-with-string-output-port    procedure)))
+
+(begin
+  (: open-string-output-port            procedure)
+  (: call-with-string-output-port       procedure))
+
+(declare
+  (type (open-string-output-port
+         (procedure () . (output-port procedure))))
+  (type (call-with-string-output-port
+            (procedure (procedure) . (string)))))
+
+(begin
+  (: open-string-output-port
+     (procedure () . (output-port procedure)))
+  (: call-with-string-output-port
+     (procedure -> string)))
+
+(declare
+  (type (open-string-output-port
+         (procedure () . (output-port (procedure () . (string))))))
+  (type (call-with-string-output-port
+            (procedure ((procedure (output-port) . (undefined))) . (string)))))
+
+(begin
+  (: open-string-output-port
+     (procedure () . (output-port (procedure () . (string)))))
+  (: call-with-string-output-port
+     (procedure ((procedure (output-port) . (undefined))) . (string))))
+
+(begin
+  (: open-string-output-port
+     (-> . (output-port (-> . (string)))))
+  (: call-with-string-output-port
+     ((output-port -> . (undefined)) -> . (string))))
+
+(begin
+  (: open-string-output-port
+     (forall ((?getter (-> . (string))))
+             (-> . (output-port ?getter))))
+  (: call-with-string-output-port
+     (forall ((?printer (output-port -> undefined)))
+             (?printer -> . (string)))))
+
+(begin
+  (: open-string-output-port
+     (forall ((?getter (-> string)))
+             (-> output-port ?getter)))
+  (: call-with-string-output-port
+     (forall ((?printer (output-port -> undefined)))
+             (?printer -> string))))
+@end lisp
 
 @c page
 @node fixnum
