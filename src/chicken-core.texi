@@ -2240,7 +2240,6 @@ flow--analysis of interpreted code.
 @menu
 * types declaring::             Declaring types.
 * types syntax::                Type syntax.
-* types pred::                  Predicates.
 * types purity::                Purity.
 * types exts::                  Using type information in extensions.
 * types optim::                 Optimisations done by specialisation.
@@ -2372,7 +2371,16 @@ Alternative procedure type syntax.
 Procedure type that is declared not to modify locally held state.
 
 @item (@qvar{valuetype} -> @qvar{valuetype} : @qvar{valuetype})
-Predicate procedure type.
+Predicate procedure type.  Procedure--types of the form:
+
+@lisp
+(@qvar{dom} -> @qvar{rng} : @qvar{type})
+@end lisp
+
+@noindent
+specify that the declared procedure will be a predicate, i.e. it accepts a single argument of type
+@qvar{dom}, returns a result of type @qvar{rng} (usually a boolean) and returns a true value if the
+argument is of type @qvar{type} and @false{} otherwise.
 
 @item (forall (@qvar{typevar} @dots{}) @qvar{valuetype})
 @cindex Value type syntax @syntax{forall}
@@ -2755,22 +2763,6 @@ An alias for @code{undefined}.
 
 For portability the aliases @code{&optional} and @code{&rest} are allowed in procedure type
 declarations as an alternative to @code{#!optional} and @code{#!rest}, respectively.
-
-@c page
-@node types pred
-@section Predicates
-
-
-Procedure--types of the form:
-
-@lisp
-(@qvar{dom} -> @qvar{rng} : @qvar{type})
-@end lisp
-
-@noindent
-specify that the declared procedure will be a predicate, i.e. it accepts a single argument of type
-@qvar{dom}, returns a result of type @qvar{rng} (usually a boolean) and returns a @true{} value if
-the argument is of type @qvar{type} and @false{} otherwise.
 
 @c page
 @node types purity
